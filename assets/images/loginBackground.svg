@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="412" height="847" viewBox="0 0 412 847">
+  <defs>
+    <clipPath id="clip-Login_screen_2">
+      <rect width="412" height="847"/>
+    </clipPath>
+  </defs>
+  <g id="Login_screen_2" data-name="Login screen – 2" clip-path="url(#clip-Login_screen_2)">
+    <rect width="412" height="847" fill="#fff"/>
+    <path id="Path_8" data-name="Path 8" d="M-2145,123.028c176.329,55.322,183.025,52.312,202.11,40.371,25.994-16.26,3.054-71.6,112.951-57.8s107.149-18.041,107.149-18.041V-22.8H-2145Z" transform="translate(2135 -51.2)" fill="#4caf50"/>
+    <path id="Path_9" data-name="Path 9" d="M-1720.362,30.244C-1783.8,10.615-1861.286.23-1861.286.23s-84.916-8.5-99.476,0c-29.759,17.377-3.118,44.346-3.118,44.346s55.619,49.474-54.91,35.791S-2145,22.724-2145,22.724V174.9h424.638Z" transform="translate(2138.669 718.8)" fill="#4caf50"/>
+  </g>
+</svg>
