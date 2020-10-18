@@ -81,9 +81,13 @@ class RecipeListItem extends StatelessWidget {
                       Icon(
                         Icons.timer_rounded,
                         color: kPrimaryColorDark,
+                        //size: 32,
                       ),
                       const SizedBox(width: 8),
-                      Text('$readyInMinutes min'),
+                      Text(
+                        '$readyInMinutes min',
+                        style: Theme.of(context).textTheme.subtitle2,
+                      ),
                     ],
                   ),
                   Column(
@@ -94,7 +98,10 @@ class RecipeListItem extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      Text('$servings pers'),
+                      Text(
+                        '$servings pers',
+                        style: Theme.of(context).textTheme.subtitle2,
+                      ),
                       const SizedBox(width: 8),
                       Icon(
                         Icons.group_rounded,

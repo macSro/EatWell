@@ -9,26 +9,30 @@ class MyScaffold extends StatelessWidget {
   final bool hasDrawer;
   final List<Tab> tabs;
   final List<Widget> tabViews;
+  final bool appBar;
 
   MyScaffold({
-    @required this.title,
+    this.title,
     @required this.child,
     this.hasDrawer = true,
     this.tabs,
     this.tabViews,
+    this.appBar = true,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-        bottom: tabs != null
-            ? TabBar(
-                tabs: tabs,
-              )
-            : null,
-      ),
+      appBar: appBar
+          ? AppBar(
+              title: Text(title),
+              bottom: tabs != null
+                  ? TabBar(
+                      tabs: tabs,
+                    )
+                  : null,
+            )
+          : null,
       drawer: hasDrawer ? MyDrawer() : null,
       body: tabs != null
           ? hasDrawer
@@ -37,7 +41,7 @@ class MyScaffold extends StatelessWidget {
                     children: tabViews,
                   ),
                   snackBar: const SnackBar(
-                    content: Text('Tap back again to exit.'),
+                    content: const Text('Tap back again to exit.'),
                   ),
                 )
               : TabBarView(
@@ -47,7 +51,7 @@ class MyScaffold extends StatelessWidget {
               ? DoubleBackToCloseApp(
                   child: child,
                   snackBar: const SnackBar(
-                    content: Text('Tap back again to exit.'),
+                    content: const Text('Tap back again to exit.'),
                   ),
                 )
               : child,

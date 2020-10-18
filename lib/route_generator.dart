@@ -1,8 +1,8 @@
+import 'package:eat_well_v1/widgets/all_recipes/recipe_list_screen.dart';
 import 'package:eat_well_v1/widgets/filters_screen.dart';
 import 'package:eat_well_v1/widgets/fridge_screen.dart';
 import 'package:eat_well_v1/widgets/login_screen.dart';
-import 'file:///D:/FlutterApps/eat_well_v1/lib/widgets/my_recipe/my_recipe_list_screen.dart';
-import 'file:///D:/FlutterApps/eat_well_v1/lib/widgets/all_recipes/all_recipe_list_screen.dart';
+import 'package:eat_well_v1/widgets/my_recipe/my_recipe_list_screen.dart';
 import 'package:eat_well_v1/widgets/register/register_screen.dart';
 import 'package:eat_well_v1/widgets/shopping_list_screen.dart';
 import 'package:flutter/cupertino.dart';

@@ -1,12 +1,11 @@
+import 'dart:ui';
+
 import 'package:eat_well_v1/bloc/recipe/recipe_bloc.dart';
 import 'package:eat_well_v1/bloc/recipe/recipe_state.dart';
 import 'package:eat_well_v1/constants.dart';
 import 'package:eat_well_v1/model/extended_ingredient.dart';
-import 'package:eat_well_v1/model/ingredient.dart';
-import 'package:eat_well_v1/model/rating.dart';
-import 'package:eat_well_v1/model/recipe.dart';
 import 'package:eat_well_v1/widgets/misc/ingredient_list_tile.dart';
-import 'package:eat_well_v1/widgets/misc/loading_screen.dart';
+import 'package:eat_well_v1/widgets/misc/loading.dart';
 import 'package:eat_well_v1/widgets/misc/recipe/recipe_rating.dart';
 import 'package:eat_well_v1/widgets/misc/scaffold.dart';
 import 'package:eat_well_v1/widgets/recipe/recipe_rating_buttons.dart';
@@ -16,128 +15,112 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class RecipeScreen extends StatelessWidget {
   static const routeName = '/recipe';
 
-  final Recipe recipe;
-
-  RecipeScreen({this.recipe});
-
   @override
   Widget build(BuildContext context) {
-    var recipe = Recipe(
-      name: 'Roasted Vegetable Tacos',
-      imageUrl: kRecipeImageUrlBasePath + '658703-636x393.jpg',
-      readyInMinutes: 30,
-      servings: 4,
-      instructions: [
-        'Preheat the oven to 375 degrees. In a casserole dish, add the chopped sweet potato, pasilla pepper, bell pepper and onion. In a small bowl, combine the chicken stock, oil and vinegar.',
-        'Mix to combine and pour evenly over the vegetables.',
-        'Sprinkle the chili powder, cumin, paprika, and salt over the veggies and stir.',
-        'Bake in for 30 minutes.',
-        'Remove the casserole dish from the oven, stir everything well, increase oven heat to 400 and bake 7 to 10 more minutes.',
-        'Remove from oven and allow to cool slightly.While the vegetables are roasting in the oven, you can cook the corn by boiling it in hot water for 5 to 7 minutes or grilling it.  Carefully remove the kernels with a sharp knife.',
-        'Heat the black beans in a sauce pan. Chop the goat cheese.',
-        'Heat your favorite tortillas, place desired amount of ingredients in the tortillas and add extra goodies such as guacamole, salsa and green onion if desire.',
-      ],
-      ingredients: [
-        ExtendedIngredient(
-          ingredient: Ingredient(
-            id: 1,
-            name: 'apple',
-            imageUrl: kIngredientImageUrlBasePath + 'apple.jpg',
-          ),
-          amount: 2.0,
-          unit: 'cups',
-        ),
-        ExtendedIngredient(
-          ingredient: Ingredient(
-            id: 2,
-            name: 'broccoli',
-            imageUrl: kIngredientImageUrlBasePath + 'broccoli.jpg',
-          ),
-          amount: 200.0,
-          unit: 'ml',
-        ),
-        ExtendedIngredient(
-          ingredient: Ingredient(
-            id: 3,
-            name: 'garlic',
-            imageUrl: kIngredientImageUrlBasePath + 'garlic.jpg',
-          ),
-          amount: 1.0,
-          unit: 'tbsp',
-        ),
-        ExtendedIngredient(
-          ingredient: Ingredient(
-            id: 4,
-            name: 'milk',
-            imageUrl: kIngredientImageUrlBasePath + 'milk.jpg',
-          ),
-          amount: 1.0,
-          unit: 'tsp',
-        ),
-      ],
-      rating: Rating(points: 20, votes: 4),
-    );
     var mediaQuery = MediaQuery.of(context);
     return BlocBuilder<RecipeBloc, RecipeState>(
       builder: (context, state) {
-        if (state is RecipeLoading) {
-          return LoadingScreen();
-        } else
-          return MyScaffold(
-            title: recipe.name,
-            hasDrawer: false,
-            child: ListView(
+        return MyScaffold(
+          appBar: false,
+          title: '',
+          hasDrawer: false,
+          child: state is RecipeDetailsFetched
+              ? _getContent(context, mediaQuery, state.recipe)
+              : LoadingView(text: 'Loading recipe details...'),
+        );
+      },
+    );
+  }
+
+  Widget _getContent(context, mediaQuery, recipe) {
+    return Stack(
+      children: [
+        ListView(
+          children: [
+            Column(
               children: [
-                Column(
-                  children: [
-                    _getImage(recipe.imageUrl, mediaQuery.size.width),
-                    const SizedBox(height: 16),
-                    RecipeRating(rating: recipe.rating),
-                    const SizedBox(height: 8),
-                    Text(
-                      recipe.name,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline5
-                          .copyWith(fontStyle: FontStyle.italic),
-                    ),
-                    const SizedBox(height: 16),
-                    _getDetails(
-                        context, recipe.readyInMinutes, recipe.servings),
-                    const SizedBox(height: 32),
-                    Text(
-                      'Ingredients',
-                      style: Theme.of(context).textTheme.headline6,
-                    ),
-                    const SizedBox(height: 16),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 48),
-                      child: _getIngredientList(recipe.ingredients),
-                    ),
-                    const SizedBox(height: 32),
-                    Text(
-                      'Instructions',
-                      style: Theme.of(context).textTheme.headline6,
-                    ),
-                    const SizedBox(height: 16),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: _getInstructions(context, recipe.instructions),
-                    ),
-                    const SizedBox(height: 32),
-                    Text(
-                      'How did you like this recipe?',
-                      style: Theme.of(context).textTheme.headline6,
-                    ),
-                    const SizedBox(height: 8),
-                    RecipeRatingButtons(recipe.id),
-                    const SizedBox(height: 32),
-                  ],
+                _getImage(recipe.imageUrl, mediaQuery.size.width),
+                const SizedBox(height: 16),
+                RecipeRating(rating: recipe.rating),
+                const SizedBox(height: 8),
+                Text(
+                  recipe.name,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline5
+                      .copyWith(fontStyle: FontStyle.italic),
                 ),
+                const SizedBox(height: 16),
+                _getDetails(context, recipe.readyInMinutes, recipe.servings),
+                const SizedBox(height: 32),
+                Text(
+                  'Ingredients',
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+                const SizedBox(height: 16),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 48),
+                  child: _getIngredientList(recipe.ingredients),
+                ),
+                const SizedBox(height: 32),
+                Text(
+                  'Instructions',
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+                const SizedBox(height: 16),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: _getInstructions(context, recipe.instructions),
+                ),
+                const SizedBox(height: 32),
+                Text(
+                  'How did you like this recipe?',
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+                const SizedBox(height: 8),
+                RecipeRatingButtons(recipe.id),
+                const SizedBox(height: 32),
               ],
             ),
-          );
-      },
+          ],
+        ),
+        Align(
+          alignment: Alignment.topLeft,
+          child: _getBackButton(context),
+        ),
+      ],
+    );
+  }
+
+  Widget _getBackButton(context) {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: ClipOval(
+        child: Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: kPrimaryColor.withOpacity(0.65),
+                shape: BoxShape.circle,
+              ),
+              height: 48,
+              width: 48,
+            ),
+            IconButton(
+              padding: EdgeInsets.zero,
+              icon: Icon(
+                Icons.arrow_back_rounded,
+                color: Colors.white,
+                size: 32,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+                //TODO: add event UpdateRating to RecipeListBloc with id of this recipe
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -215,7 +198,7 @@ class RecipeScreen extends StatelessWidget {
                   ingredient != ingredients.last
                       ? Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: Divider(),
+                          child: const Divider(),
                         )
                       : const SizedBox(),
                 ],
@@ -261,7 +244,7 @@ class RecipeScreen extends StatelessWidget {
                 textAlign: TextAlign.justify,
               ),
               stepNumber != instructions.length
-                  ? Divider(height: 32)
+                  ? const Divider(height: 32)
                   : const SizedBox(),
             ],
           );

@@ -1,14 +1,14 @@
-import 'package:eat_well_v1/bloc/recipe/recipe_bloc.dart';
-import 'package:eat_well_v1/bloc/recipe/recipe_event.dart';
+import 'package:eat_well_v1/bloc/recipe_list/recipe_list_bloc.dart';
+import 'package:eat_well_v1/bloc/recipe_list/recipe_list_event.dart';
 import 'package:eat_well_v1/constants.dart';
-import 'file:///D:/FlutterApps/eat_well_v1/lib/widgets/register/register_screen.dart';
+import 'package:eat_well_v1/widgets/register/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
 
-import 'all_recipes/all_recipe_list_screen.dart';
+import 'all_recipes/recipe_list_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   static const routeName = '/';
@@ -36,10 +36,10 @@ class LoginScreen extends StatelessWidget {
                 const SizedBox(height: 32),
                 Text(
                   'Welcome to EatWell XO!',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline5
-                      .copyWith(color: kPrimaryColorDark),
+                  style: Theme.of(context).textTheme.headline5.copyWith(
+                        color: kPrimaryColorDark,
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
                 const SizedBox(height: 32),
                 KeyboardAvoider(
@@ -85,17 +85,21 @@ class LoginScreen extends StatelessWidget {
           const SizedBox(height: 16),
           RaisedButton(
             onPressed: () => _processLogin(context),
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            color: kPrimaryColor,
+            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
             child: Text(
               'Sign In',
-              style: TextStyle().copyWith(fontSize: 18),
+              style: TextStyle().copyWith(fontSize: 24),
             ),
           ),
           const SizedBox(height: 8),
           RaisedButton(
             onPressed: () => _navigateToRegisterScreen(context),
-            color: kPrimaryColor,
-            child: const Text('Sign Up'),
+            color: kPrimaryColorDark,
+            child: Text(
+              'Sign Up',
+              style: TextStyle().copyWith(fontSize: 18),
+            ),
           ),
         ],
       ),
@@ -110,7 +114,7 @@ class LoginScreen extends StatelessWidget {
   _processLogin(context) {
     if (_formKey.currentState.validate()) {
       Navigator.of(context).pushReplacementNamed(AllRecipeListScreen.routeName);
-      BlocProvider.of<RecipeBloc>(context).add(FetchAllRecipes());
+      BlocProvider.of<RecipeListBloc>(context).add(FetchAllRecipes());
     }
   }
 }

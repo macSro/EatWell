@@ -9,7 +9,7 @@ class FridgeScreen extends StatelessWidget {
     return MyScaffold(
       title: 'E-Fridge',
       child: Center(
-        child: Text('E-Fridge'),
+        child: const Text('E-Fridge'),
       ),
     );
   }

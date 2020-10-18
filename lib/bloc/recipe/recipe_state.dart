@@ -7,27 +7,18 @@ abstract class RecipeState extends Equatable {}
 
 class RecipeInitial extends RecipeState {
   @override
-  List<Object> get props => null;
+  List<Object> get props => [];
 }
 
 class RecipeLoading extends RecipeState {
   @override
-  List<Object> get props => null;
+  List<Object> get props => [];
 }
 
-class FetchedAllRecipes extends RecipeState {
-  final List<Recipe> recipes;
-
-  FetchedAllRecipes({this.recipes});
-
-  @override
-  List<Object> get props => [recipes];
-}
-
-class FetchedRecipeInfo extends RecipeState {
+class RecipeDetailsFetched extends RecipeState {
   final Recipe recipe;
 
-  FetchedRecipeInfo({this.recipe});
+  RecipeDetailsFetched({this.recipe});
 
   @override
   List<Object> get props => [recipe];

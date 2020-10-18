@@ -9,7 +9,7 @@ class ShoppingListScreen extends StatelessWidget {
     return MyScaffold(
       title: 'Shopping list',
       child: Center(
-        child: Text('Shopping list'),
+        child: const Text('Shopping list'),
       ),
     );
   }

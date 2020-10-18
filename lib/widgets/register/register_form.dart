@@ -1,5 +1,5 @@
+import 'package:eat_well_v1/constants.dart';
 import 'package:eat_well_v1/services/authorization.dart';
-import 'file:///D:/FlutterApps/eat_well_v1/lib/constants.dart';
 import 'package:flutter/material.dart';
 
 class RegisterForm extends StatefulWidget {

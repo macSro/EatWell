@@ -63,9 +63,9 @@ class RecipeRating extends StatelessWidget {
                   emptyStar,
                 ],
               ),
-        SizedBox(height: 2),
+        const SizedBox(height: 2),
         Text(
-          'Rating: ${rating.votes > 0 ? rating.rating : 'No ratings'}',
+          'Rating: ${rating.votes > 0 ? rating.rating : '-'}',
           style: Theme.of(context).textTheme.subtitle2,
         ),
       ],

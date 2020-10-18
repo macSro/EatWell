@@ -10,7 +10,7 @@ class FiltersScreen extends StatelessWidget {
       title: 'Custom filters',
       child: Column(
         children: [
-          Text('Diets'),
+          const Text('Diets'),
           SwitchListTile(value: null, onChanged: null),
         ],
       ),

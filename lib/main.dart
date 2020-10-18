@@ -1,4 +1,4 @@
-import 'file:///D:/FlutterApps/eat_well_v1/lib/route_generator.dart';
+import 'package:eat_well_v1/route_generator.dart';
 import 'package:eat_well_v1/widgets/misc/bloc_wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +15,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    _setUpStatusBarAndOrientation();
+    _setUpOrientation();
 
     return BlocWrapper(
       child: MaterialApp(
@@ -27,14 +27,10 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  ///Sets up the status bar and orientation.
+  ///Sets up orientation.
   ///
-  /// The status bar will have a transparent background.
   /// The app will always be oriented in a portrait-mode.
-  _setUpStatusBarAndOrientation() {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-    ));
+  _setUpOrientation() {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -52,6 +48,7 @@ class MyApp extends StatelessWidget {
         bodyColor: kTextColorPrimary,
         displayColor: kTextColorPrimary,
       ),
+      fontFamily: 'Quicksand',
       iconTheme: IconThemeData(color: Colors.white),
       inputDecorationTheme: InputDecorationTheme(
         enabledBorder: OutlineInputBorder(
