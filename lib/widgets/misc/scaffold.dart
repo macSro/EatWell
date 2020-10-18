@@ -4,26 +4,26 @@ import 'package:flutter/material.dart';
 import 'drawer/drawer.dart';
 
 class MyScaffold extends StatelessWidget {
-  final String title;
   final Widget child;
+  final bool hasAppBar;
+  final String title;
   final bool hasDrawer;
   final List<Tab> tabs;
   final List<Widget> tabViews;
-  final bool appBar;
 
   MyScaffold({
-    this.title,
     @required this.child,
+    this.hasAppBar = true,
+    this.title,
     this.hasDrawer = true,
     this.tabs,
     this.tabViews,
-    this.appBar = true,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar
+      appBar: hasAppBar
           ? AppBar(
               title: Text(title),
               bottom: tabs != null
