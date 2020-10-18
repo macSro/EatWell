@@ -1,9 +1,12 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:eat_well_v1/widgets/all_recipes/recipe_list_screen.dart';
+import 'package:eat_well_v1/bloc/user/user_bloc.dart';
+import 'package:eat_well_v1/bloc/user/user_state.dart';
 import 'package:eat_well_v1/widgets/filters_screen.dart';
 import 'package:eat_well_v1/widgets/my_recipe/my_recipe_list_screen.dart';
+import 'package:eat_well_v1/widgets/recipe_list/recipe_list_screen.dart';
 import 'package:eat_well_v1/widgets/shopping_list_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../constants.dart';
@@ -28,7 +31,7 @@ class MyDrawer extends StatelessWidget {
               iconData: Icons.fastfood_rounded,
               title: 'All Recipes',
               onTap: () => Navigator.of(context)
-                  .pushReplacementNamed(AllRecipeListScreen.routeName),
+                  .pushReplacementNamed(RecipeListScreen.routeName),
             ),
             MyDrawerTile(
               iconData: Icons.favorite_border_rounded,
@@ -62,39 +65,43 @@ class MyDrawer extends StatelessWidget {
 
   ///Sets up the header in the drawer.
   Widget _getHeader(context) {
-    return Row(
-      mainAxisSize: MainAxisSize.max,
-      children: [
-        SvgPicture.asset(
-          'assets/images/logo.svg',
-          width: 64,
-        ),
-        const SizedBox(width: 32),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Hello there,',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline6
-                    .copyWith(color: Colors.white),
-              ),
-              AutoSizeText(
-                'maciej.sroczek',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline5
-                    .copyWith(color: kAccentColor),
-                minFontSize: 18,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              )
-            ],
+    return BlocBuilder<UserBloc, UserState>(
+      builder: (context, state) => Row(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          SvgPicture.asset(
+            'assets/images/logo.svg',
+            width: 64,
           ),
-        ),
-      ],
+          const SizedBox(width: 32),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Hello there,',
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline6
+                      .copyWith(color: Colors.white),
+                ),
+                AutoSizeText(
+                  state is UserAuthenticated
+                      ? '${state.user.displayName ?? 'chef!'}'
+                      : 'chef!',
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline5
+                      .copyWith(color: kAccentColor),
+                  minFontSize: 18,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

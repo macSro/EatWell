@@ -1,24 +1,33 @@
-abstract class UserEvent {}
+import 'package:equatable/equatable.dart';
 
-class RegisterUser implements UserEvent {
+abstract class UserEvent extends Equatable {}
+
+class RegisterUserWithEmail extends UserEvent {
   final String email;
   final String password;
 
-  RegisterUser({this.email, this.password});
+  RegisterUserWithEmail({this.email, this.password});
+
+  @override
+  List<Object> get props => [email, password];
 }
 
-class LoginUserWithEmail implements UserEvent {
+class LoginUserWithEmail extends UserEvent {
   final String email;
   final String password;
 
   LoginUserWithEmail({this.email, this.password});
+
+  @override
+  List<Object> get props => [email, password];
 }
 
-class LoginUserWithGoogle implements UserEvent {}
+class LoginUserWithGoogle extends UserEvent {
+  @override
+  List<Object> get props => [];
+}
 
-class SignOut implements UserEvent {}
-
-class GainPoints implements UserEvent {
-  final int points;
-  GainPoints(this.points);
+class SignOut extends UserEvent {
+  @override
+  List<Object> get props => [];
 }

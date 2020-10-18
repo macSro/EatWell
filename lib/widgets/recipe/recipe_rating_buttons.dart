@@ -1,23 +1,35 @@
+import 'package:eat_well_v1/bloc/recipe/recipe_bloc.dart';
+import 'package:eat_well_v1/bloc/recipe/recipe_event.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../constants.dart';
 
 class RecipeRatingButtons extends StatefulWidget {
-  final recipeId;
+  final int recipeId;
+  final int userRating;
 
-  RecipeRatingButtons(this.recipeId);
+  RecipeRatingButtons({this.recipeId, this.userRating});
 
   @override
   _RecipeRatingButtonsState createState() => _RecipeRatingButtonsState();
 }
 
 class _RecipeRatingButtonsState extends State<RecipeRatingButtons> {
-  bool isActive1 = false;
-  bool isActive2 = false;
-  bool isActive3 = false;
-  bool isActive4 = false;
-  bool isActive5 = false;
-  int rating;
+  List<bool> activeStars = List.filled(5, false);
+
+  @override
+  void initState() {
+    print('userRating: ${widget.userRating}');
+    _fillInStars(1, widget.userRating, true);
+    super.initState();
+  }
+
+  _fillInStars(int start, int end, bool fill) {
+    for (int i = start - 1; i < end; i++) {
+      activeStars[i] = fill;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,114 +47,83 @@ class _RecipeRatingButtonsState extends State<RecipeRatingButtons> {
       mainAxisSize: MainAxisSize.min,
       children: [
         GestureDetector(
-          child: isActive1 ? fullStar : emptyStar,
+          child: activeStars[0] ? fullStar : emptyStar,
           onTap: () {
             setState(() {
-              if (isActive1) {
-                if (!isActive2) {
-                  isActive1 = false;
+              if (activeStars[0]) {
+                if (!activeStars[1]) {
+                  activeStars[0] = false;
                 }
-                isActive2 = false;
-                isActive3 = false;
-                isActive4 = false;
-                isActive5 = false;
+                _fillInStars(2, 5, false);
               } else {
-                isActive1 = true;
+                activeStars[0] = true;
               }
-              rating = isActive1 ? 1 : 0;
-              print('rating: $rating');
+              _rateRecipe(context, activeStars[0] ? 1 : 0);
             });
           },
         ),
         const SizedBox(width: 8),
         GestureDetector(
-          child: isActive2 ? fullStar : emptyStar,
+          child: activeStars[1] ? fullStar : emptyStar,
           onTap: () {
             setState(() {
-              if (isActive2) {
-                if (!isActive3) {
-                  isActive1 = false;
-                  isActive2 = false;
+              if (activeStars[1]) {
+                if (!activeStars[2]) {
+                  _fillInStars(1, 2, false);
                 }
-                isActive3 = false;
-                isActive4 = false;
-                isActive5 = false;
+                _fillInStars(3, 5, false);
               } else {
-                isActive1 = true;
-                isActive2 = true;
+                _fillInStars(1, 2, true);
               }
-              rating = isActive2 ? 2 : 0;
-              print('rating: $rating');
+              _rateRecipe(context, activeStars[1] ? 2 : 0);
             });
           },
         ),
         const SizedBox(width: 8),
         GestureDetector(
-          child: isActive3 ? fullStar : emptyStar,
+          child: activeStars[2] ? fullStar : emptyStar,
           onTap: () {
             setState(() {
-              if (isActive3) {
-                if (!isActive4) {
-                  isActive1 = false;
-                  isActive2 = false;
-                  isActive3 = false;
+              if (activeStars[2]) {
+                if (!activeStars[3]) {
+                  _fillInStars(1, 3, false);
                 }
-                isActive4 = false;
-                isActive5 = false;
+                _fillInStars(4, 5, false);
               } else {
-                isActive1 = true;
-                isActive2 = true;
-                isActive3 = true;
+                _fillInStars(1, 3, true);
               }
-              rating = isActive3 ? 3 : 0;
-              print('rating: $rating');
+              _rateRecipe(context, activeStars[2] ? 3 : 0);
             });
           },
         ),
         const SizedBox(width: 8),
         GestureDetector(
-          child: isActive4 ? fullStar : emptyStar,
+          child: activeStars[3] ? fullStar : emptyStar,
           onTap: () {
             setState(() {
-              if (isActive4) {
-                if (!isActive5) {
-                  isActive1 = false;
-                  isActive2 = false;
-                  isActive3 = false;
-                  isActive4 = false;
+              if (activeStars[3]) {
+                if (!activeStars[4]) {
+                  _fillInStars(1, 4, false);
                 }
-                isActive5 = false;
+                activeStars[4] = false;
               } else {
-                isActive1 = true;
-                isActive2 = true;
-                isActive3 = true;
-                isActive4 = true;
+                _fillInStars(1, 4, true);
               }
-              rating = isActive4 ? 4 : 0;
-              print('rating: $rating');
+              _rateRecipe(context, activeStars[3] ? 4 : 0);
             });
           },
         ),
         const SizedBox(width: 8),
         GestureDetector(
-          child: isActive5 ? fullStar : emptyStar,
+          child: activeStars[4] ? fullStar : emptyStar,
           onTap: () {
             setState(() {
-              if (isActive5) {
-                isActive1 = false;
-                isActive2 = false;
-                isActive3 = false;
-                isActive4 = false;
-                isActive5 = false;
+              if (activeStars[4]) {
+                _fillInStars(1, 5, false);
               } else {
-                isActive1 = true;
-                isActive2 = true;
-                isActive3 = true;
-                isActive4 = true;
-                isActive5 = true;
+                _fillInStars(1, 5, true);
               }
-              rating = isActive5 ? 5 : 0;
-              print('rating: $rating');
+              _rateRecipe(context, activeStars[4] ? 5 : 0);
             });
           },
         ),
@@ -150,7 +131,11 @@ class _RecipeRatingButtonsState extends State<RecipeRatingButtons> {
     );
   }
 
-  _rateRecipe() {
-    //TODO: if rating> 0 add RateRecipe event with [rating] and [widget.recipeId], check somehow if already rated to avoid multiple votes
+  _rateRecipe(context, rating) {
+    BlocProvider.of<RecipeBloc>(context).add(UpdateRecipeRating(
+      recipeId: widget.recipeId,
+      rating: rating,
+    ));
+    print('RecipeBloc add: UpdateRecipeRating(${widget.recipeId}, $rating)');
   }
 }

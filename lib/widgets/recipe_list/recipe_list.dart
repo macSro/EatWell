@@ -1,9 +1,6 @@
-import 'package:eat_well_v1/model/rating.dart';
 import 'package:eat_well_v1/model/recipe.dart';
-import 'package:eat_well_v1/widgets/all_recipes/recipe_list_item.dart';
+import 'package:eat_well_v1/widgets/recipe_list/recipe_list_item.dart';
 import 'package:flutter/material.dart';
-
-import '../../constants.dart';
 
 class RecipeList extends StatelessWidget {
   final List<Recipe> recipes;

@@ -17,9 +17,20 @@ class RecipeLoading extends RecipeState {
 
 class RecipeDetailsFetched extends RecipeState {
   final Recipe recipe;
+  final int userRating;
 
-  RecipeDetailsFetched({this.recipe});
+  RecipeDetailsFetched({this.recipe, this.userRating});
 
   @override
-  List<Object> get props => [recipe];
+  List<Object> get props => [recipe, userRating];
+}
+
+class RecipeRatingUpdated extends RecipeState {
+  final Recipe recipe;
+  final int userRating;
+
+  RecipeRatingUpdated({this.recipe, this.userRating});
+
+  @override
+  List<Object> get props => [recipe, userRating];
 }

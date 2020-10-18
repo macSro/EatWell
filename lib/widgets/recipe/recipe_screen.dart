@@ -1,4 +1,4 @@
-import 'dart:ui';
+//import 'dart:ui';
 
 import 'package:eat_well_v1/bloc/recipe/recipe_bloc.dart';
 import 'package:eat_well_v1/bloc/recipe/recipe_state.dart';
@@ -20,19 +20,23 @@ class RecipeScreen extends StatelessWidget {
     var mediaQuery = MediaQuery.of(context);
     return BlocBuilder<RecipeBloc, RecipeState>(
       builder: (context, state) {
+        print('rebuild blocbuilder recipe screen');
         return MyScaffold(
           hasAppBar: false,
           title: '',
           hasDrawer: false,
           child: state is RecipeDetailsFetched
-              ? _getContent(context, mediaQuery, state.recipe)
-              : LoadingView(text: 'Loading recipe details...'),
+              ? _getContent(context, mediaQuery, state.recipe, state.userRating)
+              : state is RecipeRatingUpdated
+                  ? _getContent(
+                      context, mediaQuery, state.recipe, state.userRating)
+                  : LoadingView(text: 'Loading recipe details...'),
         );
       },
     );
   }
 
-  Widget _getContent(context, mediaQuery, recipe) {
+  Widget _getContent(context, mediaQuery, recipe, userRating) {
     return Stack(
       children: [
         ListView(
@@ -78,7 +82,8 @@ class RecipeScreen extends StatelessWidget {
                   style: Theme.of(context).textTheme.headline6,
                 ),
                 const SizedBox(height: 8),
-                RecipeRatingButtons(recipe.id),
+                RecipeRatingButtons(
+                    recipeId: recipe.id, userRating: userRating),
                 const SizedBox(height: 32),
               ],
             ),

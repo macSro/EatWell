@@ -31,7 +31,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 : null,
             onSaved: (val) => email = val,
             decoration: const InputDecoration(
-              prefixIcon: const Icon(Icons.email_outlined),
+              prefixIcon: const Icon(Icons.mail_outline_rounded),
               hintText: 'Enter your e-mail',
             ),
           ),

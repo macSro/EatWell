@@ -3,12 +3,11 @@ import 'package:equatable/equatable.dart';
 import 'diet.dart';
 
 class User extends Equatable {
-  final int id;
+  final String id;
   final String displayName;
   final Diet diet;
-  final int points;
 
-  User({this.id, this.displayName, this.diet, this.points});
+  User({this.id, this.displayName, this.diet});
 
   @override
   List<Object> get props => [id];

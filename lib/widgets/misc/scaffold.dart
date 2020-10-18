@@ -10,6 +10,7 @@ class MyScaffold extends StatelessWidget {
   final bool hasDrawer;
   final List<Tab> tabs;
   final List<Widget> tabViews;
+  final Widget floatingActionButton;
 
   MyScaffold({
     @required this.child,
@@ -18,6 +19,7 @@ class MyScaffold extends StatelessWidget {
     this.hasDrawer = true,
     this.tabs,
     this.tabViews,
+    this.floatingActionButton,
   });
 
   @override
@@ -34,6 +36,7 @@ class MyScaffold extends StatelessWidget {
             )
           : null,
       drawer: hasDrawer ? MyDrawer() : null,
+      floatingActionButton: floatingActionButton,
       body: tabs != null
           ? hasDrawer
               ? DoubleBackToCloseApp(

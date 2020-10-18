@@ -21,7 +21,7 @@ class RegisterScreen extends StatelessWidget {
           Align(
             alignment: Alignment.topLeft,
             child: Padding(
-              padding: const EdgeInsets.only(left: 16, top: 32),
+              padding: const EdgeInsets.all(16),
               child: IconButton(
                 icon: Icon(Icons.arrow_back),
                 iconSize: 34,

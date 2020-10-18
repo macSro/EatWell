@@ -76,6 +76,12 @@ class MyApp extends StatelessWidget {
         textTheme: ButtonTextTheme.primary,
         buttonColor: kPrimaryColorDark,
       ),
+      primaryIconTheme: IconThemeData(color: Colors.white),
+      accentIconTheme: IconThemeData(color: Colors.white),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        foregroundColor: Colors.white,
+        backgroundColor: kAccentColor,
+      ),
       dividerTheme: DividerThemeData(
         color: kDividerColor,
         space: 0,
