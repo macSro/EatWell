@@ -1,5 +1,6 @@
 import 'package:eat_well_v1/constants.dart';
 import 'package:eat_well_v1/model/rating.dart';
+import 'package:eat_well_v1/widgets/misc/icon_text.dart';
 import 'package:eat_well_v1/widgets/misc/recipe/recipe_rating.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -76,38 +77,27 @@ class RecipeListItem extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.timer_rounded,
-                        color: kPrimaryColorDark,
-                        //size: 32,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        '$readyInMinutes min',
-                        style: Theme.of(context).textTheme.subtitle2,
-                      ),
-                    ],
+                  IconText(
+                    text: Text(
+                      '$readyInMinutes min',
+                      style: Theme.of(context).textTheme.subtitle2,
+                    ),
+                    icon: Icon(
+                      Icons.timer_rounded,
+                      color: kPrimaryColorDark,
+                    ),
                   ),
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      RecipeRating(rating: rating),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        '$servings pers',
-                        style: Theme.of(context).textTheme.subtitle2,
-                      ),
-                      const SizedBox(width: 8),
-                      Icon(
-                        Icons.group_rounded,
-                        color: kPrimaryColorDark,
-                      ),
-                    ],
+                  RecipeRating(rating: rating),
+                  IconText(
+                    text: Text(
+                      '$servings pers',
+                      style: Theme.of(context).textTheme.subtitle2,
+                    ),
+                    icon: Icon(
+                      Icons.group_rounded,
+                      color: kPrimaryColorDark,
+                    ),
+                    iconFirst: false,
                   ),
                 ],
               ),

@@ -30,7 +30,7 @@ class LoginScreen extends StatelessWidget {
                       context: context,
                       emailFill: state.email,
                       passwordFill: state.password)
-                  : LoadingView(),
+                  : LoadingView(text: 'Authentication in progress...'),
         ),
       ),
     );
