@@ -1,7 +1,8 @@
 import 'package:eat_well_v1/widgets/misc/scaffold.dart';
-import 'package:eat_well_v1/widgets/my_recipe/created_recipe_list_screen.dart';
-import 'package:eat_well_v1/widgets/my_recipe/saved_recipe_list_screen.dart';
 import 'package:flutter/material.dart';
+
+import 'created_recipe_list_screen.dart';
+import 'saved_recipe_list_screen.dart';
 
 class MyRecipeListScreen extends StatelessWidget {
   static const routeName = '/my-recipe-list';

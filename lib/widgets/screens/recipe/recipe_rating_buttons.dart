@@ -3,7 +3,7 @@ import 'package:eat_well_v1/bloc/recipe/recipe_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../constants.dart';
+import '../../../constants.dart';
 
 class RecipeRatingButtons extends StatefulWidget {
   final int recipeId;

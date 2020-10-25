@@ -1,16 +1,11 @@
 import 'package:eat_well_v1/bloc/user/user_bloc.dart';
 import 'package:eat_well_v1/bloc/user/user_event.dart';
 import 'package:eat_well_v1/constants.dart';
-import 'package:eat_well_v1/widgets/register/register_screen.dart';
+import 'package:eat_well_v1/widgets/screens/register/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginForm extends StatefulWidget {
-  final String emailFill;
-  final String passwordFill;
-
-  LoginForm({this.emailFill, this.passwordFill});
-
   @override
   _LoginFormState createState() => _LoginFormState();
 }
@@ -28,7 +23,6 @@ class _LoginFormState extends State<LoginForm> {
         mainAxisSize: MainAxisSize.min,
         children: [
           TextFormField(
-            initialValue: email,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: (val) => val.isEmpty ||
                     !val.contains('@') ||
@@ -44,7 +38,6 @@ class _LoginFormState extends State<LoginForm> {
           ),
           const SizedBox(height: 16),
           TextFormField(
-            initialValue: password,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: (val) => val.isEmpty ? 'Enter a password.' : null,
             onSaved: (val) => password = val,

@@ -9,10 +9,10 @@ class RegisterForm extends StatefulWidget {
 
 class _RegisterFormState extends State<RegisterForm> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _passwordController = TextEditingController();
   String email;
   String login;
   String password;
+  String repeatPassword;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +50,8 @@ class _RegisterFormState extends State<RegisterForm> {
             autovalidateMode: AutovalidateMode.onUserInteraction,
             obscureText: true,
             validator: (val) => _validatePassword(val),
-            controller: _passwordController,
+            onChanged: (val) => password = val,
+            onSaved: (val) => password = val,
             decoration: const InputDecoration(
               prefixIcon: const Icon(Icons.lock),
               hintText: 'Enter a password',
@@ -60,13 +61,9 @@ class _RegisterFormState extends State<RegisterForm> {
           TextFormField(
             autovalidateMode: AutovalidateMode.onUserInteraction,
             obscureText: true,
-            onSaved: (val) => password = val,
-            validator: (val) {
-              if (_passwordController.text != val)
-                return 'Password doesn\'t match.';
-              else
-                return null;
-            },
+            onSaved: (val) => repeatPassword = val,
+            validator: (val) =>
+                password != val ? 'Password doesn\'t match.' : null,
             decoration: const InputDecoration(
               prefixIcon: const Icon(Icons.lock),
               hintText: 'Repeat the password',
@@ -107,19 +104,11 @@ class _RegisterFormState extends State<RegisterForm> {
       _formKey.currentState.save();
       dynamic authorizationResult =
           authorization.registerWithEmail(email, password);
-
       if (authorizationResult == null)
         print('failed');
       else {
-        Navigator.of(context).pop();
-        //TODO: przekazac login i haslo zeby auto-uzupelnic na ekranie logowania
+        Navigator.pop(context);
       }
     }
-  }
-
-  @override
-  void dispose() {
-    _passwordController.dispose();
-    super.dispose();
   }
 }

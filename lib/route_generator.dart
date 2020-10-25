@@ -1,15 +1,14 @@
-import 'package:eat_well_v1/widgets/filters_screen.dart';
-import 'package:eat_well_v1/widgets/fridge_screen.dart';
-import 'package:eat_well_v1/widgets/my_recipe/my_recipe_list_screen.dart';
-import 'package:eat_well_v1/widgets/recipe_list/recipe_list_screen.dart';
-import 'package:eat_well_v1/widgets/register/register_screen.dart';
-import 'package:eat_well_v1/widgets/shopping_list_screen.dart';
+import 'package:eat_well_v1/widgets/screens/login/login_screen.dart';
+import 'package:eat_well_v1/widgets/screens/my_recipe_list/my_recipe_list_screen.dart';
+import 'package:eat_well_v1/widgets/screens/recipe/recipe_screen.dart';
+import 'package:eat_well_v1/widgets/screens/recipe_list/recipe_list_screen.dart';
+import 'package:eat_well_v1/widgets/screens/register/register_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'file:///D:/FlutterApps/eat_well_v1/lib/widgets/login/login_screen.dart';
-
-import 'widgets/recipe/recipe_screen.dart';
+import 'file:///D:/FlutterApps/eat_well_v1/lib/widgets/screens/filters_screen.dart';
+import 'file:///D:/FlutterApps/eat_well_v1/lib/widgets/screens/fridge_screen.dart';
+import 'file:///D:/FlutterApps/eat_well_v1/lib/widgets/screens/shopping_list_screen.dart';
 
 typedef Widget _ScreenBuilder(BuildContext context);
 

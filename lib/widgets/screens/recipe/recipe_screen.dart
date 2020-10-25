@@ -1,5 +1,3 @@
-//import 'dart:ui';
-
 import 'package:eat_well_v1/bloc/recipe/recipe_bloc.dart';
 import 'package:eat_well_v1/bloc/recipe/recipe_state.dart';
 import 'package:eat_well_v1/constants.dart';
@@ -8,9 +6,10 @@ import 'package:eat_well_v1/widgets/misc/ingredient_list_tile.dart';
 import 'package:eat_well_v1/widgets/misc/loading.dart';
 import 'package:eat_well_v1/widgets/misc/recipe/recipe_rating.dart';
 import 'package:eat_well_v1/widgets/misc/scaffold.dart';
-import 'package:eat_well_v1/widgets/recipe/recipe_rating_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'recipe_rating_buttons.dart';
 
 class RecipeScreen extends StatelessWidget {
   static const routeName = '/recipe';
@@ -120,7 +119,6 @@ class RecipeScreen extends StatelessWidget {
               ),
               onPressed: () {
                 Navigator.pop(context);
-                //TODO: add event UpdateRating to RecipeListBloc with id of this recipe
               },
             ),
           ],

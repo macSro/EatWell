@@ -3,14 +3,15 @@ import 'package:eat_well_v1/bloc/recipe_list/recipe_list_event.dart';
 import 'package:eat_well_v1/bloc/user/user_bloc.dart';
 import 'package:eat_well_v1/bloc/user/user_state.dart';
 import 'package:eat_well_v1/constants.dart';
-import 'package:eat_well_v1/widgets/login/login_form.dart';
 import 'package:eat_well_v1/widgets/misc/loading.dart';
-import 'package:eat_well_v1/widgets/recipe_list/recipe_list_screen.dart';
+import 'package:eat_well_v1/widgets/screens/recipe_list/recipe_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
+
+import 'login_form.dart';
 
 class LoginScreen extends StatelessWidget {
   static const routeName = '/';

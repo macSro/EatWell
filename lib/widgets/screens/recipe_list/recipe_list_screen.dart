@@ -6,11 +6,12 @@ import 'package:eat_well_v1/bloc/user/user_bloc.dart';
 import 'package:eat_well_v1/bloc/user/user_state.dart';
 import 'package:eat_well_v1/widgets/misc/loading.dart';
 import 'package:eat_well_v1/widgets/misc/scaffold.dart';
-import 'package:eat_well_v1/widgets/recipe/recipe_screen.dart';
-import 'package:eat_well_v1/widgets/recipe_list/recipe_list.dart';
-import 'package:eat_well_v1/widgets/recipe_list/recipe_list_search.dart';
+import 'package:eat_well_v1/widgets/screens/recipe/recipe_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'recipe_list.dart';
+import 'recipe_list_search.dart';
 
 class RecipeListScreen extends StatelessWidget {
   static const routeName = '/recipe-list';
@@ -27,7 +28,6 @@ class RecipeListScreen extends StatelessWidget {
           floatingActionButton: state is AllRecipesFetched
               ? FloatingActionButton(
                   onPressed: () {
-                    //TODO: move to filters dialog and create a show function like in Cellere
                     showRecipeSearchDialog(context: context);
                   },
                   child: Icon(Icons.filter_alt_rounded),

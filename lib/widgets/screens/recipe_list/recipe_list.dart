@@ -1,6 +1,7 @@
 import 'package:eat_well_v1/model/recipe.dart';
-import 'package:eat_well_v1/widgets/recipe_list/recipe_list_item.dart';
 import 'package:flutter/material.dart';
+
+import 'recipe_list_item.dart';
 
 class RecipeList extends StatelessWidget {
   final List<Recipe> recipes;

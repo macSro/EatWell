@@ -1,16 +1,16 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:eat_well_v1/bloc/user/user_bloc.dart';
 import 'package:eat_well_v1/bloc/user/user_state.dart';
-import 'package:eat_well_v1/widgets/filters_screen.dart';
-import 'package:eat_well_v1/widgets/my_recipe/my_recipe_list_screen.dart';
-import 'package:eat_well_v1/widgets/recipe_list/recipe_list_screen.dart';
-import 'package:eat_well_v1/widgets/shopping_list_screen.dart';
+import 'package:eat_well_v1/widgets/screens/filters_screen.dart';
+import 'package:eat_well_v1/widgets/screens/my_recipe_list/my_recipe_list_screen.dart';
+import 'package:eat_well_v1/widgets/screens/recipe_list/recipe_list_screen.dart';
+import 'package:eat_well_v1/widgets/screens/shopping_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../../constants.dart';
-import '../../fridge_screen.dart';
+import '../../screens/fridge_screen.dart';
 import '../drawer/drawer_tile.dart';
 
 class MyDrawer extends StatelessWidget {

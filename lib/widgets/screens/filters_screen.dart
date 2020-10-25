@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'misc/scaffold.dart';
+import '../misc/scaffold.dart';
 
 class FiltersScreen extends StatelessWidget {
   static const routeName = '/filters';

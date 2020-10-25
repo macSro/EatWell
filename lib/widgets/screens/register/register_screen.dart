@@ -1,9 +1,9 @@
-import 'package:eat_well_v1/widgets/register/register_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
 
-import '../../constants.dart';
+import '../../../constants.dart';
+import 'register_form.dart';
 
 class RegisterScreen extends StatelessWidget {
   static const routeName = '/register';
@@ -61,6 +61,4 @@ class RegisterScreen extends StatelessWidget {
       ),
     );
   }
-
-  //TODO: form wyciagnac jako osobny stful widget i zrobic dispose
 }
