@@ -8,7 +8,7 @@ class MyScaffold extends StatelessWidget {
   final bool hasAppBar;
   final String title;
   final bool hasDrawer;
-  final List<Tab> tabs;
+  final TabBar tabBar;
   final List<Widget> tabViews;
   final Widget floatingActionButton;
 
@@ -17,7 +17,7 @@ class MyScaffold extends StatelessWidget {
     this.hasAppBar = true,
     this.title,
     this.hasDrawer = true,
-    this.tabs,
+    this.tabBar,
     this.tabViews,
     this.floatingActionButton,
   });
@@ -28,16 +28,12 @@ class MyScaffold extends StatelessWidget {
       appBar: hasAppBar
           ? AppBar(
               title: Text(title),
-              bottom: tabs != null
-                  ? TabBar(
-                      tabs: tabs,
-                    )
-                  : null,
+              bottom: tabBar,
             )
           : null,
       drawer: hasDrawer ? MyDrawer() : null,
       floatingActionButton: floatingActionButton,
-      body: tabs != null
+      body: tabBar != null
           ? hasDrawer
               ? DoubleBackToCloseApp(
                   child: TabBarView(

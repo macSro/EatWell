@@ -1,26 +1,29 @@
+import 'package:eat_well_v1/widgets/screens/diet_screen.dart';
+import 'package:eat_well_v1/widgets/screens/fridge_screen.dart';
 import 'package:eat_well_v1/widgets/screens/login/login_screen.dart';
-import 'package:eat_well_v1/widgets/screens/my_recipe_list/my_recipe_list_screen.dart';
+import 'package:eat_well_v1/widgets/screens/my_recipes/create_recipe_screen.dart';
+import 'package:eat_well_v1/widgets/screens/my_recipes/my_recipes_screen.dart';
 import 'package:eat_well_v1/widgets/screens/recipe/recipe_screen.dart';
-import 'package:eat_well_v1/widgets/screens/recipe_list/recipe_list_screen.dart';
+import 'package:eat_well_v1/widgets/screens/recipes/recipes_screen.dart';
 import 'package:eat_well_v1/widgets/screens/register/register_screen.dart';
+import 'package:eat_well_v1/widgets/screens/settings/settings_screen.dart';
+import 'package:eat_well_v1/widgets/screens/shopping_list_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'file:///D:/FlutterApps/eat_well_v1/lib/widgets/screens/filters_screen.dart';
-import 'file:///D:/FlutterApps/eat_well_v1/lib/widgets/screens/fridge_screen.dart';
-import 'file:///D:/FlutterApps/eat_well_v1/lib/widgets/screens/shopping_list_screen.dart';
 
 typedef Widget _ScreenBuilder(BuildContext context);
 
 final Map<String, _ScreenBuilder> _routeBuilders = {
   LoginScreen.routeName: (context) => LoginScreen(),
   RegisterScreen.routeName: (context) => RegisterScreen(),
-  RecipeListScreen.routeName: (context) => RecipeListScreen(),
-  MyRecipeListScreen.routeName: (context) => MyRecipeListScreen(),
+  RecipesScreen.routeName: (context) => RecipesScreen(),
   RecipeScreen.routeName: (context) => RecipeScreen(),
-  FiltersScreen.routeName: (context) => FiltersScreen(),
+  MyRecipesScreen.routeName: (context) => MyRecipesScreen(),
+  CreateRecipeScreen.routeName: (context) => CreateRecipeScreen(),
+  DietScreen.routeName: (context) => DietScreen(),
   FridgeScreen.routeName: (context) => FridgeScreen(),
   ShoppingListScreen.routeName: (context) => ShoppingListScreen(),
+  SettingsScreen.routeName: (context) => SettingsScreen(),
 };
 
 class RouteGenerator {

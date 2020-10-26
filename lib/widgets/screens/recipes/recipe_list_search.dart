@@ -60,8 +60,7 @@ class _RecipeSearchDialog extends StatelessWidget {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  padding: const EdgeInsets.symmetric(vertical: 8),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

@@ -38,7 +38,8 @@ class _RegisterFormState extends State<RegisterForm> {
           const SizedBox(height: 16),
           TextFormField(
             autovalidateMode: AutovalidateMode.onUserInteraction,
-            validator: (val) => val.isEmpty ? 'Enter login.' : null,
+            //TODO: validator should always return null so that displayName is not required and there should be a screen to change user settings
+            validator: (val) => val.isEmpty ? 'Enter a display name.' : null,
             onSaved: (val) => login = val,
             decoration: const InputDecoration(
               prefixIcon: const Icon(Icons.person),

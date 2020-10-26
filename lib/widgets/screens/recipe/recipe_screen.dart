@@ -1,13 +1,20 @@
+import 'package:eat_well_v1/bloc/my_recipes/saved_recipes/saved_recipes_bloc.dart';
+import 'package:eat_well_v1/bloc/my_recipes/saved_recipes/saved_recipes_event.dart';
 import 'package:eat_well_v1/bloc/recipe/recipe_bloc.dart';
 import 'package:eat_well_v1/bloc/recipe/recipe_state.dart';
+import 'package:eat_well_v1/bloc/user/user_bloc.dart';
+import 'package:eat_well_v1/bloc/user/user_state.dart';
 import 'package:eat_well_v1/constants.dart';
 import 'package:eat_well_v1/model/extended_ingredient.dart';
+import 'package:eat_well_v1/widgets/misc/authenticated_view.dart';
+import 'package:eat_well_v1/widgets/misc/icon_button_stateful.dart';
 import 'package:eat_well_v1/widgets/misc/ingredient_list_tile.dart';
 import 'package:eat_well_v1/widgets/misc/loading.dart';
 import 'package:eat_well_v1/widgets/misc/recipe/recipe_rating.dart';
 import 'package:eat_well_v1/widgets/misc/scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 import 'recipe_rating_buttons.dart';
 
@@ -17,25 +24,39 @@ class RecipeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var mediaQuery = MediaQuery.of(context);
-    return BlocBuilder<RecipeBloc, RecipeState>(
-      builder: (context, state) {
-        print('rebuild blocbuilder recipe screen');
-        return MyScaffold(
-          hasAppBar: false,
-          title: '',
-          hasDrawer: false,
-          child: state is RecipeDetailsFetched
-              ? _getContent(context, mediaQuery, state.recipe, state.userRating)
-              : state is RecipeRatingUpdated
-                  ? _getContent(
-                      context, mediaQuery, state.recipe, state.userRating)
-                  : LoadingView(text: 'Loading recipe details...'),
-        );
-      },
+    return BlocBuilder<UserBloc, UserState>(
+      builder: (context, userState) => userState is UserAuthenticated
+          ? BlocBuilder<RecipeBloc, RecipeState>(
+              builder: (context, recipeState) {
+                return MyScaffold(
+                  hasAppBar: false,
+                  title: '',
+                  hasDrawer: false,
+                  child: recipeState is RecipeDetailsFetched
+                      ? _getContent(
+                          context,
+                          mediaQuery,
+                          recipeState.recipe,
+                          recipeState.userRating,
+                          userState.user.id,
+                        )
+                      : recipeState is RecipeRatingUpdated
+                          ? _getContent(
+                              context,
+                              mediaQuery,
+                              recipeState.recipe,
+                              recipeState.userRating,
+                              userState.user.id,
+                            )
+                          : LoadingView(text: 'Loading recipe details...'),
+                );
+              },
+            )
+          : AuthenticatedView(),
     );
   }
 
-  Widget _getContent(context, mediaQuery, recipe, userRating) {
+  Widget _getContent(context, mediaQuery, recipe, userRating, userId) {
     return Stack(
       children: [
         ListView(
@@ -88,41 +109,83 @@ class RecipeScreen extends StatelessWidget {
             ),
           ],
         ),
-        Align(
+        Container(
           alignment: Alignment.topLeft,
+          padding: const EdgeInsets.all(16),
           child: _getBackButton(context),
+        ),
+        Container(
+          alignment: Alignment.topRight,
+          padding: const EdgeInsets.all(16),
+          child: _getSaveButton(context, recipe.id, userId),
         ),
       ],
     );
   }
 
   Widget _getBackButton(context) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: ClipOval(
-        child: Stack(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: kPrimaryColor.withOpacity(0.65),
-                shape: BoxShape.circle,
-              ),
-              height: 48,
-              width: 48,
+    return ClipOval(
+      child: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: kPrimaryColor.withOpacity(0.65),
+              shape: BoxShape.circle,
             ),
-            IconButton(
-              padding: EdgeInsets.zero,
-              icon: Icon(
-                Icons.arrow_back_rounded,
-                color: Colors.white,
-                size: 32,
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
+            height: 48,
+            width: 48,
+          ),
+          IconButton(
+            padding: EdgeInsets.zero,
+            icon: Icon(
+              Icons.arrow_back_rounded,
+              color: Colors.white,
+              size: 32,
             ),
-          ],
-        ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _getSaveButton(context, recipeId, userId) {
+    return ClipOval(
+      child: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.red.withOpacity(0.65),
+              shape: BoxShape.circle,
+            ),
+            height: 48,
+            width: 48,
+          ),
+          ChangingIconButton(
+            iconPrimary: Icon(
+              Icons.favorite_border_rounded,
+              color: Colors.white,
+              size: 28,
+            ),
+            iconSecondary: Icon(
+              Icons.favorite_rounded,
+              color: Colors.white,
+              size: 28,
+            ),
+            onPressed: (bool isPrimary) {
+              if (isPrimary) {
+                BlocProvider.of<SavedRecipesBloc>(context)
+                    .add(SaveRecipe(recipeId: recipeId, userId: userId));
+              } else {
+                BlocProvider.of<SavedRecipesBloc>(context).add(
+                    RemoveRecipeFromSaved(recipeId: recipeId, userId: userId));
+              }
+            },
+            //onPressed: _handleRecipeSaving,
+          ),
+        ],
       ),
     );
   }
@@ -138,8 +201,10 @@ class RecipeScreen extends StatelessWidget {
           ),
         ],
       ),
-      child: Image.network(
-        url,
+      child: FadeInImage.memoryNetwork(
+        placeholder: kTransparentImage,
+        image: url,
+        fadeInDuration: const Duration(milliseconds: 400),
         width: width,
       ),
     );

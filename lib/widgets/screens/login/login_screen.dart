@@ -4,7 +4,7 @@ import 'package:eat_well_v1/bloc/user/user_bloc.dart';
 import 'package:eat_well_v1/bloc/user/user_state.dart';
 import 'package:eat_well_v1/constants.dart';
 import 'package:eat_well_v1/widgets/misc/loading.dart';
-import 'package:eat_well_v1/widgets/screens/recipe_list/recipe_list_screen.dart';
+import 'package:eat_well_v1/widgets/screens/recipes/recipes_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -82,7 +82,7 @@ class LoginScreen extends StatelessWidget {
   }
 
   _navigateToRecipeListScreen(context) {
-    Navigator.of(context).pushReplacementNamed(RecipeListScreen.routeName);
+    Navigator.of(context).pushReplacementNamed(RecipesScreen.routeName);
     BlocProvider.of<RecipeListBloc>(context).add(FetchAllRecipes());
   }
 }

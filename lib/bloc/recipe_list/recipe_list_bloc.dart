@@ -245,7 +245,6 @@ class RecipeListBloc extends Bloc<RecipeListEvent, RecipeListState> {
             ),
           ],
         );
-        print('fetched all recipes!!!');
         return [recipe1, recipe2, recipe3, recipe4];
       },
     );

@@ -27,7 +27,8 @@ class _LoginFormState extends State<LoginForm> {
             validator: (val) => val.isEmpty ||
                     !val.contains('@') ||
                     val.startsWith('@') ||
-                    val.endsWith('@')
+                    val.endsWith('@') ||
+                    val.endsWith('.')
                 ? 'Enter a valid e-mail.'
                 : null,
             onSaved: (val) => email = val,
