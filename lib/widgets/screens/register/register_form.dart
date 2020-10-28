@@ -1,5 +1,6 @@
 import 'package:eat_well_v1/constants.dart';
 import 'package:eat_well_v1/services/authorization.dart';
+import 'package:eat_well_v1/tools.dart';
 import 'package:flutter/material.dart';
 
 class RegisterForm extends StatefulWidget {
@@ -23,12 +24,7 @@ class _RegisterFormState extends State<RegisterForm> {
         children: [
           TextFormField(
             autovalidateMode: AutovalidateMode.onUserInteraction,
-            validator: (val) => val.isEmpty ||
-                    !val.contains('@') ||
-                    val.startsWith('@') ||
-                    val.endsWith('@')
-                ? 'Enter a valid e-mail.'
-                : null,
+            validator: (val) => Tools.validateEmail(val),
             onSaved: (val) => email = val,
             decoration: const InputDecoration(
               prefixIcon: const Icon(Icons.mail_outline_rounded),
@@ -38,19 +34,19 @@ class _RegisterFormState extends State<RegisterForm> {
           const SizedBox(height: 16),
           TextFormField(
             autovalidateMode: AutovalidateMode.onUserInteraction,
-            //TODO: validator should always return null so that displayName is not required and there should be a screen to change user settings
+            //TODO: low priority: validator should always return null so that displayName is not required and there should be a screen to change user settings
             validator: (val) => val.isEmpty ? 'Enter a display name.' : null,
             onSaved: (val) => login = val,
             decoration: const InputDecoration(
               prefixIcon: const Icon(Icons.person),
-              hintText: 'Enter a login',
+              hintText: 'Enter a display name',
             ),
           ),
           const SizedBox(height: 16),
           TextFormField(
             autovalidateMode: AutovalidateMode.onUserInteraction,
             obscureText: true,
-            validator: (val) => _validatePassword(val),
+            validator: (val) => Tools.validatePassword(val),
             onChanged: (val) => password = val,
             onSaved: (val) => password = val,
             decoration: const InputDecoration(
@@ -70,10 +66,10 @@ class _RegisterFormState extends State<RegisterForm> {
               hintText: 'Repeat the password',
             ),
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: 16),
           RaisedButton(
             onPressed: () => _processRegister(context),
-            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
             color: kPrimaryColor,
             child: Text(
               'Sign Up',
@@ -83,21 +79,6 @@ class _RegisterFormState extends State<RegisterForm> {
         ],
       ),
     );
-  }
-
-  String _validatePassword(String val) {
-    Pattern pattern =
-        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
-    RegExp regExp = RegExp(pattern);
-
-    if (val.isEmpty)
-      return 'Enter a password.';
-    else if (val.length < 8)
-      return 'Password must contain at least 8 characters.';
-    else if (!regExp.hasMatch(val))
-      return 'At least 1: uppercase, lowercase, special character & digit.';
-    else
-      return null;
   }
 
   _processRegister(context) {

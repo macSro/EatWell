@@ -1,9 +1,12 @@
 import 'package:eat_well_v1/bloc/user/user_bloc.dart';
 import 'package:eat_well_v1/bloc/user/user_event.dart';
 import 'package:eat_well_v1/constants.dart';
+import 'package:eat_well_v1/widgets/misc/icon_text.dart';
 import 'package:eat_well_v1/widgets/screens/register/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../tools.dart';
 
 class LoginForm extends StatefulWidget {
   @override
@@ -24,13 +27,7 @@ class _LoginFormState extends State<LoginForm> {
         children: [
           TextFormField(
             autovalidateMode: AutovalidateMode.onUserInteraction,
-            validator: (val) => val.isEmpty ||
-                    !val.contains('@') ||
-                    val.startsWith('@') ||
-                    val.endsWith('@') ||
-                    val.endsWith('.')
-                ? 'Enter a valid e-mail.'
-                : null,
+            validator: (val) => Tools.validateEmail(val),
             onSaved: (val) => email = val,
             decoration: const InputDecoration(
               prefixIcon: const Icon(Icons.mail_outline_rounded),
@@ -52,10 +49,18 @@ class _LoginFormState extends State<LoginForm> {
           RaisedButton(
             onPressed: () => _processLogin(context),
             color: kPrimaryColor,
-            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
-            child: Text(
-              'Sign In',
-              style: TextStyle().copyWith(fontSize: 24),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+            child: IconText(
+              iconFirst: false,
+              squeeze: true,
+              icon: Icon(
+                Icons.arrow_forward_rounded,
+                size: 28,
+              ),
+              text: Text(
+                'Sign In',
+                style: TextStyle().copyWith(fontSize: 24),
+              ),
             ),
           ),
           const SizedBox(height: 8),

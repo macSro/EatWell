@@ -15,10 +15,10 @@ class RecipeListLoading extends RecipeListState {
   List<Object> get props => [];
 }
 
-class AllRecipesFetched extends RecipeListState {
+class RecipesFetched extends RecipeListState {
   final List<Recipe> recipes;
 
-  AllRecipesFetched({this.recipes});
+  RecipesFetched({this.recipes});
 
   @override
   List<Object> get props => [recipes];
