@@ -1,7 +1,7 @@
 import 'package:eat_well_v1/bloc/my_recipes/created_recipes/created_recipes_bloc.dart';
 import 'package:eat_well_v1/bloc/my_recipes/saved_recipes/saved_recipes_bloc.dart';
 import 'package:eat_well_v1/bloc/recipe/recipe_bloc.dart';
-import 'package:eat_well_v1/bloc/recipe_list/recipe_list_bloc.dart';
+import 'package:eat_well_v1/bloc/recipes/recipe_list_bloc.dart';
 import 'package:eat_well_v1/bloc/user/user_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

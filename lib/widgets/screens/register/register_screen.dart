@@ -23,7 +23,7 @@ class RegisterScreen extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: IconButton(
-                icon: Icon(Icons.arrow_back),
+                icon: Icon(Icons.arrow_back_rounded),
                 iconSize: 34,
                 onPressed: () {
                   FocusScope.of(context).unfocus();
@@ -40,20 +40,18 @@ class RegisterScreen extends StatelessWidget {
               children: [
                 SvgPicture.asset(
                   'assets/images/xo.svg',
-                  height: 72,
+                  height: 64,
                 ),
-                const SizedBox(height: 32),
+                const SizedBox(height: 16),
                 Text(
                   'Set up your account!',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline5
-                      .copyWith(color: kPrimaryColorDark),
+                  style: Theme.of(context).textTheme.headline5.copyWith(
+                        color: kPrimaryColorDark,
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
-                const SizedBox(height: 32),
-                KeyboardAvoider(
-                  child: RegisterForm(),
-                ),
+                const SizedBox(height: 24),
+                KeyboardAvoider(child: RegisterForm()),
               ],
             ),
           ),

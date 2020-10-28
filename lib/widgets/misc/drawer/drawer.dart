@@ -3,6 +3,8 @@ import 'package:eat_well_v1/bloc/my_recipes/created_recipes/created_recipes_bloc
 import 'package:eat_well_v1/bloc/my_recipes/created_recipes/created_recipes_event.dart';
 import 'package:eat_well_v1/bloc/my_recipes/saved_recipes/saved_recipes_bloc.dart';
 import 'package:eat_well_v1/bloc/my_recipes/saved_recipes/saved_recipes_event.dart';
+import 'package:eat_well_v1/bloc/recipes/recipe_list_bloc.dart';
+import 'package:eat_well_v1/bloc/recipes/recipe_list_event.dart';
 import 'package:eat_well_v1/bloc/user/user_bloc.dart';
 import 'package:eat_well_v1/bloc/user/user_state.dart';
 import 'package:eat_well_v1/widgets/misc/authenticated_view.dart';
@@ -39,18 +41,21 @@ class MyDrawer extends StatelessWidget {
                     const Divider(thickness: 2),
                     const SizedBox(height: 16),
                     MyDrawerTile(
-                      icon: Icon(
-                        Icons.fastfood_rounded,
-                        color: kAccentColor,
-                      ),
-                      title: Text('All Recipes',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline6
-                              .copyWith(color: Colors.white)),
-                      onTap: () => Navigator.of(context)
-                          .pushReplacementNamed(RecipesScreen.routeName),
-                    ),
+                        icon: Icon(
+                          Icons.fastfood_rounded,
+                          color: kAccentColor,
+                        ),
+                        title: Text('All Recipes',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline6
+                                .copyWith(color: Colors.white)),
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushReplacementNamed(RecipesScreen.routeName);
+                          BlocProvider.of<RecipeListBloc>(context)
+                              .add(FetchAllRecipes());
+                        }),
                     MyDrawerTile(
                       icon: Icon(
                         Icons.favorite_border_rounded,

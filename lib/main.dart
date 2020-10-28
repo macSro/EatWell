@@ -15,8 +15,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    _setUpOrientation();
-
+    _setUpStatusBarAndOrientation();
     return BlocWrapper(
       child: MaterialApp(
         title: 'EatWell XO',
@@ -27,10 +26,15 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  ///Sets up orientation.
+  ///Sets up the status bar and orientation.
   ///
+  /// Status bar will be hidden and transparent if swiped down.
   /// The app will always be oriented in a portrait-mode.
-  _setUpOrientation() {
+  _setUpStatusBarAndOrientation() {
+    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+    ));
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,

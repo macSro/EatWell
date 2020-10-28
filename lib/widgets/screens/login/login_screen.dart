@@ -1,5 +1,5 @@
-import 'package:eat_well_v1/bloc/recipe_list/recipe_list_bloc.dart';
-import 'package:eat_well_v1/bloc/recipe_list/recipe_list_event.dart';
+import 'package:eat_well_v1/bloc/recipes/recipe_list_bloc.dart';
+import 'package:eat_well_v1/bloc/recipes/recipe_list_event.dart';
 import 'package:eat_well_v1/bloc/user/user_bloc.dart';
 import 'package:eat_well_v1/bloc/user/user_state.dart';
 import 'package:eat_well_v1/constants.dart';
@@ -53,9 +53,9 @@ class LoginScreen extends StatelessWidget {
             children: [
               SvgPicture.asset(
                 'assets/images/xo.svg',
-                height: 72,
+                height: 64,
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: 16),
               Text(
                 'Welcome to EatWell XO!',
                 style: Theme.of(context).textTheme.headline5.copyWith(
@@ -63,7 +63,7 @@ class LoginScreen extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: 24),
               KeyboardAvoider(
                 child: LoginForm(),
               ),

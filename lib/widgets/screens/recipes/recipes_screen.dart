@@ -1,7 +1,7 @@
 import 'package:eat_well_v1/bloc/recipe/recipe_bloc.dart';
 import 'package:eat_well_v1/bloc/recipe/recipe_event.dart';
-import 'package:eat_well_v1/bloc/recipe_list/recipe_list_bloc.dart';
-import 'package:eat_well_v1/bloc/recipe_list/recipe_list_state.dart';
+import 'package:eat_well_v1/bloc/recipes/recipe_list_bloc.dart';
+import 'package:eat_well_v1/bloc/recipes/recipe_list_state.dart';
 import 'package:eat_well_v1/bloc/user/user_bloc.dart';
 import 'package:eat_well_v1/bloc/user/user_state.dart';
 import 'package:eat_well_v1/model/recipe.dart';
@@ -12,8 +12,8 @@ import 'package:eat_well_v1/widgets/screens/recipes/recipe_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../filters/recipe_list_filter.dart';
 import 'recipe_list.dart';
-import 'recipe_list_search.dart';
 
 class RecipesScreen extends StatelessWidget {
   static const routeName = '/recipes';
@@ -24,13 +24,13 @@ class RecipesScreen extends StatelessWidget {
       builder: (context, state) {
         return MyScaffold(
           title: 'Recipes',
-          child: state is AllRecipesFetched
+          child: state is RecipesFetched
               ? _getContent(context, state.recipes)
               : LoadingView(text: 'Loading recipes...'),
-          floatingActionButton: state is AllRecipesFetched
+          floatingActionButton: state is RecipesFetched
               ? FloatingActionButton(
                   onPressed: () {
-                    showRecipeSearchDialog(context: context);
+                    showRecipeFiltersDialog(context: context);
                   },
                   child: Icon(Icons.filter_alt_rounded),
                 )

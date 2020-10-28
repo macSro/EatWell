@@ -1,4 +1,3 @@
-import 'package:eat_well_v1/model/recipe.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 
@@ -15,7 +14,7 @@ class FetchSavedRecipes extends SavedRecipesEvent {
 }
 
 class SaveRecipe extends SavedRecipesEvent {
-  final Recipe recipeId;
+  final int recipeId;
   final String userId;
 
   SaveRecipe({@required this.recipeId, @required this.userId});

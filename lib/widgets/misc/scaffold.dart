@@ -24,36 +24,38 @@ class MyScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: hasAppBar
-          ? AppBar(
-              title: Text(title),
-              bottom: tabBar,
-            )
-          : null,
-      drawer: hasDrawer ? MyDrawer() : null,
-      floatingActionButton: floatingActionButton,
-      body: tabBar != null
-          ? hasDrawer
-              ? DoubleBackToCloseApp(
-                  child: TabBarView(
+    return SafeArea(
+      child: Scaffold(
+        appBar: hasAppBar
+            ? AppBar(
+                title: Text(title),
+                bottom: tabBar,
+              )
+            : null,
+        drawer: hasDrawer ? MyDrawer() : null,
+        floatingActionButton: floatingActionButton,
+        body: tabBar != null
+            ? hasDrawer
+                ? DoubleBackToCloseApp(
+                    child: TabBarView(
+                      children: tabViews,
+                    ),
+                    snackBar: const SnackBar(
+                      content: const Text('Tap back again to exit.'),
+                    ),
+                  )
+                : TabBarView(
                     children: tabViews,
-                  ),
-                  snackBar: const SnackBar(
-                    content: const Text('Tap back again to exit.'),
-                  ),
-                )
-              : TabBarView(
-                  children: tabViews,
-                )
-          : hasDrawer
-              ? DoubleBackToCloseApp(
-                  child: child,
-                  snackBar: const SnackBar(
-                    content: const Text('Tap back again to exit.'),
-                  ),
-                )
-              : child,
+                  )
+            : hasDrawer
+                ? DoubleBackToCloseApp(
+                    child: child,
+                    snackBar: const SnackBar(
+                      content: const Text('Tap back again to exit.'),
+                    ),
+                  )
+                : child,
+      ),
     );
   }
 }
