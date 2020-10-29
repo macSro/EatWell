@@ -8,10 +8,18 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   @override
   Stream<UserState> mapEventToState(UserEvent event) async* {
-    if (event is RegisterUserWithEmail)
+    if (event is AppStarted)
+      yield* _appStarted();
+    else if (event is RegisterUserWithEmail)
       yield* _registerUserWithEmail(event.email, event.password);
     else if (event is LoginUserWithEmail)
       yield* _loginUserWithEmail(event.email, event.password);
+  }
+
+  Stream<UserState> _appStarted() async* {
+    //TODO: firebase check is user signed in with currentUser and yield Auth or NoAuth
+    await Future.delayed(Duration(seconds: 2), () {});
+    yield UserUnauthenticated();
   }
 
   Stream<UserState> _registerUserWithEmail(email, password) async* {

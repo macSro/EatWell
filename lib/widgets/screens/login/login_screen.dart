@@ -14,7 +14,7 @@ import 'package:keyboard_avoider/keyboard_avoider.dart';
 import 'login_form.dart';
 
 class LoginScreen extends StatelessWidget {
-  static const routeName = '/';
+  static const routeName = '/login';
 
   @override
   Widget build(BuildContext context) {
@@ -24,20 +24,15 @@ class LoginScreen extends StatelessWidget {
       listener: (context, state) => _navigateToRecipeListScreen(context),
       child: Material(
         child: BlocBuilder<UserBloc, UserState>(
-          builder: (context, state) => state is UserInitial
-              ? _getContent(context: context)
-              : state is UserRegisteredWithEmail
-                  ? _getContent(
-                      context: context,
-                      emailFill: state.email,
-                      passwordFill: state.password)
-                  : LoadingView(text: 'Authentication in progress...'),
+          builder: (context, state) => state is UserLoading
+              ? LoadingView(text: 'Authentication in progress...')
+              : _getContent(context),
         ),
       ),
     );
   }
 
-  Widget _getContent({@required context, emailFill, passwordFill}) {
+  Widget _getContent(context) {
     return Stack(
       children: [
         SvgPicture.asset(

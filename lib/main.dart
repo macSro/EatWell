@@ -1,5 +1,6 @@
 import 'package:eat_well_v1/route_generator.dart';
 import 'package:eat_well_v1/widgets/misc/bloc_wrapper.dart';
+import 'package:eat_well_v1/widgets/screens/splash/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'EatWell XO',
         theme: _getThemeData(),
-        initialRoute: '/',
+        initialRoute: SplashScreen.routeName,
         onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );

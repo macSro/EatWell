@@ -1,5 +1,6 @@
 import 'package:eat_well_v1/model/user.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 
 abstract class UserState extends Equatable {}
 
@@ -26,7 +27,7 @@ class UserRegisteredWithEmail extends UserState {
 class UserAuthenticated extends UserState {
   final User user;
 
-  UserAuthenticated({this.user});
+  UserAuthenticated({@required this.user});
 
   @override
   List<Object> get props => [user];

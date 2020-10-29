@@ -8,12 +8,14 @@ import 'package:eat_well_v1/widgets/screens/recipes/recipes_screen.dart';
 import 'package:eat_well_v1/widgets/screens/register/register_screen.dart';
 import 'package:eat_well_v1/widgets/screens/settings/settings_screen.dart';
 import 'package:eat_well_v1/widgets/screens/shopping_list_screen.dart';
+import 'package:eat_well_v1/widgets/screens/splash/splash_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 typedef Widget _ScreenBuilder(BuildContext context);
 
 final Map<String, _ScreenBuilder> _routeBuilders = {
+  SplashScreen.routeName: (context) => SplashScreen(),
   LoginScreen.routeName: (context) => LoginScreen(),
   RegisterScreen.routeName: (context) => RegisterScreen(),
   RecipesScreen.routeName: (context) => RecipesScreen(),

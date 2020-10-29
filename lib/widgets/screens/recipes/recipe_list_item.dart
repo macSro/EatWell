@@ -66,7 +66,7 @@ class RecipeListItem extends StatelessWidget {
           child: FadeInImage.memoryNetwork(
             placeholder: kTransparentImage,
             image: imageUrl,
-            fadeInDuration: const Duration(milliseconds: 400),
+            fadeInDuration: const Duration(milliseconds: 250),
             height: 180,
             width: double.infinity,
             fit: BoxFit.cover,

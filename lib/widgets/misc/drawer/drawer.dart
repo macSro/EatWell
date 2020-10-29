@@ -8,6 +8,7 @@ import 'package:eat_well_v1/bloc/recipes/recipe_list_event.dart';
 import 'package:eat_well_v1/bloc/user/user_bloc.dart';
 import 'package:eat_well_v1/bloc/user/user_state.dart';
 import 'package:eat_well_v1/widgets/misc/authenticated_view.dart';
+import 'package:eat_well_v1/widgets/misc/icon_text.dart';
 import 'package:eat_well_v1/widgets/screens/diet_screen.dart';
 import 'package:eat_well_v1/widgets/screens/my_recipes/my_recipes_screen.dart';
 import 'package:eat_well_v1/widgets/screens/recipes/recipes_screen.dart';
@@ -30,7 +31,7 @@ class MyDrawer extends StatelessWidget {
             ? Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 32,
-                  vertical: 48,
+                  vertical: 24,
                 ),
                 color: kPrimaryColorDark,
                 child: Column(
@@ -127,6 +128,22 @@ class MyDrawer extends StatelessWidget {
                       onTap: () => Navigator.of(context)
                           .pushReplacementNamed(SettingsScreen.routeName),
                     ),
+                    Spacer(),
+                    Center(
+                      child: FlatButton(
+                        onPressed: () {},
+                        child: IconText(
+                          squeeze: true,
+                          icon: Icon(Icons.logout, size: 28),
+                          text: Text(
+                            'Sign out',
+                            style: TextStyle(
+                                fontSize: 22, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        textColor: Colors.redAccent,
+                      ),
+                    ),
                   ],
                 ),
               )
@@ -140,9 +157,21 @@ class MyDrawer extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.max,
       children: [
-        SvgPicture.asset(
-          'assets/images/logo.svg',
-          width: 64,
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SvgPicture.asset(
+              'assets/images/logo.svg',
+              width: 56,
+            ),
+            SizedBox(height: 4),
+            Text(
+              'EatWell XO',
+              style: Theme.of(context).textTheme.subtitle2.copyWith(
+                    color: Colors.white,
+                  ),
+            ),
+          ],
         ),
         const SizedBox(width: 32),
         Expanded(
@@ -165,7 +194,7 @@ class MyDrawer extends StatelessWidget {
                 minFontSize: 18,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-              )
+              ),
             ],
           ),
         ),
