@@ -21,7 +21,7 @@ class CreatedRecipesBloc
     yield CreatedRecipesLoading();
     //TODO: FROM FIREBASE final recipes = await fetchCreatedRecipes();
     final recipes = await Future.delayed(
-      Duration(seconds: 3),
+      Duration(seconds: 2),
       () {
         var recipe1 = Recipe(
           id: 658703,

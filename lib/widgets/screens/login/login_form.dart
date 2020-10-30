@@ -2,7 +2,6 @@ import 'package:eat_well_v1/bloc/user/user_bloc.dart';
 import 'package:eat_well_v1/bloc/user/user_event.dart';
 import 'package:eat_well_v1/constants.dart';
 import 'package:eat_well_v1/widgets/misc/icon_text.dart';
-import 'package:eat_well_v1/widgets/screens/register/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,37 +14,112 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
-  String email;
-  String password;
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  bool isError = false;
+  bool isButtonPressed = false;
+  bool focus1 = false;
+  bool focus2 = false;
+
+  @override
+  void initState() {
+    emailController.addListener(() {
+      setState(() {
+        if (emailController.text.isNotEmpty) {
+          focus1 = true;
+        }
+        focus2 = false;
+      });
+    });
+    passwordController.addListener(() {
+      setState(() {
+        if (passwordController.text.isNotEmpty) {
+          focus2 = true;
+        }
+        focus1 = false;
+      });
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
+      onChanged: () {
+        isButtonPressed = false;
+        if (isError) {
+          _formKey.currentState.validate();
+        }
+      },
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           TextFormField(
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            validator: (val) => Tools.validateEmail(val),
-            onSaved: (val) => email = val,
-            decoration: const InputDecoration(
+            controller: emailController,
+            validator: (val) {
+              if (!isButtonPressed) {
+                return null;
+              }
+              isError = true;
+              final message = Tools.validateEmail(val);
+              if (message != null) {
+                return message;
+              } else {
+                isError = false;
+                return null;
+              }
+            },
+            decoration: InputDecoration(
               prefixIcon: const Icon(Icons.mail_outline_rounded),
               hintText: 'Enter your email',
+              suffixIcon: focus1
+                  ? IconButton(
+                      icon: const Icon(Icons.clear),
+                      onPressed: () {
+                        setState(() {
+                          focus1 = false;
+                        });
+                        emailController.clear();
+                      },
+                    )
+                  : null,
             ),
           ),
           const SizedBox(height: 16),
           TextFormField(
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            validator: (val) => val.isEmpty ? 'Enter a password.' : null,
-            onSaved: (val) => password = val,
+            controller: passwordController,
+            validator: (val) {
+              if (!isButtonPressed) {
+                return null;
+              }
+              isError = true;
+              final message = val.isEmpty ? 'Enter a password.' : null;
+              if (message != null) {
+                return message;
+              } else {
+                isError = false;
+                return null;
+              }
+            },
             obscureText: true,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               prefixIcon: const Icon(Icons.lock),
               hintText: 'Enter your password',
+              suffixIcon: focus2
+                  ? IconButton(
+                      icon: const Icon(Icons.clear),
+                      onPressed: () {
+                        setState(() {
+                          focus2 = false;
+                        });
+                        passwordController.clear();
+                      },
+                    )
+                  : null,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 24),
           RaisedButton(
             onPressed: () => _processLogin(context),
             color: kPrimaryColor,
@@ -63,29 +137,28 @@ class _LoginFormState extends State<LoginForm> {
               ),
             ),
           ),
-          const SizedBox(height: 8),
-          RaisedButton(
-            onPressed: () => _navigateToRegisterScreen(context),
-            color: kPrimaryColorDark,
-            child: Text(
-              'Sign Up',
-              style: TextStyle().copyWith(fontSize: 18),
-            ),
-          ),
         ],
       ),
     );
   }
 
-  _navigateToRegisterScreen(context) {
-    FocusScope.of(context).unfocus();
-    Navigator.of(context).pushNamed(RegisterScreen.routeName);
-  }
-
   _processLogin(context) {
     if (_formKey.currentState.validate()) {
-      BlocProvider.of<UserBloc>(context)
-          .add(LoginUserWithEmail(email: email, password: password));
+      print(
+          'SIGNING ING: email: ${emailController.text}   password: ${passwordController.text}');
+      BlocProvider.of<UserBloc>(context).add(
+        LoginUserWithEmail(
+          email: emailController.text,
+          password: passwordController.text,
+        ),
+      );
     }
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 }

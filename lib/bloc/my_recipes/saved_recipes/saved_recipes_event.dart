@@ -5,30 +5,24 @@ import 'package:flutter/foundation.dart';
 abstract class SavedRecipesEvent extends Equatable {}
 
 class FetchSavedRecipes extends SavedRecipesEvent {
-  final String userId;
-
-  FetchSavedRecipes({@required this.userId});
-
   @override
-  List<Object> get props => [userId];
+  List<Object> get props => [];
 }
 
 class SaveRecipe extends SavedRecipesEvent {
   final int recipeId;
-  final String userId;
 
-  SaveRecipe({@required this.recipeId, @required this.userId});
+  SaveRecipe({@required this.recipeId});
 
   @override
-  List<Object> get props => [recipeId, userId];
+  List<Object> get props => [recipeId];
 }
 
 class RemoveRecipeFromSaved extends SavedRecipesEvent {
   final int recipeId;
-  final String userId;
 
-  RemoveRecipeFromSaved({@required this.recipeId, @required this.userId});
+  RemoveRecipeFromSaved({@required this.recipeId});
 
   @override
-  List<Object> get props => [recipeId, userId];
+  List<Object> get props => [recipeId];
 }

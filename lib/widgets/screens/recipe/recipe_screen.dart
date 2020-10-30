@@ -6,10 +6,11 @@ import 'package:eat_well_v1/bloc/user/user_bloc.dart';
 import 'package:eat_well_v1/bloc/user/user_state.dart';
 import 'package:eat_well_v1/constants.dart';
 import 'package:eat_well_v1/model/extended_ingredient.dart';
-import 'package:eat_well_v1/widgets/misc/authenticated_view.dart';
-import 'package:eat_well_v1/widgets/misc/icon_button_stateful.dart';
+import 'package:eat_well_v1/widgets/misc/changing_icon_button.dart';
+import 'package:eat_well_v1/widgets/misc/failure.dart';
 import 'package:eat_well_v1/widgets/misc/ingredient_list_tile.dart';
 import 'package:eat_well_v1/widgets/misc/loading.dart';
+import 'package:eat_well_v1/widgets/misc/recipe/circle_icon_button.dart';
 import 'package:eat_well_v1/widgets/misc/recipe/recipe_rating.dart';
 import 'package:eat_well_v1/widgets/misc/scaffold.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,6 @@ class RecipeScreen extends StatelessWidget {
                           mediaQuery,
                           recipeState.recipe,
                           recipeState.userRating,
-                          userState.user.id,
                         )
                       : recipeState is RecipeRatingUpdated
                           ? _getContent(
@@ -46,17 +46,16 @@ class RecipeScreen extends StatelessWidget {
                               mediaQuery,
                               recipeState.recipe,
                               recipeState.userRating,
-                              userState.user.id,
                             )
                           : LoadingView(text: 'Loading recipe details...'),
                 );
               },
             )
-          : AuthenticatedView(),
+          : FailureView(),
     );
   }
 
-  Widget _getContent(context, mediaQuery, recipe, userRating, userId) {
+  Widget _getContent(context, mediaQuery, recipe, userRating) {
     return Stack(
       children: [
         ListView(
@@ -117,76 +116,55 @@ class RecipeScreen extends StatelessWidget {
         Container(
           alignment: Alignment.topRight,
           padding: const EdgeInsets.all(16),
-          child: _getSaveButton(context, recipe.id, userId),
+          child: _getSaveButton(context, recipe.id),
         ),
       ],
     );
   }
 
   Widget _getBackButton(context) {
-    return ClipOval(
-      child: Stack(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: kPrimaryColor.withOpacity(0.65),
-              shape: BoxShape.circle,
-            ),
-            height: 48,
-            width: 48,
-          ),
-          IconButton(
-            padding: EdgeInsets.zero,
-            icon: Icon(
-              Icons.arrow_back_rounded,
-              color: Colors.white,
-              size: 32,
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ],
+    return CircleIconButton(
+      iconButton: IconButton(
+        padding: EdgeInsets.zero,
+        icon: Icon(
+          Icons.arrow_back_rounded,
+          color: Colors.white,
+          size: 32,
+        ),
+        onPressed: () {
+          Navigator.pop(context);
+        },
       ),
+      color: kPrimaryColor.withOpacity(0.65),
     );
   }
 
-  Widget _getSaveButton(context, recipeId, userId) {
-    return ClipOval(
-      child: Stack(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.red.withOpacity(0.65),
-              shape: BoxShape.circle,
-            ),
-            height: 48,
-            width: 48,
-          ),
-          ChangingIconButton(
-            iconPrimary: Icon(
-              Icons.favorite_border_rounded,
-              color: Colors.white,
-              size: 28,
-            ),
-            iconSecondary: Icon(
-              Icons.favorite_rounded,
-              color: Colors.white,
-              size: 28,
-            ),
-            onPressed: (bool isPrimary) {
-              if (isPrimary) {
-                BlocProvider.of<SavedRecipesBloc>(context)
-                    .add(SaveRecipe(recipeId: recipeId, userId: userId));
-              } else {
-                BlocProvider.of<SavedRecipesBloc>(context).add(
-                    RemoveRecipeFromSaved(recipeId: recipeId, userId: userId));
-              }
-            },
-            //onPressed: _handleRecipeSaving,
-          ),
-        ],
+  Widget _getSaveButton(context, recipeId) {
+    return CircleIconButton(
+      iconButton: ChangingIconButton(
+        iconPrimary: Icon(
+          Icons.favorite_border_rounded,
+          color: Colors.white,
+          size: 28,
+        ),
+        iconSecondary: Icon(
+          Icons.favorite_rounded,
+          color: Colors.white,
+          size: 28,
+        ),
+        onPressed: (bool isPrimary) {
+          if (isPrimary) {
+            BlocProvider.of<SavedRecipesBloc>(context).add(
+              SaveRecipe(recipeId: recipeId),
+            );
+          } else {
+            BlocProvider.of<SavedRecipesBloc>(context).add(
+              RemoveRecipeFromSaved(recipeId: recipeId),
+            );
+          }
+        },
       ),
+      color: Colors.red.withOpacity(0.65),
     );
   }
 

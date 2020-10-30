@@ -5,14 +5,15 @@ import 'package:eat_well_v1/bloc/recipes/recipe_list_state.dart';
 import 'package:eat_well_v1/bloc/user/user_bloc.dart';
 import 'package:eat_well_v1/bloc/user/user_state.dart';
 import 'package:eat_well_v1/model/recipe.dart';
+import 'package:eat_well_v1/widgets/misc/fullscreen_dialog.dart';
 import 'package:eat_well_v1/widgets/misc/loading.dart';
 import 'package:eat_well_v1/widgets/misc/scaffold.dart';
+import 'package:eat_well_v1/widgets/screens/filters/filter_list.dart';
 import 'package:eat_well_v1/widgets/screens/recipe/recipe_screen.dart';
 import 'package:eat_well_v1/widgets/screens/recipes/recipe_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../filters/recipe_list_filter.dart';
 import 'recipe_list.dart';
 
 class RecipesScreen extends StatelessWidget {
@@ -30,7 +31,10 @@ class RecipesScreen extends StatelessWidget {
           floatingActionButton: state is RecipesFetched
               ? FloatingActionButton(
                   onPressed: () {
-                    showRecipeFiltersDialog(context: context);
+                    showFullscreenDialog(
+                      context: context,
+                      child: FilterList(),
+                    );
                   },
                   child: Icon(Icons.filter_alt_rounded),
                 )
@@ -44,13 +48,13 @@ class RecipesScreen extends StatelessWidget {
     return BlocBuilder<UserBloc, UserState>(
       builder: (context, state) => RecipeList(
         recipeItems: state is UserAuthenticated
-            ? _mapRecipesToRecipeItems(context, recipes, state.user.id)
+            ? _mapRecipesToRecipeItems(context, recipes)
             : [],
       ),
     );
   }
 
-  _mapRecipesToRecipeItems(context, List<Recipe> recipes, userId) {
+  _mapRecipesToRecipeItems(context, List<Recipe> recipes) {
     return recipes
         .map((recipe) => RecipeListItem(
               id: recipe.id,
@@ -59,14 +63,15 @@ class RecipesScreen extends StatelessWidget {
               readyInMinutes: recipe.readyInMinutes,
               servings: recipe.servings,
               rating: recipe.rating,
-              onTap: () => _navigateToRecipeScreen(context, recipe.id, userId),
+              onTap: () => _navigateToRecipeScreen(context, recipe.id),
             ))
         .toList();
   }
 
-  _navigateToRecipeScreen(context, recipeId, userId) {
+  _navigateToRecipeScreen(context, recipeId) {
     Navigator.of(context).pushNamed(RecipeScreen.routeName);
-    BlocProvider.of<RecipeBloc>(context)
-        .add(FetchRecipeDetails(recipeId: recipeId, userId: userId));
+    BlocProvider.of<RecipeBloc>(context).add(
+      FetchRecipeDetails(recipeId: recipeId),
+    );
   }
 }

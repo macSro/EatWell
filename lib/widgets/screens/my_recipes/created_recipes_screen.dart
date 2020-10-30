@@ -15,10 +15,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../constants.dart';
 
 class CreatedRecipesScreen extends StatelessWidget {
-  final String userId;
-
-  CreatedRecipesScreen({@required this.userId});
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -74,7 +70,6 @@ class CreatedRecipesScreen extends StatelessWidget {
                   recipeItems: _mapRecipesToRecipeItems(
                     context,
                     state.recipes,
-                    userId,
                   ),
                 )
               : Center(
@@ -87,7 +82,7 @@ class CreatedRecipesScreen extends StatelessWidget {
     );
   }
 
-  _mapRecipesToRecipeItems(context, List<Recipe> recipes, userId) {
+  _mapRecipesToRecipeItems(context, List<Recipe> recipes) {
     return recipes
         .map((recipe) => RecipeListItem(
               id: recipe.id,
@@ -96,14 +91,15 @@ class CreatedRecipesScreen extends StatelessWidget {
               readyInMinutes: recipe.readyInMinutes,
               servings: recipe.servings,
               rating: recipe.rating,
-              onTap: () => _navigateToRecipeScreen(context, recipe.id, userId),
+              onTap: () => _navigateToRecipeScreen(context, recipe.id),
             ))
         .toList();
   }
 
-  _navigateToRecipeScreen(context, recipeId, userId) {
+  _navigateToRecipeScreen(context, recipeId) {
     Navigator.pushNamed(context, RecipeScreen.routeName);
-    BlocProvider.of<RecipeBloc>(context)
-        .add(FetchRecipeDetails(recipeId: recipeId, userId: userId));
+    BlocProvider.of<RecipeBloc>(context).add(
+      FetchRecipeDetails(recipeId: recipeId),
+    );
   }
 }

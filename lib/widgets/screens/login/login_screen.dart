@@ -3,8 +3,11 @@ import 'package:eat_well_v1/bloc/recipes/recipe_list_event.dart';
 import 'package:eat_well_v1/bloc/user/user_bloc.dart';
 import 'package:eat_well_v1/bloc/user/user_state.dart';
 import 'package:eat_well_v1/constants.dart';
+import 'package:eat_well_v1/widgets/misc/failure.dart';
+import 'package:eat_well_v1/widgets/misc/fullscreen_dialog.dart';
 import 'package:eat_well_v1/widgets/misc/loading.dart';
 import 'package:eat_well_v1/widgets/screens/recipes/recipes_screen.dart';
+import 'package:eat_well_v1/widgets/screens/register/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,15 +21,23 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<UserBloc, UserState>(
-      listenWhen: (previous, current) =>
-          previous is UserLoading && current is UserAuthenticated,
-      listener: (context, state) => _navigateToRecipeListScreen(context),
-      child: Material(
-        child: BlocBuilder<UserBloc, UserState>(
-          builder: (context, state) => state is UserLoading
-              ? LoadingView(text: 'Authentication in progress...')
-              : _getContent(context),
+    return Material(
+      child: BlocListener<UserBloc, UserState>(
+        listenWhen: (previous, current) =>
+            previous is UserLoading && current is UserAuthenticated,
+        listener: (context, state) => _navigateToRecipeListScreen(context),
+        child: BlocListener<UserBloc, UserState>(
+          listenWhen: (previous, current) =>
+              previous is UserLoading && current is UserAuthenticationFailed,
+          listener: (context, state) => showFullscreenDialog(
+            context: context,
+            child: FailureView(message: kUserAuthenticationFailedMessage),
+          ),
+          child: BlocBuilder<UserBloc, UserState>(
+            builder: (context, state) => state is UserLoading
+                ? LoadingView(text: 'Authentication in progress...')
+                : _getContent(context),
+          ),
         ),
       ),
     );
@@ -63,8 +74,15 @@ class LoginScreen extends StatelessWidget {
                 child: LoginForm(),
               ),
               const SizedBox(height: 8),
-              const Divider(),
-              const SizedBox(height: 8),
+              RaisedButton(
+                onPressed: () => _navigateToRegisterScreen(context),
+                color: kPrimaryColorDark,
+                child: Text(
+                  'Sign Up',
+                  style: TextStyle().copyWith(fontSize: 18),
+                ),
+              ),
+              const Divider(height: 32),
               GoogleSignInButton(
                 onPressed: () {},
                 borderRadius: 20,
@@ -74,6 +92,11 @@ class LoginScreen extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  _navigateToRegisterScreen(context) {
+    FocusScope.of(context).unfocus();
+    Navigator.of(context).pushNamed(RegisterScreen.routeName);
   }
 
   _navigateToRecipeListScreen(context) {

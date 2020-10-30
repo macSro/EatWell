@@ -16,15 +16,15 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
   @override
   Stream<RecipeState> mapEventToState(RecipeEvent event) async* {
     if (event is FetchRecipeDetails)
-      yield* _fetchRecipeDetails(event.recipeId, event.userId);
+      yield* _fetchRecipeDetails(event.recipeId);
     else if (event is UpdateRecipeRating)
       yield* _updateRecipeRating(event.recipeId, event.rating);
   }
 
-  Stream<RecipeState> _fetchRecipeDetails(int recipeId, String userId) async* {
+  Stream<RecipeState> _fetchRecipeDetails(int recipeId) async* {
     yield RecipeLoading();
     //TODO: FIREBASE final recipe = await fetchRecipeDetails(recipeId);
-    //TODO: FIREBASE final (int) userRating = await fetchUserRating(recipeId, userId); if null return 0.0!!!
+    //TODO: FIREBASE final (int) userRating = await fetchUserRating(recipeId, currentUser.id); if null return 0.0!!!
     final userRating = 4;
     final recipe = await Future.delayed(
       Duration(seconds: 2),
@@ -92,12 +92,11 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
   }
 
   Stream<RecipeState> _updateRecipeRating(int recipeId, int rating) async* {
-    //TODO: FIREBASE await updateRecipeUserRating(recipeId, rating) -> if [rating]==0 should delete this user rating
+    //TODO: FIREBASE await updateRecipeUserRating(recipeId, rating, currentUser.id) -> if [rating]==0 should delete this user rating
     //TODO: FIREBASE await recalculateRecipeRating()
     //TODO: FIREBASE final recipe = await fetchRecipeDetails(recipeId);
 
     final randomPoints = Random().nextInt(16) + 10;
-    print('random points: $randomPoints');
     final recipe = await Future.delayed(
       Duration(seconds: 2),
       () {

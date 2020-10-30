@@ -6,9 +6,8 @@ abstract class RecipeEvent extends Equatable {}
 
 class FetchRecipeDetails extends RecipeEvent {
   final int recipeId;
-  final String userId;
 
-  FetchRecipeDetails({@required this.recipeId, @required this.userId});
+  FetchRecipeDetails({@required this.recipeId});
 
   @override
   List<Object> get props => [recipeId];

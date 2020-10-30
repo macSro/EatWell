@@ -12,23 +12,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SavedRecipesScreen extends StatelessWidget {
-  final String userId;
-
-  SavedRecipesScreen({@required this.userId});
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SavedRecipesBloc, SavedRecipesState>(
       builder: (context, state) => state is SavedRecipesFetched
           ? RecipeList(
-              recipeItems:
-                  _mapRecipesToRecipeItems(context, state.recipes, userId),
+              recipeItems: _mapRecipesToRecipeItems(context, state.recipes),
             )
           : LoadingView(text: 'Loading saved recipes...'),
     );
   }
 
-  _mapRecipesToRecipeItems(context, List<Recipe> recipes, userId) {
+  _mapRecipesToRecipeItems(context, List<Recipe> recipes) {
     return recipes
         .map((recipe) => RecipeListItem(
               id: recipe.id,
@@ -37,7 +32,7 @@ class SavedRecipesScreen extends StatelessWidget {
               readyInMinutes: recipe.readyInMinutes,
               servings: recipe.servings,
               rating: recipe.rating,
-              onTap: () => _navigateToRecipeScreen(context, recipe.id, userId),
+              onTap: () => _navigateToRecipeScreen(context, recipe.id),
               bottom: _getRemoveFromSavedButton(),
             ))
         .toList();
@@ -60,9 +55,10 @@ class SavedRecipesScreen extends StatelessWidget {
     );
   }
 
-  _navigateToRecipeScreen(context, recipeId, userId) {
+  _navigateToRecipeScreen(context, recipeId) {
     Navigator.of(context).pushNamed(RecipeScreen.routeName);
-    BlocProvider.of<RecipeBloc>(context)
-        .add(FetchRecipeDetails(recipeId: recipeId, userId: userId));
+    BlocProvider.of<RecipeBloc>(context).add(
+      FetchRecipeDetails(recipeId: recipeId),
+    );
   }
 }

@@ -1,10 +1,14 @@
+import 'package:eat_well_v1/bloc/user/user_bloc.dart';
 import 'package:eat_well_v1/route_generator.dart';
 import 'package:eat_well_v1/widgets/misc/bloc_wrapper.dart';
+import 'package:eat_well_v1/widgets/screens/login/login_screen.dart';
 import 'package:eat_well_v1/widgets/screens/splash/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'bloc/user/user_state.dart';
 import 'constants.dart';
 
 void main() async {
@@ -16,13 +20,21 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    //TODO: DialogWrapper as Stack!
     _setUpStatusBarAndOrientation();
     return BlocWrapper(
-      child: MaterialApp(
-        title: 'EatWell XO',
-        theme: _getThemeData(),
-        initialRoute: SplashScreen.routeName,
-        onGenerateRoute: RouteGenerator.generateRoute,
+      child: BlocListener<UserBloc, UserState>(
+        listenWhen: (previous, current) =>
+            previous is UserAuthenticated && current is UserUnauthenticated,
+        //TODO: instead of going to login i should go to failurescreen and put a button that goes to the login
+        listener: (context, state) =>
+            Navigator.pushNamed(context, LoginScreen.routeName),
+        child: MaterialApp(
+          title: 'EatWell XO',
+          theme: _getThemeData(),
+          initialRoute: SplashScreen.routeName,
+          onGenerateRoute: RouteGenerator.generateRoute,
+        ),
       ),
     );
   }

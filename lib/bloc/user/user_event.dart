@@ -11,11 +11,16 @@ class AppStarted extends UserEvent {
 class RegisterUserWithEmail extends UserEvent {
   final String email;
   final String password;
+  final String displayName;
 
-  RegisterUserWithEmail({@required this.email, @required this.password});
+  RegisterUserWithEmail({
+    @required this.email,
+    @required this.password,
+    @required this.displayName,
+  });
 
   @override
-  List<Object> get props => [email, password];
+  List<Object> get props => [email, password, displayName];
 }
 
 class LoginUserWithEmail extends UserEvent {

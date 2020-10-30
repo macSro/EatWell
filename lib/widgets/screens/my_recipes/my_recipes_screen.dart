@@ -1,6 +1,6 @@
 import 'package:eat_well_v1/bloc/user/user_bloc.dart';
 import 'package:eat_well_v1/bloc/user/user_state.dart';
-import 'package:eat_well_v1/widgets/misc/authenticated_view.dart';
+import 'package:eat_well_v1/widgets/misc/failure.dart';
 import 'package:eat_well_v1/widgets/misc/scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,13 +32,13 @@ class MyRecipesScreen extends StatelessWidget {
                   ],
                 ),
                 tabViews: [
-                  CreatedRecipesScreen(userId: state.user.id),
-                  SavedRecipesScreen(userId: state.user.id),
+                  CreatedRecipesScreen(),
+                  SavedRecipesScreen(),
                 ],
                 child: Container(),
               ),
             )
-          : AuthenticatedView(),
+          : FailureView(),
     );
   }
 }

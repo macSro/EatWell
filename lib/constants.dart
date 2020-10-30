@@ -1,5 +1,17 @@
 import 'package:flutter/material.dart';
 
+//NAMES
+const kAppName = 'EatWell XO';
+const kDefaultUserDisplayName = 'Chef';
+
+//MESSAGES
+const kUserRegisterFailedMessage = 'Registration failed.';
+const kUserAuthenticationFailedMessage = 'Authentication failed.';
+const kTryAgainMessage = 'Please try again.';
+const kErrorOccurredMessage = 'An error occurred.';
+const kSignOutFailedMessage = 'Sign out failed.';
+
+//COLOR PALETTE
 const kPrimaryColor = Color(0xFF4CAF50);
 const kPrimaryColorDark = Color(0xFF388E3C);
 const kPrimaryColorLight = Color(0xFFC8E6C9);
@@ -8,10 +20,12 @@ const kTextColorPrimary = Color(0xFF212121);
 const kTextColorSecondary = Color(0xFF757575);
 const kDividerColor = Color(0xFFBDBDBD);
 
+//PATHS
 const kRecipeImageUrlBasePath = 'https://spoonacular.com/recipeImages/';
 const kIngredientImageUrlBasePath =
     'https://spoonacular.com/cdn/ingredients_100x100/';
 
+//TYPES
 enum MealTypes {
   MainCourse,
   SideDish,

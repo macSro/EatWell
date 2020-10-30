@@ -28,6 +28,14 @@ class _FilterListState extends State<FilterList> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        Center(
+          child: Text(
+            'What are you craving?',
+            style: Theme.of(context).textTheme.headline5.copyWith(
+                color: kPrimaryColorDark, fontWeight: FontWeight.bold),
+          ),
+        ),
+        const SizedBox(height: 32),
         Expanded(
           child: ListView(
             children: [

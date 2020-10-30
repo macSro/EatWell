@@ -7,7 +7,7 @@ import 'package:eat_well_v1/bloc/recipes/recipe_list_bloc.dart';
 import 'package:eat_well_v1/bloc/recipes/recipe_list_event.dart';
 import 'package:eat_well_v1/bloc/user/user_bloc.dart';
 import 'package:eat_well_v1/bloc/user/user_state.dart';
-import 'package:eat_well_v1/widgets/misc/authenticated_view.dart';
+import 'package:eat_well_v1/widgets/misc/failure.dart';
 import 'package:eat_well_v1/widgets/misc/icon_text.dart';
 import 'package:eat_well_v1/widgets/screens/diet_screen.dart';
 import 'package:eat_well_v1/widgets/screens/my_recipes/my_recipes_screen.dart';
@@ -21,6 +21,7 @@ import 'package:flutter_svg/svg.dart';
 import '../../../constants.dart';
 import '../../screens/fridge_screen.dart';
 import '../drawer/drawer_tile.dart';
+import '../fullscreen_dialog.dart';
 
 class MyDrawer extends StatelessWidget {
   @override
@@ -28,126 +29,134 @@ class MyDrawer extends StatelessWidget {
     return Drawer(
       child: BlocBuilder<UserBloc, UserState>(
         builder: (context, state) => state is UserAuthenticated
-            ? Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 32,
-                  vertical: 24,
+            ? _getContent(context, state.userDisplayName)
+            : FailureView(),
+      ),
+    );
+  }
+
+  Widget _getContent(context, displayName) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 32,
+        vertical: 24,
+      ),
+      color: kPrimaryColorDark,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _getHeader(context, displayName),
+          const SizedBox(height: 24),
+          const Divider(thickness: 2),
+          const SizedBox(height: 16),
+          MyDrawerTile(
+              icon: Icon(
+                Icons.fastfood_rounded,
+                color: kAccentColor,
+              ),
+              title: Text('All Recipes',
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline6
+                      .copyWith(color: Colors.white)),
+              onTap: () {
+                Navigator.of(context)
+                    .pushReplacementNamed(RecipesScreen.routeName);
+                BlocProvider.of<RecipeListBloc>(context).add(FetchAllRecipes());
+              }),
+          MyDrawerTile(
+            icon: Icon(
+              Icons.favorite_border_rounded,
+              color: kAccentColor,
+            ),
+            title: Text('My Recipes',
+                style: Theme.of(context)
+                    .textTheme
+                    .headline6
+                    .copyWith(color: Colors.white)),
+            onTap: () {
+              Navigator.of(context)
+                  .pushReplacementNamed(MyRecipesScreen.routeName);
+              BlocProvider.of<CreatedRecipesBloc>(context).add(
+                FetchCreatedRecipes(),
+              );
+              BlocProvider.of<SavedRecipesBloc>(context).add(
+                FetchSavedRecipes(),
+              );
+            },
+          ),
+          MyDrawerTile(
+            icon: Icon(
+              Icons.block_rounded,
+              color: kAccentColor,
+            ),
+            title: Text('Diet',
+                style: Theme.of(context)
+                    .textTheme
+                    .headline6
+                    .copyWith(color: Colors.white)),
+            onTap: () => Navigator.of(context)
+                .pushReplacementNamed(DietScreen.routeName),
+          ),
+          MyDrawerTile(
+            icon: Icon(
+              Icons.kitchen_rounded,
+              color: kAccentColor,
+            ),
+            title: Text('E-Fridge',
+                style: Theme.of(context)
+                    .textTheme
+                    .headline6
+                    .copyWith(color: Colors.white)),
+            onTap: () => Navigator.of(context)
+                .pushReplacementNamed(FridgeScreen.routeName),
+          ),
+          MyDrawerTile(
+            icon: Icon(
+              Icons.shopping_cart_outlined,
+              color: kAccentColor,
+            ),
+            title: Text('Shopping list',
+                style: Theme.of(context)
+                    .textTheme
+                    .headline6
+                    .copyWith(color: Colors.white)),
+            onTap: () => Navigator.of(context)
+                .pushReplacementNamed(ShoppingListScreen.routeName),
+          ),
+          MyDrawerTile(
+            icon: Icon(
+              Icons.settings_rounded,
+              color: Colors.grey[400],
+            ),
+            title: Text('Settings',
+                style: Theme.of(context)
+                    .textTheme
+                    .headline6
+                    .copyWith(color: Colors.grey[400])),
+            onTap: () => Navigator.of(context)
+                .pushReplacementNamed(SettingsScreen.routeName),
+          ),
+          Spacer(),
+          Center(
+            child: FlatButton(
+              onPressed: () {
+                Navigator.pop(context);
+                showFullscreenDialog(context: context, child: FailureView());
+                //TODO: prepare a Confirmation View for Sign Out and there button will trigger BlocProvider.of<UserBloc>(context).add(SignOut());
+              },
+              child: IconText(
+                squeeze: true,
+                icon: Icon(Icons.logout, size: 28),
+                text: Text(
+                  'Sign out',
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                 ),
-                color: kPrimaryColorDark,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _getHeader(context, state.user.displayName ?? 'chef!'),
-                    const SizedBox(height: 24),
-                    const Divider(thickness: 2),
-                    const SizedBox(height: 16),
-                    MyDrawerTile(
-                        icon: Icon(
-                          Icons.fastfood_rounded,
-                          color: kAccentColor,
-                        ),
-                        title: Text('All Recipes',
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline6
-                                .copyWith(color: Colors.white)),
-                        onTap: () {
-                          Navigator.of(context)
-                              .pushReplacementNamed(RecipesScreen.routeName);
-                          BlocProvider.of<RecipeListBloc>(context)
-                              .add(FetchAllRecipes());
-                        }),
-                    MyDrawerTile(
-                      icon: Icon(
-                        Icons.favorite_border_rounded,
-                        color: kAccentColor,
-                      ),
-                      title: Text('My Recipes',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline6
-                              .copyWith(color: Colors.white)),
-                      onTap: () {
-                        Navigator.of(context)
-                            .pushReplacementNamed(MyRecipesScreen.routeName);
-                        BlocProvider.of<CreatedRecipesBloc>(context)
-                            .add(FetchCreatedRecipes(userId: state.user.id));
-                        BlocProvider.of<SavedRecipesBloc>(context)
-                            .add(FetchSavedRecipes(userId: state.user.id));
-                      },
-                    ),
-                    MyDrawerTile(
-                      icon: Icon(
-                        Icons.block_rounded,
-                        color: kAccentColor,
-                      ),
-                      title: Text('Diet',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline6
-                              .copyWith(color: Colors.white)),
-                      onTap: () => Navigator.of(context)
-                          .pushReplacementNamed(DietScreen.routeName),
-                    ),
-                    MyDrawerTile(
-                      icon: Icon(
-                        Icons.kitchen_rounded,
-                        color: kAccentColor,
-                      ),
-                      title: Text('E-Fridge',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline6
-                              .copyWith(color: Colors.white)),
-                      onTap: () => Navigator.of(context)
-                          .pushReplacementNamed(FridgeScreen.routeName),
-                    ),
-                    MyDrawerTile(
-                      icon: Icon(
-                        Icons.shopping_cart_outlined,
-                        color: kAccentColor,
-                      ),
-                      title: Text('Shopping list',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline6
-                              .copyWith(color: Colors.white)),
-                      onTap: () => Navigator.of(context)
-                          .pushReplacementNamed(ShoppingListScreen.routeName),
-                    ),
-                    MyDrawerTile(
-                      icon: Icon(
-                        Icons.settings_rounded,
-                        color: Colors.grey[400],
-                      ),
-                      title: Text('Settings',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline6
-                              .copyWith(color: Colors.grey[400])),
-                      onTap: () => Navigator.of(context)
-                          .pushReplacementNamed(SettingsScreen.routeName),
-                    ),
-                    Spacer(),
-                    Center(
-                      child: FlatButton(
-                        onPressed: () {},
-                        child: IconText(
-                          squeeze: true,
-                          icon: Icon(Icons.logout, size: 28),
-                          text: Text(
-                            'Sign out',
-                            style: TextStyle(
-                                fontSize: 22, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        textColor: Colors.redAccent,
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            : AuthenticatedView(),
+              ),
+              textColor: Colors.redAccent,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -186,7 +195,7 @@ class MyDrawer extends StatelessWidget {
                     .copyWith(color: Colors.white),
               ),
               AutoSizeText(
-                displayName,
+                displayName + '!',
                 style: Theme.of(context)
                     .textTheme
                     .headline5

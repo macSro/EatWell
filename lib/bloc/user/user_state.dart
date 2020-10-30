@@ -1,6 +1,4 @@
-import 'package:eat_well_v1/model/user.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 
 abstract class UserState extends Equatable {}
 
@@ -15,25 +13,35 @@ class UserLoading extends UserState {
 }
 
 class UserRegisteredWithEmail extends UserState {
-  final String email;
-  final String password;
-
-  UserRegisteredWithEmail({this.email, this.password});
-
   @override
-  List<Object> get props => [email, password];
+  List<Object> get props => [];
+}
+
+class UserRegistrationFailed extends UserState {
+  @override
+  List<Object> get props => [];
 }
 
 class UserAuthenticated extends UserState {
-  final User user;
+  final String userDisplayName;
 
-  UserAuthenticated({@required this.user});
+  UserAuthenticated({this.userDisplayName});
 
   @override
-  List<Object> get props => [user];
+  List<Object> get props => [userDisplayName];
 }
 
 class UserUnauthenticated extends UserState {
+  @override
+  List<Object> get props => [];
+}
+
+class UserAuthenticationFailed extends UserState {
+  @override
+  List<Object> get props => [];
+}
+
+class UserSignOutFailed extends UserState {
   @override
   List<Object> get props => [];
 }
