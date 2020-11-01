@@ -2,12 +2,9 @@ import 'package:eat_well_v1/bloc/my_recipes/saved_recipes/saved_recipes_bloc.dar
 import 'package:eat_well_v1/bloc/my_recipes/saved_recipes/saved_recipes_event.dart';
 import 'package:eat_well_v1/bloc/recipe/recipe_bloc.dart';
 import 'package:eat_well_v1/bloc/recipe/recipe_state.dart';
-import 'package:eat_well_v1/bloc/user/user_bloc.dart';
-import 'package:eat_well_v1/bloc/user/user_state.dart';
 import 'package:eat_well_v1/constants.dart';
 import 'package:eat_well_v1/model/extended_ingredient.dart';
 import 'package:eat_well_v1/widgets/misc/changing_icon_button.dart';
-import 'package:eat_well_v1/widgets/misc/failure.dart';
 import 'package:eat_well_v1/widgets/misc/ingredient_list_tile.dart';
 import 'package:eat_well_v1/widgets/misc/loading.dart';
 import 'package:eat_well_v1/widgets/misc/recipe/circle_icon_button.dart';
@@ -25,33 +22,20 @@ class RecipeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var mediaQuery = MediaQuery.of(context);
-    return BlocBuilder<UserBloc, UserState>(
-      builder: (context, userState) => userState is UserAuthenticated
-          ? BlocBuilder<RecipeBloc, RecipeState>(
-              builder: (context, recipeState) {
-                return MyScaffold(
-                  hasAppBar: false,
-                  title: '',
-                  hasDrawer: false,
-                  child: recipeState is RecipeDetailsFetched
-                      ? _getContent(
-                          context,
-                          mediaQuery,
-                          recipeState.recipe,
-                          recipeState.userRating,
-                        )
-                      : recipeState is RecipeRatingUpdated
-                          ? _getContent(
-                              context,
-                              mediaQuery,
-                              recipeState.recipe,
-                              recipeState.userRating,
-                            )
-                          : LoadingView(text: 'Loading recipe details...'),
-                );
-              },
-            )
-          : FailureView(),
+    return BlocBuilder<RecipeBloc, RecipeState>(
+      builder: (context, recipeState) => MyScaffold(
+        hasAppBar: false,
+        title: '',
+        hasDrawer: false,
+        child: recipeState is RecipeDetailsFetched
+            ? _getContent(
+                context,
+                mediaQuery,
+                recipeState.recipe,
+                recipeState.userRating,
+              )
+            : LoadingView(text: 'Loading recipe details...'),
+      ),
     );
   }
 

@@ -19,10 +19,10 @@ class SplashScreen extends StatelessWidget {
           previous is UserInitial && !(current is UserInitial),
       listener: (context, state) {
         if (state is UserUnauthenticated) {
-          Navigator.pushNamed(context, LoginScreen.routeName);
+          Navigator.pushReplacementNamed(context, LoginScreen.routeName);
         } else {
           //State has to be UserAuthenticated here.
-          Navigator.pushNamed(context, RecipesScreen.routeName);
+          Navigator.pushReplacementNamed(context, RecipesScreen.routeName);
           BlocProvider.of<RecipeListBloc>(context).add(FetchAllRecipes());
         }
       },

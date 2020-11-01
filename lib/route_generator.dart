@@ -1,4 +1,5 @@
 import 'package:eat_well_v1/widgets/screens/diet_screen.dart';
+import 'package:eat_well_v1/widgets/screens/error_screen.dart';
 import 'package:eat_well_v1/widgets/screens/fridge_screen.dart';
 import 'package:eat_well_v1/widgets/screens/login/login_screen.dart';
 import 'package:eat_well_v1/widgets/screens/my_recipes/create_recipe_screen.dart';
@@ -33,6 +34,12 @@ class RouteGenerator {
     if (_routeBuilders.containsKey(settings.name)) {
       final routeBuilder = _routeBuilders[settings.name];
       return CupertinoPageRoute(builder: routeBuilder, settings: settings);
+    } else if (settings.name == ErrorScreen.routeName) {
+      return MaterialPageRoute(
+          builder: (context) => settings.arguments != null
+              ? ErrorScreen(message: settings.arguments)
+              : ErrorScreen(),
+          settings: settings);
     } else {
       return _errorRoute(settings);
     }

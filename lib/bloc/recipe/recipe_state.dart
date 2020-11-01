@@ -24,13 +24,3 @@ class RecipeDetailsFetched extends RecipeState {
   @override
   List<Object> get props => [recipe, userRating];
 }
-
-class RecipeRatingUpdated extends RecipeState {
-  final Recipe recipe;
-  final int userRating;
-
-  RecipeRatingUpdated({this.recipe, this.userRating});
-
-  @override
-  List<Object> get props => [recipe, userRating];
-}

@@ -1,5 +1,9 @@
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
+import 'package:eat_well_v1/bloc/user/user_bloc.dart';
+import 'package:eat_well_v1/bloc/user/user_state.dart';
+import 'package:eat_well_v1/widgets/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'drawer/drawer.dart';
 
@@ -24,37 +28,53 @@ class MyScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: hasAppBar
-            ? AppBar(
-                title: Text(title),
-                bottom: tabBar,
-              )
-            : null,
-        drawer: hasDrawer ? MyDrawer() : null,
-        floatingActionButton: floatingActionButton,
-        body: tabBar != null
-            ? hasDrawer
-                ? DoubleBackToCloseApp(
-                    child: TabBarView(
+    return BlocListener<UserBloc, UserState>(
+      listenWhen: (previous, current) =>
+          previous is UserLoading && current is UserUnauthenticated,
+      listener: (context, state) {
+        Navigator.pushReplacementNamed(context, LoginScreen.routeName);
+      },
+      child: SafeArea(
+        child: Scaffold(
+          appBar: hasAppBar
+              ? AppBar(
+                  title: Text(title),
+                  bottom: tabBar,
+                )
+              : null,
+          drawer: hasDrawer
+              ? BlocBuilder<UserBloc, UserState>(
+                  builder: (context, state) => state is UserAuthenticated
+                      ? state.userDisplayName != null &&
+                              state.userDisplayName != ''
+                          ? MyDrawer(userDisplayName: state.userDisplayName)
+                          : MyDrawer()
+                      : MyDrawer(),
+                )
+              : null,
+          floatingActionButton: floatingActionButton,
+          body: tabBar != null
+              ? hasDrawer
+                  ? DoubleBackToCloseApp(
+                      child: TabBarView(
+                        children: tabViews,
+                      ),
+                      snackBar: const SnackBar(
+                        content: const Text('Tap back again to exit.'),
+                      ),
+                    )
+                  : TabBarView(
                       children: tabViews,
-                    ),
-                    snackBar: const SnackBar(
-                      content: const Text('Tap back again to exit.'),
-                    ),
-                  )
-                : TabBarView(
-                    children: tabViews,
-                  )
-            : hasDrawer
-                ? DoubleBackToCloseApp(
-                    child: child,
-                    snackBar: const SnackBar(
-                      content: const Text('Tap back again to exit.'),
-                    ),
-                  )
-                : child,
+                    )
+              : hasDrawer
+                  ? DoubleBackToCloseApp(
+                      child: child,
+                      snackBar: const SnackBar(
+                        content: const Text('Tap back again to exit.'),
+                      ),
+                    )
+                  : child,
+        ),
       ),
     );
   }

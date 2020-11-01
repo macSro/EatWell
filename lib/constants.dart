@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 
-//NAMES
+//TEXTS
 const kAppName = 'EatWell XO';
 const kDefaultUserDisplayName = 'Chef';
 
 //MESSAGES
+const kErrorOccurredMessage = 'An error occurred.';
 const kUserRegisterFailedMessage = 'Registration failed.';
 const kUserAuthenticationFailedMessage = 'Authentication failed.';
-const kTryAgainMessage = 'Please try again.';
-const kErrorOccurredMessage = 'An error occurred.';
 const kSignOutFailedMessage = 'Sign out failed.';
 
 //COLOR PALETTE

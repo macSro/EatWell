@@ -1,8 +1,7 @@
 import 'package:eat_well_v1/bloc/user/user_bloc.dart';
 import 'package:eat_well_v1/bloc/user/user_state.dart';
-import 'package:eat_well_v1/widgets/misc/failure.dart';
-import 'package:eat_well_v1/widgets/misc/fullscreen_dialog.dart';
 import 'package:eat_well_v1/widgets/misc/loading.dart';
+import 'package:eat_well_v1/widgets/screens/error_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -24,9 +23,10 @@ class RegisterScreen extends StatelessWidget {
         child: BlocListener<UserBloc, UserState>(
           listenWhen: (previous, current) =>
               previous is UserLoading && current is UserRegistrationFailed,
-          listener: (context, state) => showFullscreenDialog(
-            context: context,
-            child: FailureView(message: kUserRegisterFailedMessage),
+          listener: (context, state) => Navigator.pushNamed(
+            context,
+            ErrorScreen.routeName,
+            arguments: kUserRegisterFailedMessage,
           ),
           child: BlocBuilder<UserBloc, UserState>(
             builder: (context, state) => state is UserLoading

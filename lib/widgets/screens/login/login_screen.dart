@@ -1,11 +1,11 @@
 import 'package:eat_well_v1/bloc/recipes/recipe_list_bloc.dart';
 import 'package:eat_well_v1/bloc/recipes/recipe_list_event.dart';
 import 'package:eat_well_v1/bloc/user/user_bloc.dart';
+import 'package:eat_well_v1/bloc/user/user_event.dart';
 import 'package:eat_well_v1/bloc/user/user_state.dart';
 import 'package:eat_well_v1/constants.dart';
-import 'package:eat_well_v1/widgets/misc/failure.dart';
-import 'package:eat_well_v1/widgets/misc/fullscreen_dialog.dart';
 import 'package:eat_well_v1/widgets/misc/loading.dart';
+import 'package:eat_well_v1/widgets/screens/error_screen.dart';
 import 'package:eat_well_v1/widgets/screens/recipes/recipes_screen.dart';
 import 'package:eat_well_v1/widgets/screens/register/register_screen.dart';
 import 'package:flutter/material.dart';
@@ -29,9 +29,10 @@ class LoginScreen extends StatelessWidget {
         child: BlocListener<UserBloc, UserState>(
           listenWhen: (previous, current) =>
               previous is UserLoading && current is UserAuthenticationFailed,
-          listener: (context, state) => showFullscreenDialog(
-            context: context,
-            child: FailureView(message: kUserAuthenticationFailedMessage),
+          listener: (context, state) => Navigator.pushNamed(
+            context,
+            ErrorScreen.routeName,
+            arguments: kUserAuthenticationFailedMessage,
           ),
           child: BlocBuilder<UserBloc, UserState>(
             builder: (context, state) => state is UserLoading
@@ -84,7 +85,8 @@ class LoginScreen extends StatelessWidget {
               ),
               const Divider(height: 32),
               GoogleSignInButton(
-                onPressed: () {},
+                onPressed: () =>
+                    BlocProvider.of<UserBloc>(context).add(SignInWithGoogle()),
                 borderRadius: 20,
               ),
             ],

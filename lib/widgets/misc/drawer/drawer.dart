@@ -6,8 +6,7 @@ import 'package:eat_well_v1/bloc/my_recipes/saved_recipes/saved_recipes_event.da
 import 'package:eat_well_v1/bloc/recipes/recipe_list_bloc.dart';
 import 'package:eat_well_v1/bloc/recipes/recipe_list_event.dart';
 import 'package:eat_well_v1/bloc/user/user_bloc.dart';
-import 'package:eat_well_v1/bloc/user/user_state.dart';
-import 'package:eat_well_v1/widgets/misc/failure.dart';
+import 'package:eat_well_v1/bloc/user/user_event.dart';
 import 'package:eat_well_v1/widgets/misc/icon_text.dart';
 import 'package:eat_well_v1/widgets/screens/diet_screen.dart';
 import 'package:eat_well_v1/widgets/screens/my_recipes/my_recipes_screen.dart';
@@ -21,17 +20,16 @@ import 'package:flutter_svg/svg.dart';
 import '../../../constants.dart';
 import '../../screens/fridge_screen.dart';
 import '../drawer/drawer_tile.dart';
-import '../fullscreen_dialog.dart';
 
 class MyDrawer extends StatelessWidget {
+  final String userDisplayName;
+
+  MyDrawer({this.userDisplayName = kDefaultUserDisplayName});
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: BlocBuilder<UserBloc, UserState>(
-        builder: (context, state) => state is UserAuthenticated
-            ? _getContent(context, state.userDisplayName)
-            : FailureView(),
-      ),
+      child: _getContent(context, userDisplayName),
     );
   }
 
@@ -141,9 +139,8 @@ class MyDrawer extends StatelessWidget {
           Center(
             child: FlatButton(
               onPressed: () {
-                Navigator.pop(context);
-                showFullscreenDialog(context: context, child: FailureView());
-                //TODO: prepare a Confirmation View for Sign Out and there button will trigger BlocProvider.of<UserBloc>(context).add(SignOut());
+                BlocProvider.of<UserBloc>(context).add(SignOut());
+                //TODO: prepare a UnauthenticatedScreen for Sign Out and there button will go to login
               },
               child: IconText(
                 squeeze: true,
@@ -195,7 +192,7 @@ class MyDrawer extends StatelessWidget {
                     .copyWith(color: Colors.white),
               ),
               AutoSizeText(
-                displayName + '!',
+                '$displayName!',
                 style: Theme.of(context)
                     .textTheme
                     .headline5

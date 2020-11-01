@@ -143,11 +143,10 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   _processLogin(context) {
+    isButtonPressed = true;
     if (_formKey.currentState.validate()) {
-      print(
-          'SIGNING ING: email: ${emailController.text}   password: ${passwordController.text}');
       BlocProvider.of<UserBloc>(context).add(
-        LoginUserWithEmail(
+        SignInWithEmail(
           email: emailController.text,
           password: passwordController.text,
         ),

@@ -159,7 +159,7 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
         return recipe;
       },
     );
-    yield RecipeRatingUpdated(recipe: recipe, userRating: rating);
+    yield RecipeDetailsFetched(recipe: recipe, userRating: rating);
     //TODO: error management
   }
 }

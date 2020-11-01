@@ -8,12 +8,12 @@ class AppStarted extends UserEvent {
   List<Object> get props => [];
 }
 
-class RegisterUserWithEmail extends UserEvent {
+class RegisterWithEmail extends UserEvent {
   final String email;
   final String password;
   final String displayName;
 
-  RegisterUserWithEmail({
+  RegisterWithEmail({
     @required this.email,
     @required this.password,
     @required this.displayName,
@@ -23,17 +23,17 @@ class RegisterUserWithEmail extends UserEvent {
   List<Object> get props => [email, password, displayName];
 }
 
-class LoginUserWithEmail extends UserEvent {
+class SignInWithEmail extends UserEvent {
   final String email;
   final String password;
 
-  LoginUserWithEmail({@required this.email, @required this.password});
+  SignInWithEmail({@required this.email, @required this.password});
 
   @override
   List<Object> get props => [email, password];
 }
 
-class LoginUserWithGoogle extends UserEvent {
+class SignInWithGoogle extends UserEvent {
   @override
   List<Object> get props => [];
 }

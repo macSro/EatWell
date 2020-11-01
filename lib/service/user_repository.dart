@@ -1,7 +1,4 @@
-import 'package:eat_well_v1/model/diet.dart';
-import 'package:eat_well_v1/model/user.dart' as LocalUser;
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class UserRepository {
@@ -27,6 +24,7 @@ class UserRepository {
       );
     } catch (exception) {
       print(exception.toString());
+      //TODO: return exception.toString(), change return type to Future<dynamic>
       return null;
     }
   }
@@ -38,6 +36,23 @@ class UserRepository {
         email: email,
         password: password,
       );
+    } catch (exception) {
+      print(exception.toString());
+      return null;
+    }
+  }
+
+  Future<String> signInWithGoogle() async {
+    try {
+      final googleSignInAccount = await _googleSignIn.signIn();
+      final googleSignInAuth = await googleSignInAccount.authentication;
+      final credential = GoogleAuthProvider.credential(
+        idToken: googleSignInAuth.idToken,
+        accessToken: googleSignInAuth.accessToken,
+      );
+      return await _firebaseAuth
+          .signInWithCredential(credential)
+          .then((_) => googleSignInAccount.displayName);
     } catch (exception) {
       print(exception.toString());
       return null;
@@ -56,39 +71,26 @@ class UserRepository {
     }
   }
 
-  Future<UserCredential> signInWithGoogle() async {
-    try {
-      final googleSignInAccount = await _googleSignIn.signIn();
-      final googleSignInAuth = await googleSignInAccount.authentication;
-      final credential = GoogleAuthProvider.credential(
-        idToken: googleSignInAuth.idToken,
-        accessToken: googleSignInAuth.accessToken,
-      );
-      return await _firebaseAuth.signInWithCredential(credential);
-    } catch (exception) {
-      print(exception.toString());
-      return null;
-    }
-  }
-
-  LocalUser.User createUserFromFirebase({
-    @required User firebaseUser,
-    @required String displayName,
-  }) {
-    return LocalUser.User(
-      id: firebaseUser.uid,
-      displayName: displayName,
-      diet: Diet(),
-    );
-  }
-
   Future<void> updateUserProfile({
-    @required localUser,
     email,
     password,
     displayName,
     diet,
   }) async {
-    //if(email != null)
+    try {
+      if (email != null) return await getCurrentUser().updateEmail(email);
+      if (password != null)
+        return await getCurrentUser().updatePassword(password);
+      if (displayName != null) {
+        print('try update');
+        return await getCurrentUser()
+            .updateProfile(displayName: displayName)
+            .then((value) => print('updated'));
+      }
+      //if(diet != null) go to collection with users diets and update it for current user
+    } catch (exception) {
+      print(exception.toString());
+      return null;
+    }
   }
 }
