@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:eat_well_v1/bloc/user/user_event.dart';
 import 'package:eat_well_v1/bloc/user/user_state.dart';
-import 'package:eat_well_v1/service/user_repository.dart';
+import 'package:eat_well_v1/repositories/user_repository.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
   UserRepository _repository;

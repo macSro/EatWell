@@ -30,5 +30,17 @@ class Recipe extends Equatable {
   });
 
   @override
-  List<Object> get props => [id];
+  List<Object> get props => [
+        id,
+        name,
+        imageUrl,
+        ingredients,
+        types,
+        cuisines,
+        diets,
+        instructions,
+        readyInMinutes,
+        servings,
+        rating,
+      ];
 }

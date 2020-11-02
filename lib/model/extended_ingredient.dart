@@ -7,6 +7,10 @@ class ExtendedIngredient {
   final String unit;
   final DateTime expDate;
 
-  ExtendedIngredient(
-      {@required this.ingredient, this.amount, this.unit, this.expDate});
+  ExtendedIngredient({
+    @required this.ingredient,
+    this.amount,
+    this.unit,
+    this.expDate,
+  });
 }

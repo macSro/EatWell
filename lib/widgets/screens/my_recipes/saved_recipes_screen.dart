@@ -1,4 +1,5 @@
 import 'package:eat_well_v1/bloc/my_recipes/saved_recipes/saved_recipes_bloc.dart';
+import 'package:eat_well_v1/bloc/my_recipes/saved_recipes/saved_recipes_event.dart';
 import 'package:eat_well_v1/bloc/my_recipes/saved_recipes/saved_recipes_state.dart';
 import 'package:eat_well_v1/bloc/recipe/recipe_bloc.dart';
 import 'package:eat_well_v1/bloc/recipe/recipe_event.dart';
@@ -14,7 +15,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class SavedRecipesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print('build saveddddd');
     return BlocBuilder<SavedRecipesBloc, SavedRecipesState>(
+      /*buildWhen: (previous, current) =>
+          (previous is SavedRecipesFetched &&
+              current is SavedRecipesFetched &&
+              previous.recipes.length != current.recipes.length) ||
+          previous is SavedRecipesLoading && current is SavedRecipesFetched,*/
       builder: (context, state) => state is SavedRecipesFetched
           ? RecipeList(
               recipeItems: _mapRecipesToRecipeItems(context, state.recipes),
@@ -33,12 +40,12 @@ class SavedRecipesScreen extends StatelessWidget {
               servings: recipe.servings,
               rating: recipe.rating,
               onTap: () => _navigateToRecipeScreen(context, recipe.id),
-              bottom: _getRemoveFromSavedButton(),
+              bottom: _getRemoveFromSavedButton(context, recipe.id),
             ))
         .toList();
   }
 
-  Widget _getRemoveFromSavedButton() {
+  Widget _getRemoveFromSavedButton(context, recipeId) {
     return RaisedButton(
       color: Colors.red,
       padding: const EdgeInsets.symmetric(vertical: 8),
@@ -51,7 +58,8 @@ class SavedRecipesScreen extends StatelessWidget {
           ),
         ],
       ),
-      onPressed: () {},
+      onPressed: () => BlocProvider.of<SavedRecipesBloc>(context)
+          .add(RemoveRecipeFromSaved(recipeId: recipeId)),
     );
   }
 

@@ -3,6 +3,7 @@ import 'package:eat_well_v1/bloc/recipes/recipe_list_event.dart';
 import 'package:eat_well_v1/constants.dart';
 import 'package:eat_well_v1/widgets/misc/icon_text.dart';
 import 'package:eat_well_v1/widgets/screens/filters/recipe_list_filter.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,7 +16,9 @@ class _FilterListState extends State<FilterList> {
   Map<MealTypes, bool> mealTypesFilters = {};
   Map<Cuisines, bool> cuisineFilters = {};
   Map<Diets, bool> dietsFilters = {};
-
+  VoidCallback pop;
+  //Function(........) onPop;
+  //TODO: add pop (default Navigator.pop(context); and onPop for other actions
   @override
   void initState() {
     kMealTypes.forEach((key, _) => mealTypesFilters[key] = false);
@@ -57,12 +60,15 @@ class _FilterListState extends State<FilterList> {
       padding: const EdgeInsets.only(bottom: 16),
       child: RaisedButton(
         onPressed: () {
-          BlocProvider.of<RecipeListBloc>(context).add(FetchFilteredRecipes(
+          BlocProvider.of<RecipeListBloc>(context).add(
+            FetchFilteredRecipes(
               filters: RecipeListFilters(
-            mealTypes: mealTypesFilters,
-            cuisines: cuisineFilters,
-            diets: dietsFilters,
-          )));
+                mealTypes: mealTypesFilters,
+                cuisines: cuisineFilters,
+                diets: dietsFilters,
+              ),
+            ),
+          );
           Navigator.pop(context);
         },
         padding: const EdgeInsets.symmetric(vertical: 8),

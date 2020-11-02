@@ -73,6 +73,7 @@ class MyDrawer extends StatelessWidget {
                     .headline6
                     .copyWith(color: Colors.white)),
             onTap: () {
+              //TODO: somehow check if already fetched so that it doesnt reload everytime i navigate there
               Navigator.of(context)
                   .pushReplacementNamed(MyRecipesScreen.routeName);
               BlocProvider.of<CreatedRecipesBloc>(context).add(

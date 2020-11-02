@@ -21,7 +21,7 @@ class SavedRecipesFetched extends SavedRecipesState {
   SavedRecipesFetched({this.recipes});
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [recipes];
 }
 
 class RecipeSaved extends SavedRecipesState {

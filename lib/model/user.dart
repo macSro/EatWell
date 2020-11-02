@@ -22,6 +22,8 @@ class User extends Equatable {
     );
   }
 
+  //TODO: add collection users to firestore and it will only contain id and reference to diet, shopping list, and anything like that
+
   @override
   List<Object> get props => [id, displayName, diet];
 }

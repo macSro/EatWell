@@ -1,5 +1,14 @@
+import 'package:eat_well_v1/bloc/my_recipes/created_recipes/created_recipes_bloc.dart';
+import 'package:eat_well_v1/bloc/my_recipes/created_recipes/created_recipes_event.dart';
+import 'package:eat_well_v1/model/extended_ingredient.dart';
+import 'package:eat_well_v1/model/ingredient.dart';
+import 'package:eat_well_v1/model/rating.dart';
+import 'package:eat_well_v1/model/recipe.dart';
+import 'package:eat_well_v1/widgets/misc/recipe/circle_icon_button.dart';
 import 'package:eat_well_v1/widgets/misc/scaffold.dart';
+import 'package:eat_well_v1/widgets/screens/my_recipes/create_recipe_form.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../constants.dart';
 
@@ -9,56 +18,124 @@ class CreateRecipeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MyScaffold(
-      hasAppBar: false,
-      title: '',
+      //hasAppBar: false,
+      title: 'Create a new recipe',
       hasDrawer: false,
       child: Stack(
         children: [
-          ListView(
-            children: [
-              SizedBox(height: 300),
-              Text(
-                'Create a new recipe!',
-                textAlign: TextAlign.center,
-                style: TextStyle().copyWith(fontSize: 28),
-              ),
-            ],
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: ListView(
+              children: [
+                const SizedBox(height: 16),
+                CreateRecipeForm(),
+              ],
+            ),
           ),
-          Container(
+          /*Container(
             alignment: Alignment.topLeft,
             padding: const EdgeInsets.all(16),
             child: _getBackButton(context),
-          ),
+          ),*/
+          /*Container(
+            alignment: Alignment.topRight,
+            padding: const EdgeInsets.all(16),
+            child: _getSaveButton(context),
+          ),*/
         ],
       ),
     );
   }
 
   Widget _getBackButton(context) {
-    return ClipOval(
-      child: Stack(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: kPrimaryColor.withOpacity(0.65),
-              shape: BoxShape.circle,
-            ),
-            height: 48,
-            width: 48,
-          ),
-          IconButton(
-            padding: EdgeInsets.zero,
-            icon: Icon(
-              Icons.arrow_back_rounded,
-              color: Colors.white,
-              size: 32,
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ],
+    return CircleIconButton(
+      iconButton: IconButton(
+        padding: EdgeInsets.zero,
+        icon: Icon(
+          Icons.arrow_back_rounded,
+          color: Colors.white,
+          size: 32,
+        ),
+        onPressed: () {
+          Navigator.pop(context);
+        },
       ),
+      color: kPrimaryColor.withOpacity(0.65),
+    );
+  }
+
+  Widget _getSaveButton(context) {
+    return CircleIconButton(
+      iconButton: IconButton(
+        icon: Icon(
+          Icons.check_rounded,
+          color: Colors.white,
+          size: 28,
+        ),
+        onPressed: () {
+          BlocProvider.of<CreatedRecipesBloc>(context).add(
+            CreateRecipe(
+              recipe: Recipe(
+                id: 658703,
+                name: 'Roasted Vegetable Tacos',
+                imageUrl: kRecipeImageUrlBasePath + '658703-636x393.jpg',
+                readyInMinutes: 30,
+                servings: 4,
+                rating: Rating(points: 20, votes: 4),
+                instructions: [
+                  'Preheat the oven to 375 degrees. In a casserole dish, add the chopped sweet potato, pasilla pepper, bell pepper and onion. In a small bowl, combine the chicken stock, oil and vinegar.',
+                  'Mix to combine and pour evenly over the vegetables.',
+                  'Sprinkle the chili powder, cumin, paprika, and salt over the veggies and stir.',
+                  'Bake in for 30 minutes.',
+                  'Remove the casserole dish from the oven, stir everything well, increase oven heat to 400 and bake 7 to 10 more minutes.',
+                  'Remove from oven and allow to cool slightly.While the vegetables are roasting in the oven, you can cook the corn by boiling it in hot water for 5 to 7 minutes or grilling it.  Carefully remove the kernels with a sharp knife.',
+                  'Heat the black beans in a sauce pan. Chop the goat cheese.',
+                  'Heat your favorite tortillas, place desired amount of ingredients in the tortillas and add extra goodies such as guacamole, salsa and green onion if desire.',
+                ],
+                ingredients: [
+                  ExtendedIngredient(
+                    ingredient: Ingredient(
+                      id: 1,
+                      name: 'apple',
+                      imageUrl: kIngredientImageUrlBasePath + 'apple.jpg',
+                    ),
+                    amount: 2.0,
+                    unit: 'cups',
+                  ),
+                  ExtendedIngredient(
+                    ingredient: Ingredient(
+                      id: 2,
+                      name: 'broccoli',
+                      imageUrl: kIngredientImageUrlBasePath + 'broccoli.jpg',
+                    ),
+                    amount: 200.0,
+                    unit: 'ml',
+                  ),
+                  ExtendedIngredient(
+                    ingredient: Ingredient(
+                      id: 3,
+                      name: 'garlic',
+                      imageUrl: kIngredientImageUrlBasePath + 'garlic.jpg',
+                    ),
+                    amount: 1.0,
+                    unit: 'tbsp',
+                  ),
+                  ExtendedIngredient(
+                    ingredient: Ingredient(
+                      id: 4,
+                      name: 'milk',
+                      imageUrl: kIngredientImageUrlBasePath + 'milk.jpg',
+                    ),
+                    amount: 1.0,
+                    unit: 'tsp',
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+      color: Colors.amber.withOpacity(0.65),
     );
   }
 }
