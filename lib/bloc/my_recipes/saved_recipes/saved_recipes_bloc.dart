@@ -1,12 +1,12 @@
 import 'package:bloc/bloc.dart';
-import 'package:eat_well_v1/bloc/my_recipes/saved_recipes/saved_recipes_event.dart';
-import 'package:eat_well_v1/bloc/my_recipes/saved_recipes/saved_recipes_state.dart';
-import 'package:eat_well_v1/model/extended_ingredient.dart';
-import 'package:eat_well_v1/model/ingredient.dart';
-import 'package:eat_well_v1/model/rating.dart';
-import 'package:eat_well_v1/model/recipe.dart';
 
 import '../../../constants.dart';
+import '../../../model/extended_ingredient.dart';
+import '../../../model/product.dart';
+import '../../../model/rating.dart';
+import '../../../model/recipe.dart';
+import 'saved_recipes_event.dart';
+import 'saved_recipes_state.dart';
 
 class SavedRecipesBloc extends Bloc<SavedRecipesEvent, SavedRecipesState> {
   SavedRecipesBloc() : super(SavedRecipesInitial());
@@ -28,7 +28,7 @@ class SavedRecipesBloc extends Bloc<SavedRecipesEvent, SavedRecipesState> {
       Duration(seconds: 2),
       () {
         var recipe1 = Recipe(
-          id: 658703,
+          id: '658703',
           name: 'Roasted Vegetable Tacos',
           imageUrl: kRecipeImageUrlBasePath + '658703-636x393.jpg',
           readyInMinutes: 30,
@@ -46,8 +46,8 @@ class SavedRecipesBloc extends Bloc<SavedRecipesEvent, SavedRecipesState> {
           ],
           ingredients: [
             ExtendedIngredient(
-              ingredient: Ingredient(
-                id: 1,
+              product: Product(
+                id: '1',
                 name: 'apple',
                 imageUrl: kIngredientImageUrlBasePath + 'apple.jpg',
               ),
@@ -55,8 +55,8 @@ class SavedRecipesBloc extends Bloc<SavedRecipesEvent, SavedRecipesState> {
               unit: 'cups',
             ),
             ExtendedIngredient(
-              ingredient: Ingredient(
-                id: 2,
+              product: Product(
+                id: '2',
                 name: 'broccoli',
                 imageUrl: kIngredientImageUrlBasePath + 'broccoli.jpg',
               ),
@@ -64,8 +64,8 @@ class SavedRecipesBloc extends Bloc<SavedRecipesEvent, SavedRecipesState> {
               unit: 'ml',
             ),
             ExtendedIngredient(
-              ingredient: Ingredient(
-                id: 3,
+              product: Product(
+                id: '3',
                 name: 'garlic',
                 imageUrl: kIngredientImageUrlBasePath + 'garlic.jpg',
               ),
@@ -73,8 +73,8 @@ class SavedRecipesBloc extends Bloc<SavedRecipesEvent, SavedRecipesState> {
               unit: 'tbsp',
             ),
             ExtendedIngredient(
-              ingredient: Ingredient(
-                id: 4,
+              product: Product(
+                id: '4',
                 name: 'milk',
                 imageUrl: kIngredientImageUrlBasePath + 'milk.jpg',
               ),
@@ -84,7 +84,7 @@ class SavedRecipesBloc extends Bloc<SavedRecipesEvent, SavedRecipesState> {
           ],
         );
         var recipe2 = Recipe(
-          id: 653068,
+          id: '653068',
           name: 'New Waldorf Salad',
           imageUrl: kRecipeImageUrlBasePath + '653068-636x393.jpg',
           readyInMinutes: 45,
@@ -102,8 +102,8 @@ class SavedRecipesBloc extends Bloc<SavedRecipesEvent, SavedRecipesState> {
           ],
           ingredients: [
             ExtendedIngredient(
-              ingredient: Ingredient(
-                id: 1,
+              product: Product(
+                id: '1',
                 name: 'apple',
                 imageUrl: kIngredientImageUrlBasePath + 'apple.jpg',
               ),
@@ -111,8 +111,8 @@ class SavedRecipesBloc extends Bloc<SavedRecipesEvent, SavedRecipesState> {
               unit: 'cups',
             ),
             ExtendedIngredient(
-              ingredient: Ingredient(
-                id: 2,
+              product: Product(
+                id: '2',
                 name: 'broccoli',
                 imageUrl: kIngredientImageUrlBasePath + 'broccoli.jpg',
               ),
@@ -120,8 +120,8 @@ class SavedRecipesBloc extends Bloc<SavedRecipesEvent, SavedRecipesState> {
               unit: 'ml',
             ),
             ExtendedIngredient(
-              ingredient: Ingredient(
-                id: 3,
+              product: Product(
+                id: '3',
                 name: 'garlic',
                 imageUrl: kIngredientImageUrlBasePath + 'garlic.jpg',
               ),
@@ -129,8 +129,8 @@ class SavedRecipesBloc extends Bloc<SavedRecipesEvent, SavedRecipesState> {
               unit: 'tbsp',
             ),
             ExtendedIngredient(
-              ingredient: Ingredient(
-                id: 4,
+              product: Product(
+                id: '4',
                 name: 'milk',
                 imageUrl: kIngredientImageUrlBasePath + 'milk.jpg',
               ),
@@ -157,7 +157,7 @@ class SavedRecipesBloc extends Bloc<SavedRecipesEvent, SavedRecipesState> {
       Duration(seconds: 1),
       () {
         var recipe1 = Recipe(
-          id: 658703,
+          id: '658703',
           name: 'Roasted Vegetable Tacos',
           imageUrl: kRecipeImageUrlBasePath + '658703-636x393.jpg',
           readyInMinutes: 30,
@@ -175,8 +175,8 @@ class SavedRecipesBloc extends Bloc<SavedRecipesEvent, SavedRecipesState> {
           ],
           ingredients: [
             ExtendedIngredient(
-              ingredient: Ingredient(
-                id: 1,
+              product: Product(
+                id: '1',
                 name: 'apple',
                 imageUrl: kIngredientImageUrlBasePath + 'apple.jpg',
               ),
@@ -184,8 +184,8 @@ class SavedRecipesBloc extends Bloc<SavedRecipesEvent, SavedRecipesState> {
               unit: 'cups',
             ),
             ExtendedIngredient(
-              ingredient: Ingredient(
-                id: 2,
+              product: Product(
+                id: '2',
                 name: 'broccoli',
                 imageUrl: kIngredientImageUrlBasePath + 'broccoli.jpg',
               ),
@@ -193,8 +193,8 @@ class SavedRecipesBloc extends Bloc<SavedRecipesEvent, SavedRecipesState> {
               unit: 'ml',
             ),
             ExtendedIngredient(
-              ingredient: Ingredient(
-                id: 3,
+              product: Product(
+                id: '3',
                 name: 'garlic',
                 imageUrl: kIngredientImageUrlBasePath + 'garlic.jpg',
               ),
@@ -202,8 +202,8 @@ class SavedRecipesBloc extends Bloc<SavedRecipesEvent, SavedRecipesState> {
               unit: 'tbsp',
             ),
             ExtendedIngredient(
-              ingredient: Ingredient(
-                id: 4,
+              product: Product(
+                id: '4',
                 name: 'milk',
                 imageUrl: kIngredientImageUrlBasePath + 'milk.jpg',
               ),

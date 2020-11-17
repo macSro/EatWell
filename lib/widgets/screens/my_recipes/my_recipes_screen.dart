@@ -1,6 +1,6 @@
-import 'package:eat_well_v1/widgets/misc/scaffold.dart';
 import 'package:flutter/material.dart';
 
+import '../../misc/scaffold.dart';
 import 'created_recipes_screen.dart';
 import 'saved_recipes_screen.dart';
 

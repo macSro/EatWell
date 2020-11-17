@@ -1,13 +1,13 @@
-import 'package:eat_well_v1/model/extended_ingredient.dart';
-import 'package:eat_well_v1/model/rating.dart';
+import 'extended_ingredient.dart';
+import 'rating.dart';
 import 'package:equatable/equatable.dart';
 
 class Recipe extends Equatable {
-  final int id;
+  final String id;
   final String name;
   final String imageUrl;
   final List<ExtendedIngredient> ingredients;
-  final List<String> types;
+  final List<String> dishTypes;
   final List<String> cuisines;
   final List<String> diets;
   final List<String> instructions;
@@ -20,7 +20,7 @@ class Recipe extends Equatable {
     this.name,
     this.imageUrl,
     this.ingredients,
-    this.types,
+    this.dishTypes,
     this.cuisines,
     this.diets,
     this.instructions,
@@ -29,13 +29,41 @@ class Recipe extends Equatable {
     this.rating,
   });
 
+  Recipe copyWith({
+    String id,
+    String name,
+    String imageUrl,
+    List<ExtendedIngredient> ingredients,
+    List<String> dishTypes,
+    List<String> cuisines,
+    List<String> diets,
+    List<String> instructions,
+    int readyInMinutes,
+    int servings,
+    Rating rating,
+  }) {
+    return Recipe(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      imageUrl: imageUrl ?? this.imageUrl,
+      ingredients: ingredients ?? this.ingredients,
+      dishTypes: dishTypes ?? this.dishTypes,
+      cuisines: cuisines ?? this.cuisines,
+      diets: diets ?? this.diets,
+      instructions: instructions ?? this.instructions,
+      readyInMinutes: readyInMinutes ?? this.readyInMinutes,
+      servings: servings ?? this.servings,
+      rating: rating ?? this.rating,
+    );
+  }
+
   @override
   List<Object> get props => [
         id,
         name,
         imageUrl,
         ingredients,
-        types,
+        dishTypes,
         cuisines,
         diets,
         instructions,
@@ -43,4 +71,7 @@ class Recipe extends Equatable {
         servings,
         rating,
       ];
+
+  @override
+  bool get stringify => true;
 }

@@ -1,25 +1,25 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:eat_well_v1/bloc/my_recipes/created_recipes/created_recipes_bloc.dart';
-import 'package:eat_well_v1/bloc/my_recipes/created_recipes/created_recipes_event.dart';
-import 'package:eat_well_v1/bloc/my_recipes/saved_recipes/saved_recipes_bloc.dart';
-import 'package:eat_well_v1/bloc/my_recipes/saved_recipes/saved_recipes_event.dart';
-import 'package:eat_well_v1/bloc/recipes/recipe_list_bloc.dart';
-import 'package:eat_well_v1/bloc/recipes/recipe_list_event.dart';
-import 'package:eat_well_v1/bloc/user/user_bloc.dart';
-import 'package:eat_well_v1/bloc/user/user_event.dart';
-import 'package:eat_well_v1/widgets/misc/icon_text.dart';
-import 'package:eat_well_v1/widgets/screens/diet_screen.dart';
-import 'package:eat_well_v1/widgets/screens/my_recipes/my_recipes_screen.dart';
-import 'package:eat_well_v1/widgets/screens/recipes/recipes_screen.dart';
-import 'package:eat_well_v1/widgets/screens/settings/settings_screen.dart';
-import 'package:eat_well_v1/widgets/screens/shopping_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../../bloc/my_recipes/created_recipes/created_recipes_bloc.dart';
+import '../../../bloc/my_recipes/created_recipes/created_recipes_event.dart';
+import '../../../bloc/my_recipes/saved_recipes/saved_recipes_bloc.dart';
+import '../../../bloc/my_recipes/saved_recipes/saved_recipes_event.dart';
+import '../../../bloc/recipes/recipe_list_bloc.dart';
+import '../../../bloc/recipes/recipe_list_event.dart';
+import '../../../bloc/user/user_bloc.dart';
+import '../../../bloc/user/user_event.dart';
 import '../../../constants.dart';
+import '../../screens/diet_screen.dart';
 import '../../screens/fridge_screen.dart';
+import '../../screens/my_recipes/my_recipes_screen.dart';
+import '../../screens/recipes/recipes_screen.dart';
+import '../../screens/settings/settings_screen.dart';
+import '../../screens/shopping_list_screen.dart';
 import '../drawer/drawer_tile.dart';
+import '../icon_text.dart';
 
 class MyDrawer extends StatelessWidget {
   final String userDisplayName;
@@ -86,6 +86,19 @@ class MyDrawer extends StatelessWidget {
           ),
           MyDrawerTile(
             icon: Icon(
+              Icons.kitchen_rounded,
+              color: kAccentColor,
+            ),
+            title: Text('Pantry',
+                style: Theme.of(context)
+                    .textTheme
+                    .headline6
+                    .copyWith(color: Colors.white)),
+            onTap: () => Navigator.of(context)
+                .pushReplacementNamed(PantryScreen.routeName),
+          ),
+          MyDrawerTile(
+            icon: Icon(
               Icons.block_rounded,
               color: kAccentColor,
             ),
@@ -96,19 +109,6 @@ class MyDrawer extends StatelessWidget {
                     .copyWith(color: Colors.white)),
             onTap: () => Navigator.of(context)
                 .pushReplacementNamed(DietScreen.routeName),
-          ),
-          MyDrawerTile(
-            icon: Icon(
-              Icons.kitchen_rounded,
-              color: kAccentColor,
-            ),
-            title: Text('E-Fridge',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline6
-                    .copyWith(color: Colors.white)),
-            onTap: () => Navigator.of(context)
-                .pushReplacementNamed(FridgeScreen.routeName),
           ),
           MyDrawerTile(
             icon: Icon(

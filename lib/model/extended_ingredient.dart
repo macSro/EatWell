@@ -1,16 +1,24 @@
-import 'package:eat_well_v1/model/ingredient.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 
-class ExtendedIngredient {
-  final Ingredient ingredient;
+import 'product.dart';
+
+class ExtendedIngredient extends Equatable {
+  final Product product;
   final double amount;
   final String unit;
   final DateTime expDate;
 
   ExtendedIngredient({
-    @required this.ingredient,
+    @required this.product,
     this.amount,
     this.unit,
     this.expDate,
   });
+
+  @override
+  List<Object> get props => [product, amount, unit, expDate];
+
+  @override
+  bool get stringify => true;
 }

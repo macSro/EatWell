@@ -1,10 +1,10 @@
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
-import 'package:eat_well_v1/bloc/user/user_bloc.dart';
-import 'package:eat_well_v1/bloc/user/user_state.dart';
-import 'package:eat_well_v1/widgets/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../bloc/user/user_bloc.dart';
+import '../../bloc/user/user_state.dart';
+import '../screens/login/login_screen.dart';
 import 'drawer/drawer.dart';
 
 class MyScaffold extends StatelessWidget {

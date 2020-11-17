@@ -1,6 +1,7 @@
-import 'package:eat_well_v1/constants.dart';
-import 'package:eat_well_v1/model/rating.dart';
 import 'package:flutter/material.dart';
+
+import '../../../constants.dart';
+import '../../../model/rating.dart';
 
 class RecipeRating extends StatelessWidget {
   final Rating rating;

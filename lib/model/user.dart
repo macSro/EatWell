@@ -26,4 +26,7 @@ class User extends Equatable {
 
   @override
   List<Object> get props => [id, displayName, diet];
+
+  @override
+  bool get stringify => true;
 }

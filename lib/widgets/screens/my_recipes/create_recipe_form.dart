@@ -1,7 +1,7 @@
-import 'package:eat_well_v1/widgets/misc/icon_text.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
+import '../../misc/icon_text.dart';
 
 class CreateRecipeForm extends StatefulWidget {
   @override

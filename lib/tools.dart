@@ -1,14 +1,42 @@
 class Tools {
-  static capitalizeString(String value) {
+  static capitalizeFirstWord(String value) {
     if (value == null) {
       throw ArgumentError("string: $value");
     }
-
     if (value.isEmpty) {
       return value;
     }
-
     return value[0].toUpperCase() + value.substring(1);
+  }
+
+  static capitalizeAllWords(String value) {
+    if (value == null) {
+      throw ArgumentError("string: $value");
+    }
+    if (value.isEmpty) {
+      return value;
+    }
+    List<String> words = value.split(' ');
+    String result = '';
+    words.forEach((word) {
+      result += word[0].toUpperCase() + word.substring(1);
+      if (word == words[words.length - 1]) result += ' ';
+    });
+    return result;
+  }
+
+  static num simplifyDouble(double value) {
+    return value == value.roundToDouble() ? value.toInt() : value;
+  }
+
+  static String getUnitShort(String unit) {
+    //TODO: complete with more examples
+    if (unit == 'tablespoon' || unit == 'tablespoons')
+      return 'tbsp';
+    else if (unit == 'teaspoon' || unit == 'teaspoons')
+      return 'tsp';
+    else
+      return unit;
   }
 
   static String validatePassword(String val) {

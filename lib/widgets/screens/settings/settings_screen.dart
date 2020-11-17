@@ -1,5 +1,6 @@
-import 'package:eat_well_v1/widgets/misc/scaffold.dart';
 import 'package:flutter/material.dart';
+
+import '../../misc/scaffold.dart';
 
 class SettingsScreen extends StatelessWidget {
   static const routeName = '/settings';

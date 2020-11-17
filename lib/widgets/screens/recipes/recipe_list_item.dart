@@ -1,28 +1,19 @@
-import 'package:eat_well_v1/constants.dart';
-import 'package:eat_well_v1/model/rating.dart';
-import 'package:eat_well_v1/widgets/misc/icon_text.dart';
-import 'package:eat_well_v1/widgets/misc/recipe/recipe_rating.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 
+import '../../../constants.dart';
+import '../../../model/recipe.dart';
+import '../../misc/icon_text.dart';
+import '../../misc/recipe/recipe_rating.dart';
+
 class RecipeListItem extends StatelessWidget {
-  final int id;
-  final String name;
-  final String imageUrl;
-  final int readyInMinutes;
-  final int servings;
-  final Rating rating;
+  final Recipe recipe;
   final Function onTap;
   final Widget bottom;
 
   RecipeListItem({
-    @required this.id,
-    @required this.name,
-    this.imageUrl,
-    this.readyInMinutes,
-    this.servings,
-    this.rating,
+    @required this.recipe,
     @required this.onTap,
     this.bottom,
   });
@@ -65,7 +56,7 @@ class RecipeListItem extends StatelessWidget {
           ),
           child: FadeInImage.memoryNetwork(
             placeholder: kTransparentImage,
-            image: imageUrl,
+            image: recipe.imageUrl,
             fadeInDuration: const Duration(milliseconds: 250),
             height: 180,
             width: double.infinity,
@@ -80,7 +71,7 @@ class RecipeListItem extends StatelessWidget {
             padding: const EdgeInsets.all(8),
             color: kPrimaryColor.withOpacity(0.65),
             child: Text(
-              name,
+              recipe.name,
               style: Theme.of(context)
                   .textTheme
                   .headline5
@@ -102,7 +93,7 @@ class RecipeListItem extends StatelessWidget {
       children: [
         IconText(
           text: Text(
-            '$readyInMinutes min',
+            '${recipe.readyInMinutes} min',
             style: Theme.of(context).textTheme.subtitle2,
           ),
           icon: Icon(
@@ -110,10 +101,10 @@ class RecipeListItem extends StatelessWidget {
             color: kPrimaryColorDark,
           ),
         ),
-        RecipeRating(rating: rating),
+        RecipeRating(rating: recipe.rating),
         IconText(
           text: Text(
-            '$servings pers',
+            '${recipe.servings} pers',
             style: Theme.of(context).textTheme.subtitle2,
           ),
           icon: Icon(

@@ -1,6 +1,7 @@
-import 'package:eat_well_v1/tools.dart';
-import 'package:eat_well_v1/constants.dart';
 import 'package:flutter/material.dart';
+
+import '../../constants.dart';
+import '../../tools.dart';
 
 class IngredientListTile extends StatelessWidget {
   final String imageUrl;
@@ -36,14 +37,14 @@ class IngredientListTile extends StatelessWidget {
         ),
       ),
       title: Text(
-        Tools.capitalizeString(name),
+        Tools.capitalizeFirstWord(name),
         style: Theme.of(context).textTheme.bodyText1,
       ),
       subtitle: expDate != null
           ? Text('${expDate.day}-${expDate.month}-${expDate.year}')
           : null,
       trailing: Text(
-        '${amount.toString()} $unit',
+        '${Tools.simplifyDouble(amount).toString()} ${Tools.getUnitShort(unit)}',
         style: TextStyle().copyWith(fontStyle: FontStyle.italic),
       ),
       visualDensity: VisualDensity(horizontal: 0, vertical: 4),

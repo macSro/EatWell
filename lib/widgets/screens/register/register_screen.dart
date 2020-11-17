@@ -1,13 +1,13 @@
-import 'package:eat_well_v1/bloc/user/user_bloc.dart';
-import 'package:eat_well_v1/bloc/user/user_state.dart';
-import 'package:eat_well_v1/widgets/misc/loading.dart';
-import 'package:eat_well_v1/widgets/screens/error_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
 
+import '../../../bloc/user/user_bloc.dart';
+import '../../../bloc/user/user_state.dart';
 import '../../../constants.dart';
+import '../../misc/loading.dart';
+import '../error_screen.dart';
 import 'register_form.dart';
 
 class RegisterScreen extends StatelessWidget {

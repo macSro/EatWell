@@ -1,19 +1,19 @@
-import 'package:eat_well_v1/bloc/recipes/recipe_list_bloc.dart';
-import 'package:eat_well_v1/bloc/recipes/recipe_list_event.dart';
-import 'package:eat_well_v1/bloc/user/user_bloc.dart';
-import 'package:eat_well_v1/bloc/user/user_event.dart';
-import 'package:eat_well_v1/bloc/user/user_state.dart';
-import 'package:eat_well_v1/constants.dart';
-import 'package:eat_well_v1/widgets/misc/loading.dart';
-import 'package:eat_well_v1/widgets/screens/error_screen.dart';
-import 'package:eat_well_v1/widgets/screens/recipes/recipes_screen.dart';
-import 'package:eat_well_v1/widgets/screens/register/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
 
+import '../../../bloc/recipes/recipe_list_bloc.dart';
+import '../../../bloc/recipes/recipe_list_event.dart';
+import '../../../bloc/user/user_bloc.dart';
+import '../../../bloc/user/user_event.dart';
+import '../../../bloc/user/user_state.dart';
+import '../../../constants.dart';
+import '../../misc/loading.dart';
+import '../error_screen.dart';
+import '../recipes/recipes_screen.dart';
+import '../register/register_screen.dart';
 import 'login_form.dart';
 
 class LoginScreen extends StatelessWidget {

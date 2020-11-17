@@ -1,7 +1,7 @@
-import 'package:eat_well_v1/widgets/misc/scaffold.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants.dart';
+import '../misc/scaffold.dart';
 
 class ErrorScreen extends StatelessWidget {
   static const routeName = '/error';

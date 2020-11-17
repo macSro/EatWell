@@ -1,19 +1,19 @@
-import 'package:eat_well_v1/bloc/my_recipes/saved_recipes/saved_recipes_bloc.dart';
-import 'package:eat_well_v1/bloc/my_recipes/saved_recipes/saved_recipes_event.dart';
-import 'package:eat_well_v1/bloc/recipe/recipe_bloc.dart';
-import 'package:eat_well_v1/bloc/recipe/recipe_state.dart';
-import 'package:eat_well_v1/constants.dart';
-import 'package:eat_well_v1/model/extended_ingredient.dart';
-import 'package:eat_well_v1/widgets/misc/changing_icon_button.dart';
-import 'package:eat_well_v1/widgets/misc/ingredient_list_tile.dart';
-import 'package:eat_well_v1/widgets/misc/loading.dart';
-import 'package:eat_well_v1/widgets/misc/recipe/circle_icon_button.dart';
-import 'package:eat_well_v1/widgets/misc/recipe/recipe_rating.dart';
-import 'package:eat_well_v1/widgets/misc/scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:transparent_image/transparent_image.dart';
 
+import '../../../bloc/my_recipes/saved_recipes/saved_recipes_bloc.dart';
+import '../../../bloc/my_recipes/saved_recipes/saved_recipes_event.dart';
+import '../../../bloc/recipe/recipe_bloc.dart';
+import '../../../bloc/recipe/recipe_state.dart';
+import '../../../constants.dart';
+import '../../../model/extended_ingredient.dart';
+import '../../misc/changing_icon_button.dart';
+import '../../misc/ingredient_list_tile.dart';
+import '../../misc/loading.dart';
+import '../../misc/recipe/circle_icon_button.dart';
+import '../../misc/recipe/recipe_rating.dart';
+import '../../misc/scaffold.dart';
 import 'recipe_rating_buttons.dart';
 
 class RecipeScreen extends StatelessWidget {
@@ -220,8 +220,8 @@ class RecipeScreen extends StatelessWidget {
               (ingredient) => Column(
                 children: [
                   IngredientListTile(
-                    imageUrl: ingredient.ingredient.imageUrl,
-                    name: ingredient.ingredient.name,
+                    imageUrl: ingredient.product.imageUrl,
+                    name: ingredient.product.name,
                     amount: ingredient.amount,
                     unit: ingredient.unit,
                   ),

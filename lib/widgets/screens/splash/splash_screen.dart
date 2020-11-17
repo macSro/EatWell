@@ -1,13 +1,14 @@
-import 'package:eat_well_v1/bloc/recipes/recipe_list_bloc.dart';
-import 'package:eat_well_v1/bloc/recipes/recipe_list_event.dart';
-import 'package:eat_well_v1/bloc/user/user_bloc.dart';
-import 'package:eat_well_v1/bloc/user/user_state.dart';
-import 'package:eat_well_v1/constants.dart';
-import 'package:eat_well_v1/widgets/screens/login/login_screen.dart';
-import 'package:eat_well_v1/widgets/screens/recipes/recipes_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+import '../../../bloc/recipes/recipe_list_bloc.dart';
+import '../../../bloc/recipes/recipe_list_event.dart';
+import '../../../bloc/user/user_bloc.dart';
+import '../../../bloc/user/user_state.dart';
+import '../../../constants.dart';
+import '../login/login_screen.dart';
+import '../recipes/recipes_screen.dart';
 
 class SplashScreen extends StatelessWidget {
   static const routeName = '/';

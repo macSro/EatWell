@@ -1,13 +1,12 @@
-import 'package:eat_well_v1/constants.dart';
 import 'package:equatable/equatable.dart';
 
 class RecipeListFilters extends Equatable {
-  final Map<MealTypes, bool> mealTypes;
-  final Map<Cuisines, bool> cuisines;
-  final Map<Diets, bool> diets;
+  final List<String> dishTypes;
+  final List<String> cuisines;
+  final List<String> diets;
 
-  RecipeListFilters({this.mealTypes, this.cuisines, this.diets});
+  RecipeListFilters({this.dishTypes, this.cuisines, this.diets});
 
   @override
-  List<Object> get props => [mealTypes, cuisines, diets];
+  List<Object> get props => [dishTypes, cuisines, diets];
 }

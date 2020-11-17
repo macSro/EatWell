@@ -1,6 +1,7 @@
-import 'package:eat_well_v1/model/recipe.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
+
+import '../../../model/recipe.dart';
 
 @immutable
 abstract class CreatedRecipesState extends Equatable {}

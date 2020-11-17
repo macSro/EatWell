@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 
 import '../misc/scaffold.dart';
 
-class FridgeScreen extends StatelessWidget {
-  static const routeName = '/fridge';
+class PantryScreen extends StatelessWidget {
+  static const routeName = '/pantry';
 
   @override
   Widget build(BuildContext context) {
     return MyScaffold(
-      title: 'E-Fridge',
+      title: 'Pantry',
       child: Center(
-        child: const Text('E-Fridge'),
+        child: const Text('Pantry'),
       ),
     );
   }

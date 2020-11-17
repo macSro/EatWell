@@ -1,13 +1,15 @@
 import 'package:bloc/bloc.dart';
-import 'package:eat_well_v1/bloc/user/user_event.dart';
-import 'package:eat_well_v1/bloc/user/user_state.dart';
-import 'package:eat_well_v1/repositories/user_repository.dart';
+import 'package:flutter/foundation.dart';
+
+import '../../repositories/user_repository.dart';
+import 'user_event.dart';
+import 'user_state.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
   UserRepository _repository;
 
-  UserBloc() : super(UserInitial()) {
-    _repository = UserRepository();
+  UserBloc({@required UserRepository repository}) : super(UserInitial()) {
+    _repository = repository;
   }
 
   @override

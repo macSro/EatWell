@@ -1,16 +1,16 @@
-import 'package:eat_well_v1/bloc/my_recipes/created_recipes/created_recipes_bloc.dart';
-import 'package:eat_well_v1/bloc/my_recipes/created_recipes/created_recipes_event.dart';
-import 'package:eat_well_v1/model/extended_ingredient.dart';
-import 'package:eat_well_v1/model/ingredient.dart';
-import 'package:eat_well_v1/model/rating.dart';
-import 'package:eat_well_v1/model/recipe.dart';
-import 'package:eat_well_v1/widgets/misc/recipe/circle_icon_button.dart';
-import 'package:eat_well_v1/widgets/misc/scaffold.dart';
-import 'package:eat_well_v1/widgets/screens/my_recipes/create_recipe_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../bloc/my_recipes/created_recipes/created_recipes_bloc.dart';
+import '../../../bloc/my_recipes/created_recipes/created_recipes_event.dart';
 import '../../../constants.dart';
+import '../../../model/extended_ingredient.dart';
+import '../../../model/product.dart';
+import '../../../model/rating.dart';
+import '../../../model/recipe.dart';
+import '../../misc/recipe/circle_icon_button.dart';
+import '../../misc/scaffold.dart';
+import 'create_recipe_form.dart';
 
 class CreateRecipeScreen extends StatelessWidget {
   static const routeName = '/create-recipe';
@@ -76,7 +76,7 @@ class CreateRecipeScreen extends StatelessWidget {
           BlocProvider.of<CreatedRecipesBloc>(context).add(
             CreateRecipe(
               recipe: Recipe(
-                id: 658703,
+                id: '658703',
                 name: 'Roasted Vegetable Tacos',
                 imageUrl: kRecipeImageUrlBasePath + '658703-636x393.jpg',
                 readyInMinutes: 30,
@@ -94,8 +94,8 @@ class CreateRecipeScreen extends StatelessWidget {
                 ],
                 ingredients: [
                   ExtendedIngredient(
-                    ingredient: Ingredient(
-                      id: 1,
+                    product: Product(
+                      id: '1',
                       name: 'apple',
                       imageUrl: kIngredientImageUrlBasePath + 'apple.jpg',
                     ),
@@ -103,8 +103,8 @@ class CreateRecipeScreen extends StatelessWidget {
                     unit: 'cups',
                   ),
                   ExtendedIngredient(
-                    ingredient: Ingredient(
-                      id: 2,
+                    product: Product(
+                      id: '2',
                       name: 'broccoli',
                       imageUrl: kIngredientImageUrlBasePath + 'broccoli.jpg',
                     ),
@@ -112,8 +112,8 @@ class CreateRecipeScreen extends StatelessWidget {
                     unit: 'ml',
                   ),
                   ExtendedIngredient(
-                    ingredient: Ingredient(
-                      id: 3,
+                    product: Product(
+                      id: '3',
                       name: 'garlic',
                       imageUrl: kIngredientImageUrlBasePath + 'garlic.jpg',
                     ),
@@ -121,8 +121,8 @@ class CreateRecipeScreen extends StatelessWidget {
                     unit: 'tbsp',
                   ),
                   ExtendedIngredient(
-                    ingredient: Ingredient(
-                      id: 4,
+                    product: Product(
+                      id: '4',
                       name: 'milk',
                       imageUrl: kIngredientImageUrlBasePath + 'milk.jpg',
                     ),

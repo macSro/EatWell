@@ -1,11 +1,13 @@
-import 'package:eat_well_v1/bloc/recipes/recipe_list_bloc.dart';
-import 'package:eat_well_v1/bloc/recipes/recipe_list_event.dart';
-import 'package:eat_well_v1/constants.dart';
-import 'package:eat_well_v1/widgets/misc/icon_text.dart';
-import 'package:eat_well_v1/widgets/screens/filters/recipe_list_filter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../bloc/recipes/recipe_list_bloc.dart';
+import '../../../bloc/recipes/recipe_list_event.dart';
+import '../../../constants.dart';
+import '../../../tools.dart';
+import '../../misc/icon_text.dart';
+import 'recipe_list_filter.dart';
 
 class FilterList extends StatefulWidget {
   @override
@@ -13,17 +15,17 @@ class FilterList extends StatefulWidget {
 }
 
 class _FilterListState extends State<FilterList> {
-  Map<MealTypes, bool> mealTypesFilters = {};
-  Map<Cuisines, bool> cuisineFilters = {};
-  Map<Diets, bool> dietsFilters = {};
+  Map<String, bool> mealTypesFilters = {};
+  Map<String, bool> cuisineFilters = {};
+  Map<String, bool> dietsFilters = {};
   VoidCallback pop;
   //Function(........) onPop;
   //TODO: add pop (default Navigator.pop(context); and onPop for other actions
   @override
   void initState() {
-    kMealTypes.forEach((key, _) => mealTypesFilters[key] = false);
-    kCuisines.forEach((key, _) => cuisineFilters[key] = false);
-    kDiets.forEach((key, _) => dietsFilters[key] = false);
+    kMealTypes.forEach((_, value) => mealTypesFilters[value] = false);
+    kCuisines.forEach((_, value) => cuisineFilters[value] = false);
+    kDiets.forEach((_, value) => dietsFilters[value] = false);
     super.initState();
   }
 
@@ -63,9 +65,10 @@ class _FilterListState extends State<FilterList> {
           BlocProvider.of<RecipeListBloc>(context).add(
             FetchFilteredRecipes(
               filters: RecipeListFilters(
-                mealTypes: mealTypesFilters,
-                cuisines: cuisineFilters,
-                diets: dietsFilters,
+                //TODO
+                // dishTypes: mealTypesFilters.entries.map((filter) => filter.key),
+                // cuisines: cuisineFilters,
+                // diets: dietsFilters,
               ),
             ),
           );
@@ -102,7 +105,7 @@ class _FilterListState extends State<FilterList> {
           .map(
             (filter) => SwitchListTile(
               title: Text(
-                kMealTypes[filter.key],
+                Tools.capitalizeAllWords(filter.key),
                 style: Theme.of(context).textTheme.bodyText1,
               ),
               value: filter.value,
@@ -134,7 +137,7 @@ class _FilterListState extends State<FilterList> {
           .map(
             (filter) => SwitchListTile(
               title: Text(
-                kCuisines[filter.key],
+                Tools.capitalizeAllWords(filter.key),
                 style: Theme.of(context).textTheme.bodyText1,
               ),
               value: filter.value,
@@ -166,7 +169,7 @@ class _FilterListState extends State<FilterList> {
           .map(
             (filter) => SwitchListTile(
               title: Text(
-                kDiets[filter.key],
+                Tools.capitalizeAllWords(filter.key),
                 style: Theme.of(context).textTheme.bodyText1,
               ),
               value: filter.value,

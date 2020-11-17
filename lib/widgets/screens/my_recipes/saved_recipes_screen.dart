@@ -1,16 +1,17 @@
-import 'package:eat_well_v1/bloc/my_recipes/saved_recipes/saved_recipes_bloc.dart';
-import 'package:eat_well_v1/bloc/my_recipes/saved_recipes/saved_recipes_event.dart';
-import 'package:eat_well_v1/bloc/my_recipes/saved_recipes/saved_recipes_state.dart';
-import 'package:eat_well_v1/bloc/recipe/recipe_bloc.dart';
-import 'package:eat_well_v1/bloc/recipe/recipe_event.dart';
-import 'package:eat_well_v1/model/recipe.dart';
-import 'package:eat_well_v1/widgets/misc/icon_text.dart';
-import 'package:eat_well_v1/widgets/misc/loading.dart';
-import 'package:eat_well_v1/widgets/screens/recipe/recipe_screen.dart';
-import 'package:eat_well_v1/widgets/screens/recipes/recipe_list.dart';
-import 'package:eat_well_v1/widgets/screens/recipes/recipe_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../bloc/my_recipes/saved_recipes/saved_recipes_bloc.dart';
+import '../../../bloc/my_recipes/saved_recipes/saved_recipes_event.dart';
+import '../../../bloc/my_recipes/saved_recipes/saved_recipes_state.dart';
+import '../../../bloc/recipe/recipe_bloc.dart';
+import '../../../bloc/recipe/recipe_event.dart';
+import '../../../model/recipe.dart';
+import '../../misc/icon_text.dart';
+import '../../misc/loading.dart';
+import '../recipe/recipe_screen.dart';
+import '../recipes/recipe_list.dart';
+import '../recipes/recipe_list_item.dart';
 
 class SavedRecipesScreen extends StatelessWidget {
   @override
@@ -33,13 +34,8 @@ class SavedRecipesScreen extends StatelessWidget {
   _mapRecipesToRecipeItems(context, List<Recipe> recipes) {
     return recipes
         .map((recipe) => RecipeListItem(
-              id: recipe.id,
-              name: recipe.name,
-              imageUrl: recipe.imageUrl,
-              readyInMinutes: recipe.readyInMinutes,
-              servings: recipe.servings,
-              rating: recipe.rating,
-              onTap: () => _navigateToRecipeScreen(context, recipe.id),
+              recipe: recipe,
+              onTap: () => _navigateToRecipeScreen(context, recipe),
               bottom: _getRemoveFromSavedButton(context, recipe.id),
             ))
         .toList();
@@ -63,10 +59,10 @@ class SavedRecipesScreen extends StatelessWidget {
     );
   }
 
-  _navigateToRecipeScreen(context, recipeId) {
+  _navigateToRecipeScreen(context, recipe) {
     Navigator.of(context).pushNamed(RecipeScreen.routeName);
     BlocProvider.of<RecipeBloc>(context).add(
-      FetchRecipeDetails(recipeId: recipeId),
+      FetchRecipeDetails(recipe: recipe),
     );
   }
 }
