@@ -7,7 +7,7 @@ import '../../../bloc/user/user_bloc.dart';
 import '../../../bloc/user/user_state.dart';
 import '../../../constants.dart';
 import '../../misc/loading.dart';
-import '../error_screen.dart';
+import '../error/error_screen.dart';
 import 'register_form.dart';
 
 class RegisterScreen extends StatelessWidget {

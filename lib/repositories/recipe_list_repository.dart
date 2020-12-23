@@ -68,12 +68,7 @@ class RecipeListRepository {
   }
 
   Future<List<String>> _getRecipeDishTypes(String recipeId) async {
-    final ids = await _getRecipeDishTypeIds(recipeId);
-    return _getRecipeDishTypeNames(ids);
-  }
-
-  Future<List<String>> _getRecipeDishTypeIds(String recipeId) async {
-    return _firestore
+    final ids = await _firestore
         .collection('recipe-dish-types')
         .where('recipeId', isEqualTo: recipeId)
         .get()
@@ -82,14 +77,7 @@ class RecipeListRepository {
               .map((doc) => (doc.data()['dishTypeId'] as String))
               .toList(),
         );
-  }
-
-  Future<List<String>> _getRecipeDishTypeNames(List<String> dishTypeIds) async {
-    List<Future<String>> futures = [];
-    dishTypeIds.forEach((id) {
-      futures.add(_getRecipeDishTypeName(id));
-    });
-    return Future.wait(futures);
+    return Future.wait(ids.map((id) => _getRecipeDishTypeName(id)).toList());
   }
 
   Future<String> _getRecipeDishTypeName(String id) async {

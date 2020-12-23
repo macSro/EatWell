@@ -21,8 +21,7 @@ const kDividerColor = Color(0xFFBDBDBD);
 
 //PATHS
 const kRecipeImageUrlBasePath = 'https://spoonacular.com/recipeImages/';
-const kIngredientImageUrlBasePath =
-    'https://spoonacular.com/cdn/ingredients_100x100/';
+const kIngredientImageUrlBasePath = 'https://spoonacular.com/cdn/ingredients_100x100/';
 
 //TYPES
 enum MealTypes {

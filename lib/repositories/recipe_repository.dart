@@ -10,24 +10,17 @@ class RecipeRepository {
   UserRepository _userRepository;
 
   RecipeRepository(
-      {@required FirebaseFirestore firestore,
-      @required UserRepository userRepository}) {
+      {@required FirebaseFirestore firestore, @required UserRepository userRepository}) {
     this._firestore = firestore;
     this._userRepository = userRepository;
   }
 
-  Future<List<ExtendedIngredient>> fetchRecipeIngredients(
-      String recipeId) async {
+  Future<List<ExtendedIngredient>> fetchRecipeIngredients(String recipeId) async {
     final ingredientDocs = (await _firestore
             .collection('recipe-ingredients')
             .where('recipeId', isEqualTo: recipeId)
             .get())
         .docs;
-    // List<Future<Product>> futures = [];
-    // ingredients.forEach((doc) {
-    //   futures.add(_getProduct(doc.data()['productId'] as String));
-    // });
-    // final List<Product> products = await Future.wait(futures);
 
     final List<Product> products = await Future.wait(
       ingredientDocs
@@ -36,8 +29,6 @@ class RecipeRepository {
           )
           .toList(),
     );
-    print('products fetched: ${products.length}');
-
     final List<ExtendedIngredient> ingredients = [];
     for (int i = 0; i < ingredientDocs.length; i++) {
       ingredients.add(ExtendedIngredient(
@@ -51,14 +42,12 @@ class RecipeRepository {
   }
 
   Future<Product> _getProduct(String productId) {
-    return _firestore
-        .collection('products')
-        .doc(productId)
-        .get()
-        .then((doc) => Product(
-              id: doc.id,
-              name: doc.data()['name'] as String,
-              imageUrl: doc.data()['imageUrl'] as String,
-            ));
+    return _firestore.collection('products').doc(productId).get().then(
+          (doc) => Product(
+            id: doc.id,
+            name: doc.data()['name'] as String,
+            imageUrl: doc.data()['imageUrl'] as String,
+          ),
+        );
   }
 }

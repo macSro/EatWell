@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../misc/scaffold.dart';
+import '../../misc/scaffold.dart';
 
 class DietScreen extends StatelessWidget {
   static const routeName = '/diet';

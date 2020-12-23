@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../misc/scaffold.dart';
+import '../../misc/scaffold.dart';
 
 class ShoppingListScreen extends StatelessWidget {
   static const routeName = '/shopping-list';

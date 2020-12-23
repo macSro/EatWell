@@ -12,12 +12,11 @@ import '../../../bloc/recipes/recipe_list_event.dart';
 import '../../../bloc/user/user_bloc.dart';
 import '../../../bloc/user/user_event.dart';
 import '../../../constants.dart';
-import '../../screens/diet_screen.dart';
-import '../../screens/fridge_screen.dart';
+import '../../screens/diet/diet_screen.dart';
 import '../../screens/my_recipes/my_recipes_screen.dart';
+import '../../screens/pantry/pantry_screen.dart';
 import '../../screens/recipes/recipes_screen.dart';
-import '../../screens/settings/settings_screen.dart';
-import '../../screens/shopping_list_screen.dart';
+import '../../screens/shopping_list/shopping_list_screen.dart';
 import '../drawer/drawer_tile.dart';
 import '../icon_text.dart';
 
@@ -122,19 +121,6 @@ class MyDrawer extends StatelessWidget {
                     .copyWith(color: Colors.white)),
             onTap: () => Navigator.of(context)
                 .pushReplacementNamed(ShoppingListScreen.routeName),
-          ),
-          MyDrawerTile(
-            icon: Icon(
-              Icons.settings_rounded,
-              color: Colors.grey[400],
-            ),
-            title: Text('Settings',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline6
-                    .copyWith(color: Colors.grey[400])),
-            onTap: () => Navigator.of(context)
-                .pushReplacementNamed(SettingsScreen.routeName),
           ),
           Spacer(),
           Center(

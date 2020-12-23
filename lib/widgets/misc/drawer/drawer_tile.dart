@@ -1,3 +1,4 @@
+import 'package:eat_well_v1/constants.dart';
 import 'package:flutter/material.dart';
 
 class MyDrawerTile extends StatelessWidget {
@@ -5,8 +6,7 @@ class MyDrawerTile extends StatelessWidget {
   final Text title;
   final Function onTap;
 
-  MyDrawerTile(
-      {@required this.icon, @required this.title, @required this.onTap});
+  MyDrawerTile({@required this.icon, @required this.title, @required this.onTap});
 
   @override
   Widget build(BuildContext context) {

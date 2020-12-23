@@ -8,7 +8,7 @@ import '../../../model/extended_ingredient.dart';
 import '../../../model/product.dart';
 import '../../../model/rating.dart';
 import '../../../model/recipe.dart';
-import '../../misc/recipe/circle_icon_button.dart';
+import '../../misc/circle_icon_button.dart';
 import '../../misc/scaffold.dart';
 import 'create_recipe_form.dart';
 

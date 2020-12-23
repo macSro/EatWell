@@ -23,10 +23,8 @@ class MyApp extends StatelessWidget {
     _setUpStatusBarAndOrientation();
     return FireBlocWrapper(
       child: BlocListener<UserBloc, UserState>(
-        listenWhen: (previous, current) =>
-            previous is UserAuthenticated && current is UserUnauthenticated,
-        listener: (context, state) =>
-            Navigator.pushNamed(context, LoginScreen.routeName),
+        listenWhen: (previous, current) => previous is UserAuthenticated && current is UserUnauthenticated,
+        listener: (context, state) => Navigator.pushNamed(context, LoginScreen.routeName),
         child: MaterialApp(
           title: 'EatWell XO',
           theme: _getThemeData(),

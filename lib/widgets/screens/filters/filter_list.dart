@@ -31,60 +31,12 @@ class _FilterListState extends State<FilterList> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return ListView(
       children: [
-        Center(
-          child: Text(
-            'What are you craving?',
-            style: Theme.of(context).textTheme.headline5.copyWith(
-                color: kPrimaryColorDark, fontWeight: FontWeight.bold),
-          ),
-        ),
-        const SizedBox(height: 32),
-        Expanded(
-          child: ListView(
-            children: [
-              _getMealTypeListTile(context),
-              _getCuisineListTile(context),
-              _getDietListTile(context),
-            ],
-          ),
-        ),
-        const SizedBox(height: 16),
-        _getSaveButton(context),
+        _getMealTypeListTile(context),
+        _getCuisineListTile(context),
+        _getDietListTile(context),
       ],
-    );
-  }
-
-  Widget _getSaveButton(context) {
-    return Container(
-      alignment: Alignment.bottomCenter,
-      padding: const EdgeInsets.only(bottom: 16),
-      child: RaisedButton(
-        onPressed: () {
-          BlocProvider.of<RecipeListBloc>(context).add(
-            FetchFilteredRecipes(
-              filters: RecipeListFilters(
-                //TODO
-                // dishTypes: mealTypesFilters.entries.map((filter) => filter.key),
-                // cuisines: cuisineFilters,
-                // diets: dietsFilters,
-              ),
-            ),
-          );
-          Navigator.pop(context);
-        },
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Save',
-              style: TextStyle().copyWith(fontSize: 24),
-            ),
-          ],
-        ),
-      ),
     );
   }
 

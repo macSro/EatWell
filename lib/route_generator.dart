@@ -1,17 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'widgets/screens/diet_screen.dart';
-import 'widgets/screens/error_screen.dart';
-import 'widgets/screens/fridge_screen.dart';
+import 'widgets/screens/diet/diet_screen.dart';
+import 'widgets/screens/error/error_screen.dart';
+import 'widgets/screens/pantry/pantry_screen.dart';
 import 'widgets/screens/login/login_screen.dart';
 import 'widgets/screens/my_recipes/create_recipe_screen.dart';
 import 'widgets/screens/my_recipes/my_recipes_screen.dart';
 import 'widgets/screens/recipe/recipe_screen.dart';
 import 'widgets/screens/recipes/recipes_screen.dart';
 import 'widgets/screens/register/register_screen.dart';
-import 'widgets/screens/settings/settings_screen.dart';
-import 'widgets/screens/shopping_list_screen.dart';
+import 'widgets/screens/shopping_list/shopping_list_screen.dart';
 import 'widgets/screens/splash/splash_screen.dart';
 
 typedef Widget _ScreenBuilder(BuildContext context);
@@ -27,7 +26,6 @@ final Map<String, _ScreenBuilder> _routeBuilders = {
   PantryScreen.routeName: (context) => PantryScreen(),
   DietScreen.routeName: (context) => DietScreen(),
   ShoppingListScreen.routeName: (context) => ShoppingListScreen(),
-  SettingsScreen.routeName: (context) => SettingsScreen(),
 };
 
 class RouteGenerator {

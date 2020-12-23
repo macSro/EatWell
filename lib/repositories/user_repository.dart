@@ -24,7 +24,6 @@ class UserRepository {
       );
     } catch (exception) {
       print(exception.toString());
-      //TODO: return exception.toString(), change return type to Future<dynamic>
       return null;
     }
   }

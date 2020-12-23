@@ -5,7 +5,7 @@ import 'package:transparent_image/transparent_image.dart';
 import '../../../constants.dart';
 import '../../../model/recipe.dart';
 import '../../misc/icon_text.dart';
-import '../../misc/recipe/recipe_rating.dart';
+import 'recipe_rating.dart';
 
 class RecipeListItem extends StatelessWidget {
   final Recipe recipe;

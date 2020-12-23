@@ -1,3 +1,5 @@
+import 'package:eat_well_v1/bloc/recipes/recipe_list_event.dart';
+import 'package:eat_well_v1/widgets/screens/filters/recipe_list_filter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -34,6 +36,8 @@ class RecipesScreen extends StatelessWidget {
                     showFullscreenDialog(
                       context: context,
                       child: FilterList(),
+                      title: 'What are you craving?',
+                      closeButton: _getCloseAddProductFormButton(context),
                     );
                   },
                   child: Icon(Icons.filter_alt_rounded),
@@ -41,6 +45,38 @@ class RecipesScreen extends StatelessWidget {
               : null,
         );
       },
+    );
+  }
+
+  Widget _getCloseAddProductFormButton(context) {
+    return Container(
+      alignment: Alignment.bottomCenter,
+      padding: const EdgeInsets.only(bottom: 16),
+      child: RaisedButton(
+        onPressed: () {
+          BlocProvider.of<RecipeListBloc>(context).add(
+            FetchFilteredRecipes(
+              filters: RecipeListFilters(
+                //TODO
+                // dishTypes: mealTypesFilters.entries.map((filter) => filter.key),
+                // cuisines: cuisineFilters,
+                // diets: dietsFilters,
+              ),
+            ),
+          );
+          Navigator.pop(context);
+        },
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Save',
+              style: TextStyle().copyWith(fontSize: 24),
+            ),
+          ],
+        ),
+      ),
     );
   }
 

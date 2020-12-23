@@ -1,6 +1,7 @@
+import 'package:equatable/equatable.dart';
+
 import 'extended_ingredient.dart';
 import 'rating.dart';
-import 'package:equatable/equatable.dart';
 
 class Recipe extends Equatable {
   final String id;

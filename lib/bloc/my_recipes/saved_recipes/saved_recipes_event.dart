@@ -10,7 +10,7 @@ class FetchSavedRecipes extends SavedRecipesEvent {
 }
 
 class SaveRecipe extends SavedRecipesEvent {
-  final int recipeId;
+  final String recipeId;
 
   SaveRecipe({@required this.recipeId});
 
@@ -19,7 +19,7 @@ class SaveRecipe extends SavedRecipesEvent {
 }
 
 class RemoveRecipeFromSaved extends SavedRecipesEvent {
-  final int recipeId;
+  final String recipeId;
 
   RemoveRecipeFromSaved({@required this.recipeId});
 
