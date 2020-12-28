@@ -2,8 +2,6 @@ import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../bloc/recipes/recipe_list_bloc.dart';
-import '../../bloc/recipes/recipe_list_event.dart';
 import '../../bloc/user/user_bloc.dart';
 import '../../bloc/user/user_state.dart';
 import '../screens/login/login_screen.dart';

@@ -58,7 +58,7 @@ class UserRepository {
     }
   }
 
-  ///Handles regular signing out.
+  ///Handles signing out.
   Future<bool> signOut() async {
     try {
       return await _firebaseAuth.signOut().then(

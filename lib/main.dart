@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         listenWhen: (previous, current) => previous is UserAuthenticated && current is UserUnauthenticated,
         listener: (context, state) => Navigator.pushNamed(context, LoginScreen.routeName),
         child: MaterialApp(
-          title: 'EatWell XO',
+          title: kAppName,
           theme: _getThemeData(),
           initialRoute: SplashScreen.routeName,
           onGenerateRoute: RouteGenerator.generateRoute,
