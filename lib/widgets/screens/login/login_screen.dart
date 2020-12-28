@@ -11,8 +11,8 @@ import '../../../bloc/user/user_event.dart';
 import '../../../bloc/user/user_state.dart';
 import '../../../constants.dart';
 import '../../misc/loading.dart';
+import '../all_recipes/all_recipes_screen.dart';
 import '../error/error_screen.dart';
-import '../recipes/recipes_screen.dart';
 import '../register/register_screen.dart';
 import 'login_form.dart';
 

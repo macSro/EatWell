@@ -3,7 +3,6 @@ import 'package:bloc/bloc.dart';
 import '../../../constants.dart';
 import '../../../model/extended_ingredient.dart';
 import '../../../model/product.dart';
-import '../../../model/rating.dart';
 import '../../../model/recipe.dart';
 import 'saved_recipes_event.dart';
 import 'saved_recipes_state.dart';
@@ -33,7 +32,7 @@ class SavedRecipesBloc extends Bloc<SavedRecipesEvent, SavedRecipesState> {
           imageUrl: kRecipeImageUrlBasePath + '658703-636x393.jpg',
           readyInMinutes: 30,
           servings: 4,
-          rating: Rating(points: 20, votes: 4),
+          rating: 5.0,
           instructions: [
             'Preheat the oven to 375 degrees. In a casserole dish, add the chopped sweet potato, pasilla pepper, bell pepper and onion. In a small bowl, combine the chicken stock, oil and vinegar.',
             'Mix to combine and pour evenly over the vegetables.',
@@ -89,7 +88,7 @@ class SavedRecipesBloc extends Bloc<SavedRecipesEvent, SavedRecipesState> {
           imageUrl: kRecipeImageUrlBasePath + '653068-636x393.jpg',
           readyInMinutes: 45,
           servings: 4,
-          rating: Rating(points: 0, votes: 0),
+          rating: 0.0,
           instructions: [
             'Preheat the oven to 375 degrees. In a casserole dish, add the chopped sweet potato, pasilla pepper, bell pepper and onion. In a small bowl, combine the chicken stock, oil and vinegar.',
             'Mix to combine and pour evenly over the vegetables.',
@@ -162,7 +161,7 @@ class SavedRecipesBloc extends Bloc<SavedRecipesEvent, SavedRecipesState> {
           imageUrl: kRecipeImageUrlBasePath + '658703-636x393.jpg',
           readyInMinutes: 30,
           servings: 4,
-          rating: Rating(points: 20, votes: 4),
+          rating: 5.0,
           instructions: [
             'Preheat the oven to 375 degrees. In a casserole dish, add the chopped sweet potato, pasilla pepper, bell pepper and onion. In a small bowl, combine the chicken stock, oil and vinegar.',
             'Mix to combine and pour evenly over the vegetables.',

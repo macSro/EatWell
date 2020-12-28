@@ -9,10 +9,10 @@ import '../../../constants.dart';
 import '../../../model/recipe.dart';
 import '../../misc/icon_text.dart';
 import '../../misc/loading.dart';
+import '../all_recipes/recipe_list.dart';
+import '../all_recipes/recipe_list_item.dart';
 import '../recipe/recipe_screen.dart';
-import '../recipes/recipe_list.dart';
-import '../recipes/recipe_list_item.dart';
-import 'create_recipe_screen.dart';
+import 'create_recipe/create_recipe_screen.dart';
 
 class CreatedRecipesScreen extends StatelessWidget {
   @override
@@ -94,7 +94,7 @@ class CreatedRecipesScreen extends StatelessWidget {
   _navigateToRecipeScreen(context, recipe) {
     Navigator.pushNamed(context, RecipeScreen.routeName);
     BlocProvider.of<RecipeBloc>(context).add(
-      FetchRecipeDetails(recipe: recipe),
+      SelectRecipe(recipe: recipe),
     );
   }
 }

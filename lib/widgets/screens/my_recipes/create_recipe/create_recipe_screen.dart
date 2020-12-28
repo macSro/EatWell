@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../bloc/my_recipes/created_recipes/created_recipes_bloc.dart';
-import '../../../bloc/my_recipes/created_recipes/created_recipes_event.dart';
-import '../../../constants.dart';
-import '../../../model/extended_ingredient.dart';
-import '../../../model/product.dart';
-import '../../../model/rating.dart';
-import '../../../model/recipe.dart';
-import '../../misc/circle_icon_button.dart';
-import '../../misc/scaffold.dart';
+import '../../../../bloc/my_recipes/created_recipes/created_recipes_bloc.dart';
+import '../../../../bloc/my_recipes/created_recipes/created_recipes_event.dart';
+import '../../../../constants.dart';
+import '../../../../model/extended_ingredient.dart';
+import '../../../../model/product.dart';
+import '../../../../model/recipe.dart';
+import '../../../misc/circle_icon_button.dart';
+import '../../../misc/scaffold.dart';
 import 'create_recipe_form.dart';
 
 class CreateRecipeScreen extends StatelessWidget {
@@ -81,7 +80,7 @@ class CreateRecipeScreen extends StatelessWidget {
                 imageUrl: kRecipeImageUrlBasePath + '658703-636x393.jpg',
                 readyInMinutes: 30,
                 servings: 4,
-                rating: Rating(points: 20, votes: 4),
+                rating: 5.0,
                 instructions: [
                   'Preheat the oven to 375 degrees. In a casserole dish, add the chopped sweet potato, pasilla pepper, bell pepper and onion. In a small bowl, combine the chicken stock, oil and vinegar.',
                   'Mix to combine and pour evenly over the vegetables.',

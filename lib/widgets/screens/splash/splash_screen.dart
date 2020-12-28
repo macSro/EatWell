@@ -7,8 +7,8 @@ import '../../../bloc/recipes/recipe_list_event.dart';
 import '../../../bloc/user/user_bloc.dart';
 import '../../../bloc/user/user_state.dart';
 import '../../../constants.dart';
+import '../all_recipes/all_recipes_screen.dart';
 import '../login/login_screen.dart';
-import '../recipes/recipes_screen.dart';
 
 class SplashScreen extends StatelessWidget {
   static const routeName = '/';
@@ -16,8 +16,7 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<UserBloc, UserState>(
-      listenWhen: (previous, current) =>
-          previous is UserInitial && !(current is UserInitial),
+      listenWhen: (previous, current) => previous is UserInitial && !(current is UserInitial),
       listener: (context, state) {
         if (state is UserUnauthenticated) {
           Navigator.pushReplacementNamed(context, LoginScreen.routeName);

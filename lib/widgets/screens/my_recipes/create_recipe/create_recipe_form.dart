@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../constants.dart';
-import '../../misc/icon_text.dart';
+import '../../../../constants.dart';
+import '../../../misc/icon_text.dart';
 
 class CreateRecipeForm extends StatefulWidget {
   @override
@@ -38,6 +38,42 @@ class _CreateRecipeFormState extends State<CreateRecipeForm> {
             ),
             text: Text(
               'Select the meal type',
+              style: TextStyle().copyWith(fontSize: 20),
+            ),
+          ),
+        ),
+        const SizedBox(height: 16),
+        RaisedButton(
+          onPressed: () => {},
+          color: kPrimaryColor,
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+          child: IconText(
+            iconFirst: false,
+            squeeze: true,
+            icon: Icon(
+              Icons.arrow_forward_rounded,
+              size: 28,
+            ),
+            text: Text(
+              'Select the cuisine',
+              style: TextStyle().copyWith(fontSize: 20),
+            ),
+          ),
+        ),
+        const SizedBox(height: 16),
+        RaisedButton(
+          onPressed: () => {},
+          color: kPrimaryColor,
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+          child: IconText(
+            iconFirst: false,
+            squeeze: true,
+            icon: Icon(
+              Icons.arrow_forward_rounded,
+              size: 28,
+            ),
+            text: Text(
+              'Select the diet',
               style: TextStyle().copyWith(fontSize: 20),
             ),
           ),

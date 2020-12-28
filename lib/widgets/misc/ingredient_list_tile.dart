@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../constants.dart';
 import '../../tools.dart';
-import 'circle_icon_button.dart';
 
 class IngredientListTile extends StatelessWidget {
   final String imageUrl;
@@ -10,6 +9,7 @@ class IngredientListTile extends StatelessWidget {
   final double amount;
   final String unit;
   final DateTime expDate;
+  final otherTrailing;
 
   IngredientListTile({
     @required this.imageUrl,
@@ -17,6 +17,7 @@ class IngredientListTile extends StatelessWidget {
     this.amount,
     this.unit,
     this.expDate,
+    this.otherTrailing,
   });
 
   @override
@@ -43,10 +44,14 @@ class IngredientListTile extends StatelessWidget {
         style: Theme.of(context).textTheme.bodyText1,
       ),
       subtitle: expDate != null ? Text('Exp: ${expDate.day}-${expDate.month}-${expDate.year}') : null,
-      trailing: amount != null ? Text(
-        '${Tools.simplifyDouble(amount).toString()}${unit != null ? ' ' : ''}${unit != null ? Tools.getUnitShort(unit) : ''}',
-        style: TextStyle().copyWith(fontStyle: FontStyle.italic),
-      ) : null,
+      trailing: otherTrailing != null
+          ? otherTrailing
+          : amount != null
+              ? Text(
+                  '${Tools.simplifyDouble(amount).toString()}${unit != null ? ' ' : ''}${unit != null ? Tools.getUnitShort(unit) : ''}',
+                  style: TextStyle().copyWith(fontStyle: FontStyle.italic),
+                )
+              : null,
       visualDensity: VisualDensity(horizontal: 0, vertical: 4),
     );
   }

@@ -9,18 +9,14 @@ class RecipeRepository {
   FirebaseFirestore _firestore;
   UserRepository _userRepository;
 
-  RecipeRepository(
-      {@required FirebaseFirestore firestore, @required UserRepository userRepository}) {
+  RecipeRepository({@required FirebaseFirestore firestore, @required UserRepository userRepository}) {
     this._firestore = firestore;
     this._userRepository = userRepository;
   }
 
   Future<List<ExtendedIngredient>> fetchRecipeIngredients(String recipeId) async {
-    final ingredientDocs = (await _firestore
-            .collection('recipe-ingredients')
-            .where('recipeId', isEqualTo: recipeId)
-            .get())
-        .docs;
+    final ingredientDocs =
+        (await _firestore.collection('recipe-ingredients').where('recipeId', isEqualTo: recipeId).get()).docs;
 
     final List<Product> products = await Future.wait(
       ingredientDocs
@@ -49,5 +45,56 @@ class RecipeRepository {
             imageUrl: doc.data()['imageUrl'] as String,
           ),
         );
+  }
+
+  Future<double> fetchRecipeRating(String recipeId) async {
+    QuerySnapshot snap =
+        await _firestore.collection('recipe-ratings').where('recipeId', isEqualTo: recipeId).get();
+    double rating = 0.0;
+    if (snap.docs.isEmpty) return rating;
+
+    snap.docs.forEach((doc) {
+      rating += (doc.data()['rating'] as num).toDouble();
+    });
+
+    return rating / snap.docs.length;
+  }
+
+  Future<int> fetchUserRating(String recipeId) async {
+    String userRatingDocId = await getUserRatingDocId(recipeId, _userRepository.getCurrentUser().uid);
+
+    return userRatingDocId != null
+        ? await (_firestore.collection('recipe-ratings').doc(userRatingDocId).get())
+            .then((doc) => (doc.data()['rating'] as num).toInt())
+        : 0;
+  }
+
+  Future<void> updateUserRating(String recipeId, int rating) async {
+    String userRatingDocId = await getUserRatingDocId(recipeId, _userRepository.getCurrentUser().uid);
+
+    return userRatingDocId != null
+        ? _firestore.collection('recipe-ratings').doc(userRatingDocId).update({'rating': rating})
+        : null;
+  }
+
+  Future<void> deleteUserRating(String recipeId) async {
+    String userRatingDocId = await getUserRatingDocId(recipeId, _userRepository.getCurrentUser().uid);
+
+    return userRatingDocId != null
+        ? _firestore.collection('recipe-ratings').doc(userRatingDocId).delete()
+        : null;
+  }
+
+  Future<String> getUserRatingDocId(String recipeId, String userId) async {
+    QuerySnapshot snap = await _firestore
+        .collection('recipe-ratings')
+        .where('recipeId', isEqualTo: recipeId)
+        .where('userId', isEqualTo: userId)
+        .limit(1) //will always result with 1 or 0
+        .get();
+    if (snap.docs.isEmpty)
+      return null;
+    else
+      return snap.docs.first.id;
   }
 }

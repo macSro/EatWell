@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 
 import 'extended_ingredient.dart';
-import 'rating.dart';
 
 class Recipe extends Equatable {
   final String id;
@@ -14,7 +13,7 @@ class Recipe extends Equatable {
   final List<String> instructions;
   final int readyInMinutes;
   final int servings;
-  final Rating rating;
+  final double rating;
 
   Recipe({
     this.id,
@@ -41,7 +40,7 @@ class Recipe extends Equatable {
     List<String> instructions,
     int readyInMinutes,
     int servings,
-    Rating rating,
+    double rating,
   }) {
     return Recipe(
       id: id ?? this.id,

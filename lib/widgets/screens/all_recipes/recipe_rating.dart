@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
-import '../../../model/rating.dart';
 
 class RecipeRating extends StatelessWidget {
-  final Rating rating;
+  final double rating;
 
   RecipeRating({this.rating});
 
@@ -27,29 +26,29 @@ class RecipeRating extends StatelessWidget {
     );
     return Column(
       children: [
-        rating.votes != 0
+        rating > 0
             ? Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  rating.rating < 1 ? halfStar : wholeStar,
-                  rating.rating > 1 && rating.rating < 2
+                  rating < 1 ? halfStar : wholeStar,
+                  rating > 1 && rating < 2
                       ? halfStar
-                      : rating.rating >= 2
+                      : rating >= 2
                           ? wholeStar
                           : emptyStar,
-                  rating.rating > 2 && rating.rating < 3
+                  rating > 2 && rating < 3
                       ? halfStar
-                      : rating.rating >= 3
+                      : rating >= 3
                           ? wholeStar
                           : emptyStar,
-                  rating.rating > 3 && rating.rating < 4
+                  rating > 3 && rating < 4
                       ? halfStar
-                      : rating.rating >= 4
+                      : rating >= 4
                           ? wholeStar
                           : emptyStar,
-                  rating.rating > 4 && rating.rating < 5
+                  rating > 4 && rating < 5
                       ? halfStar
-                      : rating.rating >= 5
+                      : rating >= 5
                           ? wholeStar
                           : emptyStar,
                 ],
@@ -66,7 +65,7 @@ class RecipeRating extends StatelessWidget {
               ),
         const SizedBox(height: 2),
         Text(
-          'Rating: ${rating.votes > 0 ? rating.rating : '-'}',
+          'Rating: ${rating > 0 ? rating : '-'}',
           style: Theme.of(context).textTheme.subtitle2,
         ),
       ],

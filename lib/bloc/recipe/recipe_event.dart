@@ -6,21 +6,21 @@ import '../../model/recipe.dart';
 @immutable
 abstract class RecipeEvent extends Equatable {}
 
-class FetchRecipeDetails extends RecipeEvent {
+class SelectRecipe extends RecipeEvent {
   final Recipe recipe;
 
-  FetchRecipeDetails({@required this.recipe});
+  SelectRecipe({@required this.recipe});
 
   @override
   List<Object> get props => [recipe];
 }
 
 class UpdateRecipeRating extends RecipeEvent {
-  final String recipeId;
+  final Recipe recipe;
   final int rating;
 
-  UpdateRecipeRating({this.recipeId, this.rating});
+  UpdateRecipeRating({this.recipe, this.rating});
 
   @override
-  List<Object> get props => [recipeId, rating];
+  List<Object> get props => [recipe, rating];
 }

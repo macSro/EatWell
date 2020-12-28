@@ -1,11 +1,10 @@
-import 'package:eat_well_v1/bloc/recipes/recipe_list_event.dart';
-import 'package:eat_well_v1/widgets/screens/filters/recipe_list_filter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../bloc/recipe/recipe_bloc.dart';
 import '../../../bloc/recipe/recipe_event.dart';
 import '../../../bloc/recipes/recipe_list_bloc.dart';
+import '../../../bloc/recipes/recipe_list_event.dart';
 import '../../../bloc/recipes/recipe_list_state.dart';
 import '../../../bloc/user/user_bloc.dart';
 import '../../../bloc/user/user_state.dart';
@@ -14,6 +13,7 @@ import '../../misc/fullscreen_dialog.dart';
 import '../../misc/loading.dart';
 import '../../misc/scaffold.dart';
 import '../filters/filter_list.dart';
+import '../filters/recipe_list_filter.dart';
 import '../recipe/recipe_screen.dart';
 import 'recipe_list.dart';
 import 'recipe_list_item.dart';
@@ -26,7 +26,12 @@ class RecipesScreen extends StatelessWidget {
     return BlocBuilder<RecipeListBloc, RecipeListState>(
       builder: (context, state) {
         return MyScaffold(
-          title: 'Recipes',
+          title: 'All recipes',
+          actions: [
+            IconButton(
+                icon: Icon(Icons.refresh),
+                onPressed: () => BlocProvider.of<RecipeListBloc>(context).add(FetchAllRecipes())),
+          ],
           child: state is RecipesFetched
               ? _getContent(context, state.recipes)
               : LoadingView(text: 'Loading recipes...'),
@@ -57,11 +62,11 @@ class RecipesScreen extends StatelessWidget {
           BlocProvider.of<RecipeListBloc>(context).add(
             FetchFilteredRecipes(
               filters: RecipeListFilters(
-                //TODO
-                // dishTypes: mealTypesFilters.entries.map((filter) => filter.key),
-                // cuisines: cuisineFilters,
-                // diets: dietsFilters,
-              ),
+                  //TODO
+                  // dishTypes: mealTypesFilters.entries.map((filter) => filter.key),
+                  // cuisines: cuisineFilters,
+                  // diets: dietsFilters,
+                  ),
             ),
           );
           Navigator.pop(context);
@@ -83,9 +88,7 @@ class RecipesScreen extends StatelessWidget {
   Widget _getContent(context, recipes) {
     return BlocBuilder<UserBloc, UserState>(
       builder: (context, state) => RecipeList(
-        recipeItems: state is UserAuthenticated
-            ? _mapRecipesToRecipeItems(context, recipes)
-            : [],
+        recipeItems: state is UserAuthenticated ? _mapRecipesToRecipeItems(context, recipes) : [],
       ),
     );
   }
@@ -102,7 +105,7 @@ class RecipesScreen extends StatelessWidget {
   _navigateToRecipeScreen(context, recipe) {
     Navigator.of(context).pushNamed(RecipeScreen.routeName);
     BlocProvider.of<RecipeBloc>(context).add(
-      FetchRecipeDetails(recipe: recipe),
+      SelectRecipe(recipe: recipe),
     );
   }
 }

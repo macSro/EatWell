@@ -1,13 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../bloc/recipes/recipe_list_bloc.dart';
-import '../../../bloc/recipes/recipe_list_event.dart';
 import '../../../constants.dart';
 import '../../../tools.dart';
 import '../../misc/icon_text.dart';
-import 'recipe_list_filter.dart';
 
 class FilterList extends StatefulWidget {
   @override

@@ -1,4 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eat_well_v1/bloc/pantry/pantry_bloc.dart';
+import 'package:eat_well_v1/bloc/product_search/product_search_bloc.dart';
+import 'package:eat_well_v1/repositories/pantry_repository.dart';
+import 'package:eat_well_v1/repositories/product_search_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,14 +25,18 @@ class FireBlocWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     UserRepository userRepository = UserRepository();
-    RecipeListRepository recipeListRepository = RecipeListRepository(
-      firestore: firestore,
-      userRepository: userRepository,
-    );
     RecipeRepository recipeRepository = RecipeRepository(
       firestore: firestore,
       userRepository: userRepository,
     );
+    RecipeListRepository recipeListRepository = RecipeListRepository(
+      firestore: firestore,
+      userRepository: userRepository,
+      recipeRepository: recipeRepository,
+    );
+    ProductSearchRepository productSearchRepository = ProductSearchRepository(firestore: firestore);
+    PantryRepository pantryRepository =
+        PantryRepository(firestore: firestore, userRepository: userRepository);
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -39,6 +47,7 @@ class FireBlocWrapper extends StatelessWidget {
         BlocProvider(
           create: (context) => RecipeListBloc(
             recipeListRepository: recipeListRepository,
+            recipeRepository: recipeRepository,
             userRepository: userRepository,
           ),
         ),
@@ -54,6 +63,15 @@ class FireBlocWrapper extends StatelessWidget {
         BlocProvider(
           create: (context) => CreatedRecipesBloc(),
         ),
+        BlocProvider(
+          create: (context) => ProductSearchBloc(
+            productSearchRepository: productSearchRepository,
+          ),
+        ),
+        BlocProvider(
+            create: (context) => PantryBloc(
+                  pantryRepository: pantryRepository,
+                )),
       ],
       child: child,
     );

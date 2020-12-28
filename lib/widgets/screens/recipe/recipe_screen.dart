@@ -1,5 +1,3 @@
-import 'package:eat_well_v1/widgets/misc/fullscreen_dialog.dart';
-import 'package:eat_well_v1/widgets/misc/unit_converter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -15,7 +13,7 @@ import '../../misc/circle_icon_button.dart';
 import '../../misc/ingredient_list_tile.dart';
 import '../../misc/loading.dart';
 import '../../misc/scaffold.dart';
-import '../recipes/recipe_rating.dart';
+import '../all_recipes/recipe_rating.dart';
 import 'recipe_rating_buttons.dart';
 
 class RecipeScreen extends StatelessWidget {
@@ -59,27 +57,9 @@ class RecipeScreen extends StatelessWidget {
                 const SizedBox(height: 16),
                 _getDetails(context, recipe.readyInMinutes, recipe.servings),
                 const SizedBox(height: 32),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      'Ingredients',
-                      style: Theme.of(context).textTheme.headline6,
-                    ),
-                    const SizedBox(width: 4),
-                    GestureDetector(
-                      child: Icon(
-                        Icons.help_outline_rounded,
-                        color: kPrimaryColor,
-                      ),
-                      onTap: () => showFullscreenDialog(
-                        context: context,
-                        child: UnitConverter(),
-                        title: 'Unit Converter',
-                        closeButton: _getCloseUnitConverterButton(context),
-                      ),
-                    ),
-                  ],
+                Text(
+                  'Ingredients',
+                  style: Theme.of(context).textTheme.headline6,
                 ),
                 const SizedBox(height: 16),
                 Padding(
@@ -102,7 +82,7 @@ class RecipeScreen extends StatelessWidget {
                   style: Theme.of(context).textTheme.headline6,
                 ),
                 const SizedBox(height: 8),
-                RecipeRatingButtons(recipeId: recipe.id, userRating: userRating),
+                RecipeRatingButtons(recipe: recipe, userRating: userRating),
                 const SizedBox(height: 32),
               ],
             ),
@@ -119,26 +99,6 @@ class RecipeScreen extends StatelessWidget {
           child: _getSaveButton(context, recipe.id),
         ),
       ],
-    );
-  }
-
-  Widget _getCloseUnitConverterButton(context) {
-    return Container(
-      alignment: Alignment.bottomCenter,
-      padding: const EdgeInsets.only(bottom: 16),
-      child: RaisedButton(
-        onPressed: () => Navigator.pop(context),
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Close',
-              style: TextStyle().copyWith(fontSize: 24),
-            ),
-          ],
-        ),
-      ),
     );
   }
 

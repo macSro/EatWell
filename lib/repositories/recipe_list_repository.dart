@@ -1,96 +1,102 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eat_well_v1/repositories/recipe_repository.dart';
 import 'package:flutter/foundation.dart';
 
-import '../model/rating.dart';
 import '../model/recipe.dart';
 import 'user_repository.dart';
 
 class RecipeListRepository {
   FirebaseFirestore _firestore;
   UserRepository _userRepository;
+  RecipeRepository _recipeRepository;
 
-  RecipeListRepository(
-      {@required FirebaseFirestore firestore,
-      @required UserRepository userRepository}) {
+  RecipeListRepository({
+    @required FirebaseFirestore firestore,
+    @required UserRepository userRepository,
+    @required RecipeRepository recipeRepository,
+  }) {
     this._firestore = firestore;
     this._userRepository = userRepository;
+    this._recipeRepository = recipeRepository;
   }
 
-  Stream<Map<String, Rating>> fetchAllRatings() {
-    return _firestore
-        .collection('recipe-ratings')
-        .orderBy('recipeId')
-        .snapshots()
-        .map((snapshot) {
-      Map<String, Rating> result = {};
-      snapshot.docs.forEach((doc) {
-        final ratingData = doc.data();
-        result[(ratingData['recipeId'] as String)] = Rating(
-          points: (ratingData['points'] as num).toInt(),
-          votes: (ratingData['votes'] as num).toInt(),
-        );
-      });
-      return result;
-    });
-  }
+  Future<List<Recipe>> fetchAllRecipes() async {
+    final recipeDocs = (await _firestore.collection('recipes').get()).docs;
 
-  Stream<List<Recipe>> fetchAllRecipes() {
-    return _firestore
-        .collection('recipes')
-        .orderBy(FieldPath.documentId)
-        .snapshots()
-        .asyncMap((snapshot) => Future.wait(snapshot.docs.map(
-              (doc) {
-                return _getRecipe(doc);
-              },
-            ).toList()));
+    final List<Recipe> recipes = await Future.wait(recipeDocs.map((doc) => _getRecipe(doc)).toList());
+
+    return recipes;
   }
 
   Future<Recipe> _getRecipe(QueryDocumentSnapshot recipeDoc) async {
     final recipeId = recipeDoc.id;
     final recipeData = recipeDoc.data();
-    final dishTypes = await _getRecipeDishTypes(recipeId);
-    // final cuisines = await _getRecipeCuisines(recipeId);
-    // final diets = await _getRecipeDiets(recipeId);
+    final ingredients = await _recipeRepository.fetchRecipeIngredients(recipeId);
+    final rating = await _recipeRepository.fetchRecipeRating(recipeId);
+    final dishTypes = await _getRecipeFilters(
+        recipeId: recipeId, collectionName: 'dish-types', collectionIdName: 'dishTypeId');
+    final cuisines = await _getRecipeFilters(
+        recipeId: recipeId, collectionName: 'cuisines', collectionIdName: 'cuisineId');
+    final diets =
+        await _getRecipeFilters(recipeId: recipeId, collectionName: 'diets', collectionIdName: 'dietId');
 
     return Recipe(
       id: recipeDoc.id,
       name: recipeData['name'],
       imageUrl: recipeData['imageUrl'],
-      instructions: (recipeData['instructions'] as List)
-          .map((instruction) => instruction as String)
-          ?.toList(),
+      ingredients: ingredients,
+      instructions:
+          (recipeData['instructions'] as List).map((instruction) => instruction as String)?.toList(),
       readyInMinutes: recipeData['readyInMinutes'],
       servings: recipeData['servings'],
+      rating: rating,
       dishTypes: dishTypes,
-      rating: Rating(points: 10, votes: 2),
+      cuisines: cuisines,
+      diets: diets,
     );
   }
 
-  Future<List<String>> _getRecipeDishTypes(String recipeId) async {
+  Future<List<String>> _getRecipeFilters({
+    @required String recipeId,
+    @required String collectionName,
+    @required String collectionIdName,
+  }) async {
     final ids = await _firestore
-        .collection('recipe-dish-types')
+        .collection('recipe-$collectionName')
         .where('recipeId', isEqualTo: recipeId)
         .get()
         .then(
-          (snapshot) => snapshot.docs
-              .map((doc) => (doc.data()['dishTypeId'] as String))
-              .toList(),
+          (snapshot) => snapshot.docs.map((doc) => (doc.data()[collectionIdName] as String)).toList(),
         );
-    return Future.wait(ids.map((id) => _getRecipeDishTypeName(id)).toList());
+    return Future.wait(ids.map((id) => _getRecipeFilterName(collectionName, id)).toList());
   }
 
-  Future<String> _getRecipeDishTypeName(String id) async {
-    return _firestore
-        .collection('dish-types')
-        .doc(id)
-        .get()
-        .then((doc) => (doc.data()['name'] as String));
+  Future<String> _getRecipeFilterName(String collectionName, String id) {
+    return _firestore.collection(collectionName).doc(id).get().then((doc) => (doc.data()['name'] as String));
   }
 
-  Future<List<String>> _getRecipeCuisines(String recipeId) async {}
+  // Stream<Map<String, double>> fetchAllRatings() {
+  //   return _firestore.collection('recipe-ratings').orderBy('recipeId').snapshots().map((snapshot) {
+  //     Map<String, double> result = {};
+  //     snapshot.docs.forEach((doc) {
+  //       final ratingData = doc.data();
+  //       result[(ratingData['recipeId'] as String)] = (ratingData['rating'] as num).toDouble();
+  //     });
+  //     return result;
+  //   });
+  // }
 
-  Future<List<String>> _getRecipeDiets(String recipeId) async {}
+  // Stream<List<Recipe>> fetchAllRecipes() {
+  //   return _firestore
+  //       .collection('recipes')
+  //       .orderBy(FieldPath.documentId)
+  //       .snapshots()
+  //       .asyncMap((snapshot) => Future.wait(snapshot.docs.map(
+  //             (doc) {
+  //               return _getRecipe(doc);
+  //             },
+  //           ).toList()));
+  // }
 
   // Stream<List<Recipe>> fetchAllRecipes() {
   //   //MAYBE JUST NEST ALL IN MULTIPLE THEN()

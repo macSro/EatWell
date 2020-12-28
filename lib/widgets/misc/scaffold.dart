@@ -2,6 +2,8 @@ import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../bloc/recipes/recipe_list_bloc.dart';
+import '../../bloc/recipes/recipe_list_event.dart';
 import '../../bloc/user/user_bloc.dart';
 import '../../bloc/user/user_state.dart';
 import '../screens/login/login_screen.dart';
@@ -15,6 +17,7 @@ class MyScaffold extends StatelessWidget {
   final TabBar tabBar;
   final List<Widget> tabViews;
   final Widget floatingActionButton;
+  final List<Widget> actions;
 
   MyScaffold({
     @required this.child,
@@ -24,13 +27,13 @@ class MyScaffold extends StatelessWidget {
     this.tabBar,
     this.tabViews,
     this.floatingActionButton,
+    this.actions,
   });
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<UserBloc, UserState>(
-      listenWhen: (previous, current) =>
-          previous is UserLoading && current is UserUnauthenticated,
+      listenWhen: (previous, current) => previous is UserLoading && current is UserUnauthenticated,
       listener: (context, state) {
         Navigator.pushReplacementNamed(context, LoginScreen.routeName);
       },
@@ -39,14 +42,14 @@ class MyScaffold extends StatelessWidget {
           appBar: hasAppBar
               ? AppBar(
                   title: Text(title),
+                  actions: actions,
                   bottom: tabBar,
                 )
               : null,
           drawer: hasDrawer
               ? BlocBuilder<UserBloc, UserState>(
                   builder: (context, state) => state is UserAuthenticated
-                      ? state.userDisplayName != null &&
-                              state.userDisplayName != ''
+                      ? state.userDisplayName != null && state.userDisplayName != ''
                           ? MyDrawer(userDisplayName: state.userDisplayName)
                           : MyDrawer()
                       : MyDrawer(),

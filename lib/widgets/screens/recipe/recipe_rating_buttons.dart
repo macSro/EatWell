@@ -4,12 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../bloc/recipe/recipe_bloc.dart';
 import '../../../bloc/recipe/recipe_event.dart';
 import '../../../constants.dart';
+import '../../../model/recipe.dart';
 
 class RecipeRatingButtons extends StatefulWidget {
-  final String recipeId;
+  final Recipe recipe;
   final int userRating;
 
-  RecipeRatingButtons({this.recipeId, this.userRating});
+  RecipeRatingButtons({this.recipe, this.userRating});
 
   @override
   _RecipeRatingButtonsState createState() => _RecipeRatingButtonsState();
@@ -20,7 +21,6 @@ class _RecipeRatingButtonsState extends State<RecipeRatingButtons> {
 
   @override
   void initState() {
-    print('userRating: ${widget.userRating}');
     _fillInStars(1, widget.userRating, true);
     super.initState();
   }
@@ -133,9 +133,8 @@ class _RecipeRatingButtonsState extends State<RecipeRatingButtons> {
 
   _rateRecipe(context, rating) {
     BlocProvider.of<RecipeBloc>(context).add(UpdateRecipeRating(
-      recipeId: widget.recipeId,
+      recipe: widget.recipe,
       rating: rating,
     ));
-    print('RecipeBloc add: UpdateRecipeRating(${widget.recipeId}, $rating)');
   }
 }
