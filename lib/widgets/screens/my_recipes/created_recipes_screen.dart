@@ -9,7 +9,6 @@ import '../../../constants.dart';
 import '../../../model/recipe.dart';
 import '../../misc/icon_text.dart';
 import '../../misc/loading.dart';
-import '../all_recipes/recipe_list.dart';
 import '../all_recipes/recipe_list_item.dart';
 import '../recipe/recipe_screen.dart';
 import 'create_recipe/create_recipe_screen.dart';
@@ -66,8 +65,8 @@ class CreatedRecipesScreen extends StatelessWidget {
     return BlocBuilder<CreatedRecipesBloc, CreatedRecipesState>(
       builder: (context, state) => state is CreatedRecipesFetched
           ? state.recipes.isNotEmpty
-              ? RecipeList(
-                  recipeItems: _mapRecipesToRecipeItems(
+              ? ListView(
+                  children: _mapRecipesToRecipeItems(
                     context,
                     state.recipes,
                   ),

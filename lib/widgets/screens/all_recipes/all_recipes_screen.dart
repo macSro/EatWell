@@ -15,7 +15,6 @@ import '../../misc/scaffold.dart';
 import '../filters/filter_list.dart';
 import '../filters/recipe_list_filter.dart';
 import '../recipe/recipe_screen.dart';
-import 'recipe_list.dart';
 import 'recipe_list_item.dart';
 
 class RecipesScreen extends StatelessWidget {
@@ -87,8 +86,8 @@ class RecipesScreen extends StatelessWidget {
 
   Widget _getContent(context, recipes) {
     return BlocBuilder<UserBloc, UserState>(
-      builder: (context, state) => RecipeList(
-        recipeItems: state is UserAuthenticated ? _mapRecipesToRecipeItems(context, recipes) : [],
+      builder: (context, state) => ListView(
+        children: state is UserAuthenticated ? _mapRecipesToRecipeItems(context, recipes) : [],
       ),
     );
   }

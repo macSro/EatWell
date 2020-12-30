@@ -25,7 +25,6 @@ class RecipeScreen extends StatelessWidget {
     return BlocBuilder<RecipeBloc, RecipeState>(
       builder: (context, recipeState) => MyScaffold(
         hasAppBar: false,
-        title: '',
         hasDrawer: false,
         child: recipeState is RecipeDetailsFetched
             ? _getContent(

@@ -99,7 +99,6 @@ class MyDrawer extends StatelessWidget {
             child: FlatButton(
               onPressed: () {
                 BlocProvider.of<UserBloc>(context).add(SignOut());
-                //TODO: prepare a UnauthenticatedScreen for Sign Out and there button will go to login
               },
               child: IconText(
                 squeeze: true,

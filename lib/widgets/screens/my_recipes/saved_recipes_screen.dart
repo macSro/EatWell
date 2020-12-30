@@ -9,7 +9,6 @@ import '../../../bloc/recipe/recipe_event.dart';
 import '../../../model/recipe.dart';
 import '../../misc/icon_text.dart';
 import '../../misc/loading.dart';
-import '../all_recipes/recipe_list.dart';
 import '../all_recipes/recipe_list_item.dart';
 import '../recipe/recipe_screen.dart';
 
@@ -24,8 +23,8 @@ class SavedRecipesScreen extends StatelessWidget {
               previous.recipes.length != current.recipes.length) ||
           previous is SavedRecipesLoading && current is SavedRecipesFetched,*/
       builder: (context, state) => state is SavedRecipesFetched
-          ? RecipeList(
-              recipeItems: _mapRecipesToRecipeItems(context, state.recipes),
+          ? ListView(
+              children: _mapRecipesToRecipeItems(context, state.recipes),
             )
           : LoadingView(text: 'Loading saved recipes...'),
     );
