@@ -1,14 +1,16 @@
 import 'package:eat_well_v1/bloc/pantry/pantry_bloc.dart';
 import 'package:eat_well_v1/bloc/product_search/product_search_bloc.dart';
+import 'package:eat_well_v1/constants.dart';
 import 'package:eat_well_v1/model/extended_ingredient.dart';
+import 'package:eat_well_v1/widgets/misc/ingredient_list_tile.dart';
 import 'package:eat_well_v1/widgets/misc/loading.dart';
+import 'package:eat_well_v1/widgets/misc/products/add_product_form.dart';
+import 'package:eat_well_v1/widgets/misc/products/edit_product_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../misc/fullscreen_dialog.dart';
-import '../../misc/ingredient_list_tile.dart';
 import '../../misc/scaffold.dart';
-import 'add_product_form.dart';
 
 class PantryScreen extends StatelessWidget {
   static const routeName = '/pantry';
@@ -21,60 +23,119 @@ class PantryScreen extends StatelessWidget {
           title: 'Pantry',
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 0.0),
-            child: state is PantryFetched ? _getProducts(state.products) : LoadingView(text: 'Loading pantry...'),
+            child: state is PantryFetched
+                ? _getContent(context, state.products)
+                : LoadingView(text: 'Loading pantry...'),
           ),
-          floatingActionButton: state is PantryFetched ? _getAddButton(context, state.products) : null,
+          floatingActionButton: state is PantryFetched
+              ? _getAddButton(context, state.products)
+              : null,
         );
       },
     );
   }
 
-  Widget _getProducts(List<ExtendedIngredient> products) {
-    return ListView(
-                children: products
-                    .map(
-                      (product) => Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IngredientListTile(imageUrl: product.product.imageUrl, name: product.product.name),
-                          Divider(),
-                        ],
+  Widget _getContent(context, List<ExtendedIngredient> products) {
+    return Padding(
+      padding: const EdgeInsets.all(4),
+      child: ListView.builder(
+        itemCount: products.length,
+        itemBuilder: (context, index) => Card(
+          elevation: 3,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(16)),
+          ),
+          child: InkWell(
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (context) => SimpleDialog(
+                  title: Text(
+                    'Edit details',
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline6
+                        .copyWith(color: kPrimaryColorDark),
+                  ),
+                  contentPadding: const EdgeInsets.all(16),
+                  children: [
+                    EditProductForm(
+                      initAmount: products[index].amount,
+                      initUnit: products[index].unit,
+                      initDate: products[index].expDate,
+                    ),
+                  ],
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(16)),
+                  ),
+                ),
+              ).then((result) {
+                if (result != null) {
+                  if (result[0] == 'remove') {
+                    BlocProvider.of<PantryBloc>(context).add(
+                      RemoveProductFromPantry(
+                        currentProducts: products,
+                        productId: products[index].product.id,
                       ),
-                    )
-                    .toList(),
-              );
-  }
-
-  FloatingActionButton _getAddButton(context, List<ExtendedIngredient> products) => FloatingActionButton(
-        onPressed: () {
-          BlocProvider.of<ProductSearchBloc>(context).add(FetchProducts(excludedIds: products.map((product) => product.product.id).toList()));
-          showFullscreenDialog(
-            context: context,
-            child: AddProductForm(),
-            title: 'Add a product to your pantry!',
-            closeButton: _getCloseAddProductFormButton(context),
-          );
-        },
-        child: Icon(Icons.add_rounded),
-      );
-
-  Widget _getCloseAddProductFormButton(context) {
-    return Container(
-      alignment: Alignment.bottomCenter,
-      padding: const EdgeInsets.only(bottom: 16),
-      child: RaisedButton(
-        onPressed: () => Navigator.pop(context),
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Close',
-              style: TextStyle().copyWith(fontSize: 24),
+                    );
+                  }
+                  else{
+                    BlocProvider.of<PantryBloc>(context).add(
+                      UpdateProductInPantry(
+                        currentProducts: products,
+                        productId: products[index].product.id,
+                        amount: result[0],
+                        unit: result[1], 
+                        expDate: result[2],
+                      ),
+                    );
+                  }
+                }
+              });
+            },
+            child: IngredientListTile(
+              name: products[index].product.name,
+              imageUrl: products[index].product.imageUrl,
+              amount: products[index].amount,
+              unit: products[index].unit,
+              expDate: products[index].expDate,
             ),
-          ],
+          ),
         ),
       ),
+    );
+  }
+
+  FloatingActionButton _getAddButton(
+    context,
+    List<ExtendedIngredient> products,
+  ) {
+    return FloatingActionButton(
+      onPressed: () {
+        BlocProvider.of<ProductSearchBloc>(context).add(
+          FetchProducts(
+            excludedIds: products.map((product) => product.product.id).toList(),
+          ),
+        );
+        showFullscreenDialog(
+          context: context,
+          child: AddProductForm(includeAmount: true),
+          title: 'Add a product to your pantry!',
+        ).then((result) {
+          if (result != null) {
+            BlocProvider.of<PantryBloc>(context).add(
+              AddProductToPantry(
+                currentProducts: products,
+                productId: result[0],
+                amount: result[1],
+                unit: result[2],
+                expDate: result[3],
+              ),
+            );
+          }
+        });
+      },
+      child: Icon(Icons.add_rounded),
     );
   }
 }

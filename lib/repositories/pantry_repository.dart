@@ -8,7 +8,10 @@ class PantryRepository {
   FirebaseFirestore _firestore;
   UserRepository _userRepository;
 
-  PantryRepository({@required FirebaseFirestore firestore, @required UserRepository userRepository}) {
+  PantryRepository({
+    @required FirebaseFirestore firestore,
+    @required UserRepository userRepository,
+  }) {
     this._firestore = firestore;
     this._userRepository = userRepository;
   }
@@ -23,7 +26,7 @@ class PantryRepository {
     final List<Product> products = await Future.wait(
       pantryDocs
           .map(
-            (doc) => _getProduct(doc.data()['productId'] as String),
+            (doc) => getProduct(doc.data()['productId'] as String),
           )
           .toList(),
     );
@@ -31,16 +34,16 @@ class PantryRepository {
     for (int i = 0; i < pantryDocs.length; i++) {
       pantryProducts.add(ExtendedIngredient(
         product: products[i],
-        // amount: (pantryDocs[i].data()['amount'] as num).toDouble(),
-        // unit: pantryDocs[i].data()['unit'] as String,
-        //expDate: pantryDocs[i].data()['expDate'] as DATEEEEEE,
+        amount: (pantryDocs[i].data()['amount'] as num).toDouble(),
+        unit: pantryDocs[i].data()['unit'] as String,
+        //expDate: pantryDocs[i].data()['expDate'] LIKE IN INQUIRIES,
       ));
     }
 
     return pantryProducts;
   }
 
-  Future<Product> _getProduct(String productId) {
+  Future<Product> getProduct(String productId) {
     return _firestore.collection('products').doc(productId).get().then(
           (doc) => Product(
             id: doc.id,
@@ -50,12 +53,51 @@ class PantryRepository {
         );
   }
 
-  Future<void> addProductToPantry(String productId) async {
-    await (_firestore.collection('pantry-products').doc().set({
+  Future<void> addProductToPantry(
+      String productId, double amount, String unit, DateTime expDate) async {
+    return _firestore.collection('pantry-products').doc().set({
       'productId': productId,
       'userId': _userRepository.getCurrentUser().uid,
-    }));
+      'amount': amount,
+      'unit': unit,
+      'expDate': expDate,
+    });
   }
 
-  Future<void> updateProductInPantry(String productId) async {}
+  Future<void> removeProductFromPantry(String productId) async {
+    return _firestore
+        .collection('pantry-products')
+        .where('productId', isEqualTo: productId)
+        .where('userId', isEqualTo: _userRepository.getCurrentUser().uid)
+        .limit(1)
+        .get()
+        .then((snap) => _firestore
+            .collection('pantry-products')
+            .doc(snap.docs.first.id)
+            .delete(),
+        );
+  }
+
+  Future<void> updateProductInPantry({
+    String productId,
+    double amount,
+    String unit,
+    DateTime expDate,
+  }) async {
+    return _firestore
+        .collection('pantry-products')
+        .where('productId', isEqualTo: productId)
+        .where('userId', isEqualTo: _userRepository.getCurrentUser().uid)
+        .limit(1)
+        .get()
+        .then((snap) => _firestore
+          .collection('pantry-products')
+          .doc(snap.docs.first.id)
+          .update({
+            'amount': amount,
+            'unit': unit,
+            'expDate': Timestamp.fromDate(expDate),
+          }),
+        );
+  } 
 }

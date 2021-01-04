@@ -16,6 +16,20 @@ class ExtendedIngredient extends Equatable {
     this.expDate,
   });
 
+  ExtendedIngredient copyWith({
+    Product product,
+    double amount,
+    String unit,
+    DateTime expDate,
+  }){
+    return ExtendedIngredient(
+      product: product ?? this.product,
+      amount: amount ?? this.amount,
+      unit: unit ?? this.unit,
+      expDate: expDate ?? this.expDate,
+    );
+  }
+
   @override
   List<Object> get props => [product, amount, unit, expDate];
 

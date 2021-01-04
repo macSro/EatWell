@@ -8,6 +8,14 @@ class Product extends Equatable {
 
   Product({@required this.id, @required this.name, this.imageUrl});
 
+  Product copyWith({String id, String name, String imageUrl}) {
+    return Product(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      imageUrl: imageUrl ?? this.imageUrl,
+    );
+  }
+
   @override
   List<Object> get props => [id, name, imageUrl];
 

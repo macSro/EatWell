@@ -41,9 +41,12 @@ class IngredientListTile extends StatelessWidget {
       ),
       title: Text(
         Tools.capitalizeFirstWord(name),
-        style: Theme.of(context).textTheme.bodyText1,
+        style: amount != null
+            ? Theme.of(context).textTheme.headline6.copyWith(fontSize: 18)
+            : Theme.of(context).textTheme.bodyText1,
       ),
-      subtitle: expDate != null ? Text('Exp: ${expDate.day}-${expDate.month}-${expDate.year}') : null,
+      subtitle:
+          expDate != null ? Text('Expires: ${Tools.getDate(expDate)}') : null,
       trailing: otherTrailing != null
           ? otherTrailing
           : amount != null

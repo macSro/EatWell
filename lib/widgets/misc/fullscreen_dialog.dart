@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 
 import '../../constants.dart';
 
-showFullscreenDialog({
+Future showFullscreenDialog({
   @required BuildContext context,
   @required Widget child,
   @required String title,
-  @required Widget closeButton,
 }) {
-  showGeneralDialog(
+  return showGeneralDialog(
     context: context,
     barrierColor: Colors.white.withOpacity(0.93),
     barrierDismissible: false,
@@ -17,7 +16,6 @@ showFullscreenDialog({
       return _FullscreenDialog(
         child: child,
         title: title,
-        closeButton: closeButton,
       );
     },
   );
@@ -26,13 +24,8 @@ showFullscreenDialog({
 class _FullscreenDialog extends StatelessWidget {
   final Widget child;
   final String title;
-  final Widget closeButton;
 
-  _FullscreenDialog({
-    @required this.child,
-    @required this.title,
-    @required this.closeButton,
-  });
+  _FullscreenDialog({@required this.child, @required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -45,10 +38,8 @@ class _FullscreenDialog extends StatelessWidget {
               Center(
                 child: Text(
                   '$title',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline5
-                      .copyWith(color: kPrimaryColorDark, fontWeight: FontWeight.bold),
+                  style: Theme.of(context).textTheme.headline5.copyWith(
+                      color: kPrimaryColorDark, fontWeight: FontWeight.bold),
                 ),
               ),
               const SizedBox(height: 32),
@@ -56,7 +47,23 @@ class _FullscreenDialog extends StatelessWidget {
                 child: child,
               ),
               const SizedBox(height: 16),
-              closeButton,
+              Container(
+                alignment: Alignment.bottomCenter,
+                padding: const EdgeInsets.only(bottom: 16),
+                child: RaisedButton(
+                  onPressed: () => Navigator.pop(context),
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Close',
+                        style: TextStyle().copyWith(fontSize: 24),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         ),

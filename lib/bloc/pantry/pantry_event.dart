@@ -13,19 +13,56 @@ class FetchPantry extends PantryEvent {
 }
 
 class AddProductToPantry extends PantryEvent {
+  final List<ExtendedIngredient> currentProducts;
   final String productId;
+  final double amount;
+  final String unit;
+  final DateTime expDate;
 
-  AddProductToPantry({this.productId});
+  AddProductToPantry({
+    @required this.currentProducts,
+    @required this.productId,
+    @required this.amount,
+    @required this.unit,
+    this.expDate,
+  });
 
   @override
-  List<Object> get props => [productId];
+  List<Object> get props => [
+        currentProducts,
+        productId,
+        amount,
+        unit,
+        expDate,
+      ];
+}
+
+class RemoveProductFromPantry extends PantryEvent {
+  final List<ExtendedIngredient> currentProducts;
+  final String productId;
+
+  RemoveProductFromPantry(
+      {@required this.currentProducts, @required this.productId});
+
+  @override
+  List<Object> get props => [currentProducts, productId];
 }
 
 class UpdateProductInPantry extends PantryEvent {
-  final Product product;
+  final List<ExtendedIngredient> currentProducts;
+  final String productId;
+  final double amount;
+  final String unit;
+  final DateTime expDate;
 
-  UpdateProductInPantry({this.product});
+  UpdateProductInPantry({
+    @required this.currentProducts,
+    @required this.productId,
+    this.amount,
+    this.unit,
+    this.expDate,
+  });
 
   @override
-  List<Object> get props => [product];
+  List<Object> get props => [currentProducts, productId, amount, unit, expDate];
 }
