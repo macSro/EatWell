@@ -1,4 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:eat_well_v1/bloc/all_recipes/recipe_list_bloc.dart';
+import 'package:eat_well_v1/bloc/all_recipes/recipe_list_event.dart';
+import 'package:eat_well_v1/bloc/diet/diet_bloc.dart';
 import 'package:eat_well_v1/bloc/pantry/pantry_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,8 +11,6 @@ import '../../../bloc/my_recipes/created_recipes/created_recipes_bloc.dart';
 import '../../../bloc/my_recipes/created_recipes/created_recipes_event.dart';
 import '../../../bloc/my_recipes/saved_recipes/saved_recipes_bloc.dart';
 import '../../../bloc/my_recipes/saved_recipes/saved_recipes_event.dart';
-import '../../../bloc/recipes/recipe_list_bloc.dart';
-import '../../../bloc/recipes/recipe_list_event.dart';
 import '../../../bloc/user/user_bloc.dart';
 import '../../../bloc/user/user_event.dart';
 import '../../../constants.dart';
@@ -55,7 +56,7 @@ class MyDrawer extends StatelessWidget {
                   style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
               onTap: () {
                 Navigator.of(context).pushReplacementNamed(RecipesScreen.routeName);
-                BlocProvider.of<RecipeListBloc>(context).add(FetchAllRecipes());
+                BlocProvider.of<RecipeListBloc>(context).add(FetchRecipes());
               }),
           MyDrawerTile(
             icon: Icon(
@@ -92,7 +93,10 @@ class MyDrawer extends StatelessWidget {
               color: kAccentColor,
             ),
             title: Text('Diet', style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
-            onTap: () => Navigator.of(context).pushReplacementNamed(DietScreen.routeName),
+            onTap: () {
+              Navigator.of(context).pushReplacementNamed(DietScreen.routeName);
+              BlocProvider.of<DietBloc>(context).add(FetchBannedProducts());
+            },
           ),
           Spacer(),
           Center(

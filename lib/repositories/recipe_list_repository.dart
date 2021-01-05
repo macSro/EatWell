@@ -1,44 +1,64 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eat_well_v1/model/extended_ingredient.dart';
+import 'package:eat_well_v1/model/product.dart';
+import 'package:eat_well_v1/repositories/pantry_repository.dart';
 import 'package:eat_well_v1/repositories/recipe_repository.dart';
 import 'package:flutter/foundation.dart';
 
 import '../model/recipe.dart';
-import 'user_repository.dart';
 
 class RecipeListRepository {
   FirebaseFirestore _firestore;
-  UserRepository _userRepository;
   RecipeRepository _recipeRepository;
+  PantryRepository _pantryRepository;
 
   RecipeListRepository({
     @required FirebaseFirestore firestore,
-    @required UserRepository userRepository,
     @required RecipeRepository recipeRepository,
+    @required PantryRepository pantryRepository,
   }) {
     this._firestore = firestore;
-    this._userRepository = userRepository;
     this._recipeRepository = recipeRepository;
+    this._pantryRepository = pantryRepository;
   }
 
   Future<List<Recipe>> fetchAllRecipes() async {
     final recipeDocs = (await _firestore.collection('recipes').get()).docs;
 
-    final List<Recipe> recipes = await Future.wait(recipeDocs.map((doc) => _getRecipe(doc)).toList());
+    final List<Recipe> recipes = await Future.wait(recipeDocs.map((doc) => getRecipe(doc)).toList());
 
     return recipes;
   }
 
-  Future<Recipe> _getRecipe(QueryDocumentSnapshot recipeDoc) async {
+  Future<Recipe> getRecipe(DocumentSnapshot recipeDoc) async {
     final recipeId = recipeDoc.id;
     final recipeData = recipeDoc.data();
-    final ingredients = await _recipeRepository.fetchRecipeIngredients(recipeId);
-    final rating = await _recipeRepository.fetchRecipeRating(recipeId);
-    final dishTypes = await _getRecipeFilters(
-        recipeId: recipeId, collectionName: 'dish-types', collectionIdName: 'dishTypeId');
-    final cuisines = await _getRecipeFilters(
-        recipeId: recipeId, collectionName: 'cuisines', collectionIdName: 'cuisineId');
-    final diets =
-        await _getRecipeFilters(recipeId: recipeId, collectionName: 'diets', collectionIdName: 'dietId');
+
+    final futuresResults = await Future.wait([
+      _recipeRepository.fetchRecipeIngredients(recipeId),
+      _recipeRepository.fetchRecipeRating(recipeId),
+      _getRecipeFilters(recipeId: recipeId, collectionName: 'dish-types', collectionIdName: 'dishTypeId'),
+      _getRecipeFilters(recipeId: recipeId, collectionName: 'cuisines', collectionIdName: 'cuisineId'),
+      _getRecipeFilters(recipeId: recipeId, collectionName: 'diets', collectionIdName: 'dietId'),
+    ]);
+
+    final List<ExtendedIngredient> ingredients = futuresResults[0];
+    final double rating = futuresResults[1];
+    final List<String> dishTypes = futuresResults[2];
+    final List<String> cuisines = futuresResults[3];
+    final List<String> diets = futuresResults[4];
+
+    final List<String> productsIds = ingredients.map((ingredient) => ingredient.product.id).toList();
+    final inPantry = await _pantryRepository.getNumberOfProductsInPantry(productsIds);
+    
+    // final ingredients = await _recipeRepository.fetchRecipeIngredients(recipeId);
+    // final rating = await _recipeRepository.fetchRecipeRating(recipeId);
+    // final dishTypes = await _getRecipeFilters(
+    //     recipeId: recipeId, collectionName: 'dish-types', collectionIdName: 'dishTypeId');
+    // final cuisines = await _getRecipeFilters(
+    //     recipeId: recipeId, collectionName: 'cuisines', collectionIdName: 'cuisineId');
+    // final diets =
+    //     await _getRecipeFilters(recipeId: recipeId, collectionName: 'diets', collectionIdName: 'dietId');
 
     return Recipe(
       id: recipeDoc.id,
@@ -53,6 +73,7 @@ class RecipeListRepository {
       dishTypes: dishTypes,
       cuisines: cuisines,
       diets: diets,
+      inPantry: inPantry,
     );
   }
 

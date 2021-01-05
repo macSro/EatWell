@@ -1,3 +1,4 @@
+import 'package:eat_well_v1/model/recipe.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 
@@ -19,10 +20,11 @@ class SaveRecipe extends SavedRecipesEvent {
 }
 
 class RemoveRecipeFromSaved extends SavedRecipesEvent {
+  final List<Recipe> currentRecipes;
   final String recipeId;
 
-  RemoveRecipeFromSaved({@required this.recipeId});
+  RemoveRecipeFromSaved({this.currentRecipes, @required this.recipeId});
 
   @override
-  List<Object> get props => [recipeId];
+  List<Object> get props => [currentRecipes, recipeId];
 }

@@ -8,9 +8,10 @@ import '../../../model/recipe.dart';
 
 class RecipeRatingButtons extends StatefulWidget {
   final Recipe recipe;
+  final bool isSaved;
   final int userRating;
 
-  RecipeRatingButtons({this.recipe, this.userRating});
+  RecipeRatingButtons({@required this.recipe, @required this.isSaved, @required this.userRating});
 
   @override
   _RecipeRatingButtonsState createState() => _RecipeRatingButtonsState();
@@ -132,9 +133,12 @@ class _RecipeRatingButtonsState extends State<RecipeRatingButtons> {
   }
 
   _rateRecipe(context, rating) {
-    BlocProvider.of<RecipeBloc>(context).add(UpdateRecipeRating(
-      recipe: widget.recipe,
-      rating: rating,
-    ));
+    BlocProvider.of<RecipeBloc>(context).add(
+      UpdateRecipeRating(
+        recipe: widget.recipe,
+        isSaved: widget.isSaved,
+        rating: rating,
+      ),
+    );
   }
 }

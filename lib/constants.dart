@@ -24,7 +24,25 @@ const kRecipeImageUrlBasePath = 'https://spoonacular.com/recipeImages/';
 const kIngredientImageUrlBasePath = 'https://spoonacular.com/cdn/ingredients_100x100/';
 
 //TYPES
-enum MealTypes {
+enum SortBy {
+  AZ,
+  ZA,
+  Rating,
+  PreparationTime,
+  Servings,
+  PantryProducts,
+}
+
+const kSortBy = {
+  SortBy.AZ: 'A-Z',
+  SortBy.ZA: 'Z-A',
+  SortBy.Rating: 'Rating',
+  SortBy.PreparationTime: 'Preparation Time',
+  SortBy.Servings: 'Servings',
+  SortBy.PantryProducts: 'Pantry Products',
+};
+
+enum MealType {
   MainCourse,
   SideDish,
   Dessert,
@@ -40,24 +58,25 @@ enum MealTypes {
   Snack,
   Drink,
 }
+
 const kMealTypes = {
-  MealTypes.Appetizer: 'appetizer',
-  MealTypes.Beverage: 'beverage',
-  MealTypes.Bread: 'bread',
-  MealTypes.Breakfast: 'breakfast',
-  MealTypes.Dessert: 'dessert',
-  MealTypes.Drink: 'drink',
-  MealTypes.Fingerfood: 'fingerfood',
-  MealTypes.MainCourse: 'main course',
-  MealTypes.Marinade: 'marinade',
-  MealTypes.Salad: 'salad',
-  MealTypes.Sauce: 'sauce',
-  MealTypes.SideDish: 'side dish',
-  MealTypes.Snack: 'snack',
-  MealTypes.Soup: 'soup',
+  MealType.Appetizer: 'appetizer',
+  MealType.Beverage: 'beverage',
+  MealType.Bread: 'bread',
+  MealType.Breakfast: 'breakfast',
+  MealType.Dessert: 'dessert',
+  MealType.Drink: 'drink',
+  MealType.Fingerfood: 'fingerfood',
+  MealType.MainCourse: 'main course',
+  MealType.Marinade: 'marinade',
+  MealType.Salad: 'salad',
+  MealType.Sauce: 'sauce',
+  MealType.SideDish: 'side dish',
+  MealType.Snack: 'snack',
+  MealType.Soup: 'soup',
 };
 
-enum Cuisines {
+enum Cuisine {
   African,
   American,
   British,
@@ -86,35 +105,35 @@ enum Cuisines {
   Vietnamese,
 }
 const kCuisines = {
-  Cuisines.African: 'African',
-  Cuisines.American: 'American',
-  Cuisines.British: 'British',
-  Cuisines.Cajun: 'Cajun',
-  Cuisines.Caribbean: 'Caribbean',
-  Cuisines.Chinese: 'Chinese',
-  Cuisines.EasternEuropean: 'Eastern Europe',
-  Cuisines.European: 'European',
-  Cuisines.French: 'French',
-  Cuisines.German: 'German',
-  Cuisines.Greek: 'Greek',
-  Cuisines.Indian: 'Indian',
-  Cuisines.Irish: 'Irish',
-  Cuisines.Italian: 'Italian',
-  Cuisines.Japanese: 'Japanese',
-  Cuisines.Jewish: 'Jewish',
-  Cuisines.Korean: 'Korean',
-  Cuisines.LatinAmerican: 'Latin American',
-  Cuisines.Mediterranean: 'Mediterranean',
-  Cuisines.Mexican: 'Mexican',
-  Cuisines.MiddleEastern: 'Middle Eastern',
-  Cuisines.Nordic: 'Nordic',
-  Cuisines.Southern: 'Southern',
-  Cuisines.Spanish: 'Spanish',
-  Cuisines.Thai: 'Thai',
-  Cuisines.Vietnamese: 'Vietnamese',
+  Cuisine.African: 'African',
+  Cuisine.American: 'American',
+  Cuisine.British: 'British',
+  Cuisine.Cajun: 'Cajun',
+  Cuisine.Caribbean: 'Caribbean',
+  Cuisine.Chinese: 'Chinese',
+  Cuisine.EasternEuropean: 'Eastern Europe',
+  Cuisine.European: 'European',
+  Cuisine.French: 'French',
+  Cuisine.German: 'German',
+  Cuisine.Greek: 'Greek',
+  Cuisine.Indian: 'Indian',
+  Cuisine.Irish: 'Irish',
+  Cuisine.Italian: 'Italian',
+  Cuisine.Japanese: 'Japanese',
+  Cuisine.Jewish: 'Jewish',
+  Cuisine.Korean: 'Korean',
+  Cuisine.LatinAmerican: 'Latin American',
+  Cuisine.Mediterranean: 'Mediterranean',
+  Cuisine.Mexican: 'Mexican',
+  Cuisine.MiddleEastern: 'Middle Eastern',
+  Cuisine.Nordic: 'Nordic',
+  Cuisine.Southern: 'Southern',
+  Cuisine.Spanish: 'Spanish',
+  Cuisine.Thai: 'Thai',
+  Cuisine.Vietnamese: 'Vietnamese',
 };
 
-enum Diets {
+enum Diet {
   GlutenFree,
   Ketogenic,
   LactoVegetarian,
@@ -127,14 +146,14 @@ enum Diets {
   Whole30,
 }
 const kDiets = {
-  Diets.GlutenFree: 'Gluten Free',
-  Diets.Ketogenic: 'Ketogenic',
-  Diets.LactoVegetarian: 'Lacto-Vegetarian',
-  Diets.OvoVegetarian: 'Ovo-Vegetarian',
-  Diets.Paleo: 'Paleo',
-  Diets.Pescetarian: 'Pescetarian',
-  Diets.Primal: 'Primal',
-  Diets.Vegan: 'Vegan',
-  Diets.Vegetarian: 'Vegetarian',
-  Diets.Whole30: 'Whole30',
+  Diet.GlutenFree: 'Gluten Free',
+  Diet.Ketogenic: 'Ketogenic',
+  Diet.LactoVegetarian: 'Lacto-Vegetarian',
+  Diet.OvoVegetarian: 'Ovo-Vegetarian',
+  Diet.Paleo: 'Paleo',
+  Diet.Pescetarian: 'Pescetarian',
+  Diet.Primal: 'Primal',
+  Diet.Vegan: 'Vegan',
+  Diet.Vegetarian: 'Vegetarian',
+  Diet.Whole30: 'Whole30',
 };

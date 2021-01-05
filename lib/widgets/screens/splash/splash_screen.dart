@@ -1,9 +1,9 @@
+import 'package:eat_well_v1/bloc/all_recipes/recipe_list_bloc.dart';
+import 'package:eat_well_v1/bloc/all_recipes/recipe_list_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../../bloc/recipes/recipe_list_bloc.dart';
-import '../../../bloc/recipes/recipe_list_event.dart';
 import '../../../bloc/user/user_bloc.dart';
 import '../../../bloc/user/user_state.dart';
 import '../../../constants.dart';
@@ -23,7 +23,7 @@ class SplashScreen extends StatelessWidget {
         } else {
           //State has to be UserAuthenticated here.
           Navigator.pushReplacementNamed(context, RecipesScreen.routeName);
-          BlocProvider.of<RecipeListBloc>(context).add(FetchAllRecipes());
+          BlocProvider.of<RecipeListBloc>(context).add(FetchRecipes());
         }
       },
       child: Container(

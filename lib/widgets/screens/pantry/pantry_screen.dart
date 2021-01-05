@@ -24,12 +24,21 @@ class PantryScreen extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 0.0),
             child: state is PantryFetched
-                ? _getContent(context, state.products)
+                ? state.products.isNotEmpty
+                    ? _getContent(context, state.products)
+                    : Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Text(
+                            'You haven\'t added any products yet!',
+                            style: Theme.of(context).textTheme.headline4,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      )
                 : LoadingView(text: 'Loading pantry...'),
           ),
-          floatingActionButton: state is PantryFetched
-              ? _getAddButton(context, state.products)
-              : null,
+          floatingActionButton: state is PantryFetched ? _getAddButton(context, state.products) : null,
         );
       },
     );
@@ -43,7 +52,7 @@ class PantryScreen extends StatelessWidget {
         itemBuilder: (context, index) => Card(
           elevation: 3,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(16)),
+            borderRadius: BorderRadius.all(Radius.circular(8)),
           ),
           child: InkWell(
             onTap: () {
@@ -52,10 +61,7 @@ class PantryScreen extends StatelessWidget {
                 builder: (context) => SimpleDialog(
                   title: Text(
                     'Edit details',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline6
-                        .copyWith(color: kPrimaryColorDark),
+                    style: Theme.of(context).textTheme.headline6.copyWith(color: kPrimaryColorDark),
                   ),
                   contentPadding: const EdgeInsets.all(16),
                   children: [
@@ -66,7 +72,7 @@ class PantryScreen extends StatelessWidget {
                     ),
                   ],
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(16)),
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
                   ),
                 ),
               ).then((result) {
@@ -78,14 +84,13 @@ class PantryScreen extends StatelessWidget {
                         productId: products[index].product.id,
                       ),
                     );
-                  }
-                  else{
+                  } else {
                     BlocProvider.of<PantryBloc>(context).add(
                       UpdateProductInPantry(
                         currentProducts: products,
                         productId: products[index].product.id,
                         amount: result[0],
-                        unit: result[1], 
+                        unit: result[1],
                         expDate: result[2],
                       ),
                     );

@@ -23,8 +23,7 @@ class _EditProductFormState extends State<EditProductForm> {
 
   @override
   void initState() {
-    if (widget.initAmount != null)
-      _amountController.text = '${widget.initAmount}';
+    if (widget.initAmount != null) _amountController.text = '${widget.initAmount}';
     _selectedUnit = widget.initUnit ?? 'g';
     if (widget.initDate != null) _selectedDate = widget.initDate;
     super.initState();
@@ -68,8 +67,7 @@ class _EditProductFormState extends State<EditProductForm> {
                     controller: _amountController,
                     decoration: InputDecoration(
                       hintText: 'Amount',
-                      contentPadding:
-                          const EdgeInsets.only(left: 12, right: 12),
+                      contentPadding: const EdgeInsets.only(left: 12, right: 12),
                     ),
                   ),
                 ),
@@ -124,10 +122,7 @@ class _EditProductFormState extends State<EditProductForm> {
             if (_selectedDate != null)
               Text(
                 'Expiry date selected: ${Tools.getDate(_selectedDate)}',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline6
-                    .copyWith(fontSize: 16),
+                style: Theme.of(context).textTheme.headline6.copyWith(fontSize: 16),
               ),
           ],
         ),
@@ -136,26 +131,43 @@ class _EditProductFormState extends State<EditProductForm> {
   }
 
   Widget _getSaveButton() {
-    return Row();
-      RaisedButton(
-      color: kPrimaryColor,
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-      onPressed: () {
-        if (_formKey.currentState.validate()) {
-          Navigator.pop(
-            context,
-            [
-              double.parse(_amountController.text),
-              _selectedUnit,
-              _selectedDate,
-            ],
-          );
-        }
-      },
-      child: Text(
-        'Save',
-        style: TextStyle(fontSize: 22),
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        RaisedButton(
+          color: kPrimaryColorLight,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+          onPressed: () {
+            if (_formKey.currentState.validate()) {
+              Navigator.pop(context);
+            }
+          },
+          child: Text(
+            'Cancel',
+            style: TextStyle(fontSize: 16),
+          ),
+        ),
+        RaisedButton(
+          color: kPrimaryColor,
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+          onPressed: () {
+            if (_formKey.currentState.validate()) {
+              Navigator.pop(
+                context,
+                [
+                  double.parse(_amountController.text),
+                  _selectedUnit,
+                  _selectedDate,
+                ],
+              );
+            }
+          },
+          child: Text(
+            'Save',
+            style: TextStyle(fontSize: 22),
+          ),
+        ),
+      ],
     );
   }
 
@@ -172,9 +184,9 @@ class _EditProductFormState extends State<EditProductForm> {
       ),
       onPressed: () {
         Navigator.pop(
-            context,
-            ['remove'],
-          );
+          context,
+          ['remove'],
+        );
       },
     );
   }

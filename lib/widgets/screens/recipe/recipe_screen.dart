@@ -31,6 +31,7 @@ class RecipeScreen extends StatelessWidget {
                 context,
                 mediaQuery,
                 recipeState.recipe,
+                recipeState.isSaved,
                 recipeState.userRating,
               )
             : LoadingView(text: 'Loading recipe details...'),
@@ -38,7 +39,7 @@ class RecipeScreen extends StatelessWidget {
     );
   }
 
-  Widget _getContent(context, mediaQuery, recipe, userRating) {
+  Widget _getContent(context, mediaQuery, recipe, isSaved, userRating) {
     return Stack(
       children: [
         ListView(
@@ -81,7 +82,7 @@ class RecipeScreen extends StatelessWidget {
                   style: Theme.of(context).textTheme.headline6,
                 ),
                 const SizedBox(height: 8),
-                RecipeRatingButtons(recipe: recipe, userRating: userRating),
+                RecipeRatingButtons(recipe: recipe, isSaved: isSaved, userRating: userRating,),
                 const SizedBox(height: 32),
               ],
             ),
@@ -95,7 +96,7 @@ class RecipeScreen extends StatelessWidget {
         Container(
           alignment: Alignment.topRight,
           padding: const EdgeInsets.all(16),
-          child: _getSaveButton(context, recipe.id),
+          child: _getSaveButton(context, recipe.id, isSaved),
         ),
       ],
     );
@@ -118,9 +119,10 @@ class RecipeScreen extends StatelessWidget {
     );
   }
 
-  Widget _getSaveButton(context, recipeId) {
+  Widget _getSaveButton(context, recipeId, isSaved) {
     return CircleIconButton(
       iconButton: ChangingIconButton(
+        initState: !isSaved,
         iconPrimary: Icon(
           Icons.favorite_border_rounded,
           color: Colors.white,

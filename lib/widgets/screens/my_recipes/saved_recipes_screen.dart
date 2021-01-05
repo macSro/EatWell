@@ -6,7 +6,6 @@ import '../../../bloc/my_recipes/saved_recipes/saved_recipes_event.dart';
 import '../../../bloc/my_recipes/saved_recipes/saved_recipes_state.dart';
 import '../../../bloc/recipe/recipe_bloc.dart';
 import '../../../bloc/recipe/recipe_event.dart';
-import '../../../model/recipe.dart';
 import '../../misc/icon_text.dart';
 import '../../misc/loading.dart';
 import '../all_recipes/recipe_list_item.dart';
@@ -17,30 +16,28 @@ class SavedRecipesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     print('build saveddddd');
     return BlocBuilder<SavedRecipesBloc, SavedRecipesState>(
-      /*buildWhen: (previous, current) =>
-          (previous is SavedRecipesFetched &&
-              current is SavedRecipesFetched &&
-              previous.recipes.length != current.recipes.length) ||
-          previous is SavedRecipesLoading && current is SavedRecipesFetched,*/
       builder: (context, state) => state is SavedRecipesFetched
-          ? ListView(
-              children: _mapRecipesToRecipeItems(context, state.recipes),
-            )
+          ? state.recipes.isNotEmpty
+              ? ListView.builder(
+                  itemCount: state.recipes.length,
+                 //itemBuilder: (context, index) => _mapRecipeToRecipeItem(context, state.recipes[index]),
+                  itemBuilder: (context, index) => RecipeListItem(recipe: state.recipes[index], onTap: () => _navigateToRecipeScreen(context, state.recipes[index]), bottom: _getRemoveFromSavedButton(context, state.recipes, state.recipes[index].id)),
+                )
+              : Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      'You haven\'t saved any recipes yet!',
+                      style: Theme.of(context).textTheme.headline4,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                )
           : LoadingView(text: 'Loading saved recipes...'),
     );
   }
 
-  _mapRecipesToRecipeItems(context, List<Recipe> recipes) {
-    return recipes
-        .map((recipe) => RecipeListItem(
-              recipe: recipe,
-              onTap: () => _navigateToRecipeScreen(context, recipe),
-              bottom: _getRemoveFromSavedButton(context, recipe.id),
-            ))
-        .toList();
-  }
-
-  Widget _getRemoveFromSavedButton(context, recipeId) {
+  Widget _getRemoveFromSavedButton(context, currentRecipes, recipeId) {
     return RaisedButton(
       color: Colors.red,
       padding: const EdgeInsets.symmetric(vertical: 8),
@@ -53,8 +50,9 @@ class SavedRecipesScreen extends StatelessWidget {
           ),
         ],
       ),
-      onPressed: () => BlocProvider.of<SavedRecipesBloc>(context)
-          .add(RemoveRecipeFromSaved(recipeId: recipeId)),
+      onPressed: () => BlocProvider.of<SavedRecipesBloc>(context).add(
+        RemoveRecipeFromSaved(currentRecipes: currentRecipes, recipeId: recipeId),
+      ),
     );
   }
 

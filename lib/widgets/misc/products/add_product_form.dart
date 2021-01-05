@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:eat_well_v1/bloc/inquiry/inquiry_bloc.dart';
 import 'package:eat_well_v1/bloc/product_search/product_search_bloc.dart';
 import 'package:eat_well_v1/model/product.dart';
 import 'package:eat_well_v1/widgets/misc/icon_text.dart';
@@ -40,8 +41,7 @@ class _AddProductFormState extends State<AddProductForm> {
                     _getSearchButton(state.allProducts),
                     const SizedBox(height: 16),
                     const Divider(),
-                    if (state.foundProducts.length > 0)
-                      _getSearchResults(state.foundProducts),
+                    if (state.foundProducts.length > 0) _getSearchResults(state.foundProducts),
                     if (state.foundProducts.length > 0) const Divider(),
                     if (state.foundProducts.length <= 0) _getMissingReport(),
                   ],
@@ -73,12 +73,16 @@ class _AddProductFormState extends State<AddProductForm> {
     return RaisedButton(
       padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 8),
       color: kPrimaryColorDark,
-      onPressed: () => BlocProvider.of<ProductSearchBloc>(context).add(
-        SearchForProduct(
-          allProducts: allProducts,
-          searchPhrase: _searchController.text,
-        ),
-      ),
+      onPressed: () {
+        FocusScope.of(context).unfocus();
+        BlocProvider.of<InquiryBloc>(context).add(ResetMissingReportResult());
+        BlocProvider.of<ProductSearchBloc>(context).add(
+          SearchForProduct(
+            allProducts: allProducts,
+            searchPhrase: _searchController.text,
+          ),
+        );
+      },
       child: Text(
         'Search',
         style: TextStyle().copyWith(fontSize: 18),
@@ -107,7 +111,7 @@ class _AddProductFormState extends State<AddProductForm> {
                     setState(() {
                       _selectedId = foundProducts[index].id;
                     });
-                    Navigator.pop(context, _selectedId);
+                    Navigator.pop(context, [_selectedId]);
                   }
                 },
                 child: Text('Select'),
@@ -135,10 +139,7 @@ class _AddProductFormState extends State<AddProductForm> {
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.center,
-          style: Theme.of(context)
-              .textTheme
-              .headline4
-              .copyWith(color: kPrimaryColor),
+          style: Theme.of(context).textTheme.headline4.copyWith(color: kPrimaryColor),
         ),
         IconButton(
           splashRadius: 22,
@@ -182,8 +183,7 @@ class _AddProductFormState extends State<AddProductForm> {
                     controller: _amountController,
                     decoration: InputDecoration(
                       hintText: 'Amount',
-                      contentPadding:
-                          const EdgeInsets.only(left: 12, right: 12),
+                      contentPadding: const EdgeInsets.only(left: 12, right: 12),
                     ),
                   ),
                 ),
@@ -234,7 +234,7 @@ class _AddProductFormState extends State<AddProductForm> {
               color: kAccentColor,
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
             ),
-            if(_selectedDate != null) const SizedBox(height: 16),
+            if (_selectedDate != null) const SizedBox(height: 16),
             if (_selectedDate != null)
               Text(
                 'Expiry date selected: ${Tools.getDate(_selectedDate)}',
@@ -279,41 +279,63 @@ class _AddProductFormState extends State<AddProductForm> {
 
   Widget _getMissingReport() {
     return Expanded(
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            'Oops, no results!',
-            style: Theme.of(context)
-                .textTheme
-                .headline4
-                .copyWith(color: kPrimaryColor),
-          ),
-          const SizedBox(height: 32),
-          Text(
-            'Please check the search phrase or report a missing product. We will update the product list ASAP.',
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.subtitle1,
-          ),
-          const SizedBox(height: 32),
-          RaisedButton(
-            color: Colors.redAccent,
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-            onPressed: () {},
-            child: IconText(
-              text: Text(
-                'Report!',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline6
-                    .copyWith(color: Colors.white),
-              ),
-              icon: Icon(Icons.warning_rounded),
-              squeeze: true,
-            ),
-          ),
-        ],
+      child: BlocBuilder<InquiryBloc, InquiryState>(
+        builder: (context, state) {
+          return state is InquiryInitial
+              ? Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Oops, no results!',
+                      style: Theme.of(context).textTheme.headline4.copyWith(color: kPrimaryColor),
+                    ),
+                    const SizedBox(height: 32),
+                    Text(
+                      'Please check the search phrase or report a missing product. We will update the product list!',
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.subtitle1,
+                    ),
+                    const SizedBox(height: 32),
+                    RaisedButton(
+                      color: Colors.redAccent,
+                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                      onPressed: () {
+                        BlocProvider.of<InquiryBloc>(context).add(
+                          ReportMissingProduct(productName: _searchController.text),
+                        );
+                      },
+                      child: IconText(
+                        text: Text(
+                          'Report!',
+                          style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white),
+                        ),
+                        icon: Icon(Icons.warning_rounded),
+                        squeeze: true,
+                      ),
+                    ),
+                  ],
+                )
+              : state is MissingProductReported
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.outgoing_mail,
+                          color: kPrimaryColor,
+                          size: 100,
+                        ),
+                        Text(
+                          'Your report has been submitted. Thanks!',
+                          style: Theme.of(context).textTheme.headline4.copyWith(color: kPrimaryColor),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    )
+                  : LoadingView(
+                      text: 'Reporting...',
+                    );
+        },
       ),
     );
   }

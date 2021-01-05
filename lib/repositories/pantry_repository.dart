@@ -53,8 +53,7 @@ class PantryRepository {
         );
   }
 
-  Future<void> addProductToPantry(
-      String productId, double amount, String unit, DateTime expDate) async {
+  Future<void> addProductToPantry(String productId, double amount, String unit, DateTime expDate) async {
     return _firestore.collection('pantry-products').doc().set({
       'productId': productId,
       'userId': _userRepository.getCurrentUser().uid,
@@ -71,10 +70,8 @@ class PantryRepository {
         .where('userId', isEqualTo: _userRepository.getCurrentUser().uid)
         .limit(1)
         .get()
-        .then((snap) => _firestore
-            .collection('pantry-products')
-            .doc(snap.docs.first.id)
-            .delete(),
+        .then(
+          (snap) => _firestore.collection('pantry-products').doc(snap.docs.first.id).delete(),
         );
   }
 
@@ -90,14 +87,28 @@ class PantryRepository {
         .where('userId', isEqualTo: _userRepository.getCurrentUser().uid)
         .limit(1)
         .get()
-        .then((snap) => _firestore
-          .collection('pantry-products')
-          .doc(snap.docs.first.id)
-          .update({
+        .then(
+          (snap) => _firestore.collection('pantry-products').doc(snap.docs.first.id).update({
             'amount': amount,
             'unit': unit,
             'expDate': Timestamp.fromDate(expDate),
           }),
         );
-  } 
+  }
+
+  Future<int> getNumberOfProductsInPantry(List<String> productIds) {
+    return _firestore
+        .collection('pantry-products')
+        .where('userId', isEqualTo: _userRepository.getCurrentUser().uid)
+        .get()
+        .then(
+      (snap) {
+        int result = 0;
+        snap.docs.forEach((doc) {
+          if (productIds.contains(doc.data()['productId'])) result++;
+        });
+        return result;
+      },
+    );
+  }
 }

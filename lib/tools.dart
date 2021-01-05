@@ -20,7 +20,7 @@ class Tools {
     String result = '';
     words.forEach((word) {
       result += word[0].toUpperCase() + word.substring(1);
-      if (word == words[words.length - 1]) result += ' ';
+      if (word != words[words.length - 1]) result += ' ';
     });
     return result;
   }
@@ -46,8 +46,7 @@ class Tools {
   }
 
   static String validatePassword(String val) {
-    Pattern pattern =
-        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+    Pattern pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
     RegExp regExp = RegExp(pattern);
 
     return val.isEmpty

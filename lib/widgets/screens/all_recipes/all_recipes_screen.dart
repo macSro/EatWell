@@ -1,19 +1,19 @@
+import 'package:eat_well_v1/bloc/all_recipes/recipe_list_bloc.dart';
+import 'package:eat_well_v1/bloc/all_recipes/recipe_list_event.dart';
+import 'package:eat_well_v1/bloc/all_recipes/recipe_list_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../bloc/recipe/recipe_bloc.dart';
 import '../../../bloc/recipe/recipe_event.dart';
-import '../../../bloc/recipes/recipe_list_bloc.dart';
-import '../../../bloc/recipes/recipe_list_event.dart';
-import '../../../bloc/recipes/recipe_list_state.dart';
 import '../../../bloc/user/user_bloc.dart';
 import '../../../bloc/user/user_state.dart';
+import '../../../constants.dart';
 import '../../../model/recipe.dart';
 import '../../misc/fullscreen_dialog.dart';
 import '../../misc/loading.dart';
 import '../../misc/scaffold.dart';
 import '../filters/filter_list.dart';
-import '../filters/recipe_list_filter.dart';
 import '../recipe/recipe_screen.dart';
 import 'recipe_list_item.dart';
 
@@ -29,7 +29,7 @@ class RecipesScreen extends StatelessWidget {
           actions: [
             IconButton(
                 icon: Icon(Icons.refresh),
-                onPressed: () => BlocProvider.of<RecipeListBloc>(context).add(FetchAllRecipes())),
+                onPressed: () => BlocProvider.of<RecipeListBloc>(context).add(FetchRecipes())),
           ],
           child: state is RecipesFetched
               ? _getContent(context, state.recipes)
@@ -41,6 +41,10 @@ class RecipesScreen extends StatelessWidget {
                       context: context,
                       child: FilterList(),
                       title: 'What are you craving?',
+                    ).then(
+                      (value) {
+                        if (value != null) _applySortByAndFilters(context, state.recipes, value);
+                      },
                     );
                   },
                   child: Icon(Icons.filter_alt_rounded),
@@ -48,6 +52,13 @@ class RecipesScreen extends StatelessWidget {
               : null,
         );
       },
+    );
+  }
+
+  _applySortByAndFilters(context, recipes, value) {
+    final SortBy selectedSortBy = value[0];
+    BlocProvider.of<RecipeListBloc>(context).add(
+      SortRecipes(recipes: recipes, sortBy: selectedSortBy),
     );
   }
 

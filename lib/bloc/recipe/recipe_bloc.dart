@@ -3,38 +3,35 @@ import 'package:flutter/foundation.dart';
 
 import '../../model/recipe.dart';
 import '../../repositories/recipe_repository.dart';
-import '../../repositories/user_repository.dart';
 import 'recipe_event.dart';
 import 'recipe_state.dart';
 
 class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
   RecipeRepository _recipeRepository;
-  UserRepository _userRepository;
 
-  RecipeBloc({
-    @required recipeRepository,
-    @required userRepository,
-  }) : super(RecipeInitial()) {
+  RecipeBloc({@required recipeRepository}) : super(RecipeInitial()) {
     _recipeRepository = recipeRepository;
-    _userRepository = userRepository;
   }
 
   @override
   Stream<RecipeState> mapEventToState(RecipeEvent event) async* {
     if (event is SelectRecipe)
       yield* _selectRecipe(event.recipe);
-    else if (event is UpdateRecipeRating) yield* _updateRecipeRating(event.recipe, event.rating);
+    else if (event is UpdateRecipeRating)
+      yield* _updateRecipeRating(event.recipe, event.isSaved, event.rating);
   }
 
   Stream<RecipeState> _selectRecipe(Recipe recipe) async* {
     yield RecipeLoading();
 
-    final userRating = await _recipeRepository.fetchUserRating(recipe.id);
+    final int userRating = await _recipeRepository.fetchUserRating(recipe.id);
 
-    yield RecipeDetailsFetched(recipe: recipe, userRating: userRating);
+    final bool isSaved = await _recipeRepository.isRecipeSaved(recipe.id);
+
+    yield RecipeDetailsFetched(recipe: recipe, isSaved: isSaved, userRating: userRating);
   }
 
-  Stream<RecipeState> _updateRecipeRating(Recipe recipe, int rating) async* {
+  Stream<RecipeState> _updateRecipeRating(Recipe recipe, bool isSaved, int rating) async* {
     if (rating == 0)
       await _recipeRepository.deleteUserRating(recipe.id);
     else
@@ -43,5 +40,7 @@ class RecipeBloc extends Bloc<RecipeEvent, RecipeState> {
     final double ratingResult = await _recipeRepository.fetchRecipeRating(recipe.id);
 
     final Recipe recipeResult = recipe.copyWith(rating: ratingResult);
+
+    yield RecipeDetailsFetched(recipe: recipeResult, isSaved: isSaved, userRating: rating);
   }
 }

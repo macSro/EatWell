@@ -1,13 +1,11 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:eat_well_v1/bloc/my_recipes/saved_recipes/saved_recipes_event.dart';
 import 'package:eat_well_v1/repositories/pantry_repository.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../model/extended_ingredient.dart';
-import '../../model/product.dart';
 
 part 'pantry_event.dart';
 part 'pantry_state.dart';

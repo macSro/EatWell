@@ -1,11 +1,11 @@
+import 'package:eat_well_v1/bloc/all_recipes/recipe_list_bloc.dart';
+import 'package:eat_well_v1/bloc/all_recipes/recipe_list_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:keyboard_avoider/keyboard_avoider.dart';
 
-import '../../../bloc/recipes/recipe_list_bloc.dart';
-import '../../../bloc/recipes/recipe_list_event.dart';
 import '../../../bloc/user/user_bloc.dart';
 import '../../../bloc/user/user_event.dart';
 import '../../../bloc/user/user_state.dart';
@@ -103,6 +103,6 @@ class LoginScreen extends StatelessWidget {
 
   _navigateToRecipeListScreen(context) {
     Navigator.of(context).pushReplacementNamed(RecipesScreen.routeName);
-    BlocProvider.of<RecipeListBloc>(context).add(FetchAllRecipes());
+    BlocProvider.of<RecipeListBloc>(context).add(FetchRecipes());
   }
 }

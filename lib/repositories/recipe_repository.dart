@@ -74,7 +74,11 @@ class RecipeRepository {
 
     return userRatingDocId != null
         ? _firestore.collection('recipe-ratings').doc(userRatingDocId).update({'rating': rating})
-        : null;
+        : _firestore.collection('recipe-ratings').doc().set({
+          'recipeId': recipeId,
+          'userId': _userRepository.getCurrentUser().uid,
+          'rating': rating,
+        });
   }
 
   Future<void> deleteUserRating(String recipeId) async {
@@ -96,5 +100,14 @@ class RecipeRepository {
       return null;
     else
       return snap.docs.first.id;
+  }
+
+  Future<bool> isRecipeSaved(String recipeId) async {
+    return _firestore
+        .collection('saved-recipes')
+        .where('userId', isEqualTo: _userRepository.getCurrentUser().uid)
+        .where('recipeId', isEqualTo: recipeId)
+        .get()
+        .then((snap) => snap.docs.isEmpty ? false : true);
   }
 }

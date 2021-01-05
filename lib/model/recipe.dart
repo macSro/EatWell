@@ -14,6 +14,7 @@ class Recipe extends Equatable {
   final int readyInMinutes;
   final int servings;
   final double rating;
+  final int inPantry;
 
   Recipe({
     this.id,
@@ -27,6 +28,7 @@ class Recipe extends Equatable {
     this.readyInMinutes,
     this.servings,
     this.rating,
+    this.inPantry,
   });
 
   Recipe copyWith({
@@ -41,6 +43,7 @@ class Recipe extends Equatable {
     int readyInMinutes,
     int servings,
     double rating,
+    int inPantry
   }) {
     return Recipe(
       id: id ?? this.id,
@@ -54,6 +57,7 @@ class Recipe extends Equatable {
       readyInMinutes: readyInMinutes ?? this.readyInMinutes,
       servings: servings ?? this.servings,
       rating: rating ?? this.rating,
+      inPantry: inPantry ?? this.inPantry,
     );
   }
 
@@ -70,6 +74,7 @@ class Recipe extends Equatable {
         readyInMinutes,
         servings,
         rating,
+        inPantry,
       ];
 
   @override

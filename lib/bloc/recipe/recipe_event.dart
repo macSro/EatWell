@@ -17,10 +17,11 @@ class SelectRecipe extends RecipeEvent {
 
 class UpdateRecipeRating extends RecipeEvent {
   final Recipe recipe;
+  final bool isSaved;
   final int rating;
 
-  UpdateRecipeRating({this.recipe, this.rating});
+  UpdateRecipeRating({@required this.recipe, @required this.isSaved, @required this.rating});
 
   @override
-  List<Object> get props => [recipe, rating];
+  List<Object> get props => [recipe, isSaved, rating];
 }
