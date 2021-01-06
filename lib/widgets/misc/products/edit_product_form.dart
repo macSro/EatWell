@@ -24,7 +24,7 @@ class _EditProductFormState extends State<EditProductForm> {
   @override
   void initState() {
     if (widget.initAmount != null) _amountController.text = '${widget.initAmount}';
-    _selectedUnit = widget.initUnit ?? 'g';
+    _selectedUnit = widget.initUnit ?? '';
     if (widget.initDate != null) _selectedDate = widget.initDate;
     super.initState();
   }
@@ -65,6 +65,7 @@ class _EditProductFormState extends State<EditProductForm> {
                             ? 'Incorrect value.'
                             : null,
                     controller: _amountController,
+                    keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       hintText: 'Amount',
                       contentPadding: const EdgeInsets.only(left: 12, right: 12),
@@ -80,7 +81,7 @@ class _EditProductFormState extends State<EditProductForm> {
                     ),
                     icon: Icon(Icons.arrow_downward_rounded, size: 20),
                     value: _selectedUnit,
-                    items: ['g', 'oz', 'serving', 'clove']
+                    items: kUnits
                         .map(
                           (String value) => DropdownMenuItem(
                             value: value,
@@ -97,8 +98,8 @@ class _EditProductFormState extends State<EditProductForm> {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
-            RaisedButton(
+            if(widget.initDate != null) const SizedBox(height: 16),
+            if(widget.initDate != null) RaisedButton(
               child: Text(
                 'Select expiry date',
                 style: TextStyle(fontSize: 18),
@@ -189,5 +190,11 @@ class _EditProductFormState extends State<EditProductForm> {
         );
       },
     );
+  }
+
+  @override
+  void dispose() {
+    _amountController.dispose();
+    super.dispose();
   }
 }

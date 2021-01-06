@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eat_well_v1/constants.dart';
 import 'package:eat_well_v1/model/extended_ingredient.dart';
 import 'package:eat_well_v1/model/product.dart';
 import 'package:eat_well_v1/repositories/pantry_repository.dart';
@@ -6,6 +7,7 @@ import 'package:eat_well_v1/repositories/recipe_repository.dart';
 import 'package:flutter/foundation.dart';
 
 import '../model/recipe.dart';
+import '../tools.dart';
 
 class RecipeListRepository {
   FirebaseFirestore _firestore;
@@ -23,14 +25,24 @@ class RecipeListRepository {
   }
 
   Future<List<Recipe>> fetchAllRecipes() async {
-    final recipeDocs = (await _firestore.collection('recipes').get()).docs;
+    final futuresResults = await Future.wait(
+      [
+        _firestore.collection('recipes').get(),
+        _pantryRepository.fetchPantry(),
+      ],
+    );
 
-    final List<Recipe> recipes = await Future.wait(recipeDocs.map((doc) => getRecipe(doc)).toList());
+    final List<QueryDocumentSnapshot> recipeDocs = (futuresResults[0] as QuerySnapshot).docs;
+    final List<ExtendedIngredient> pantryIngredients = futuresResults[1];
+
+    final List<Recipe> recipes = await Future.wait(
+      recipeDocs.map((doc) => getRecipe(recipeDoc: doc, pantryIngredients: pantryIngredients)).toList(),
+    );
 
     return recipes;
   }
 
-  Future<Recipe> getRecipe(DocumentSnapshot recipeDoc) async {
+  Future<Recipe> getRecipe({DocumentSnapshot recipeDoc, List<ExtendedIngredient> pantryIngredients}) async {
     final recipeId = recipeDoc.id;
     final recipeData = recipeDoc.data();
 
@@ -44,22 +56,41 @@ class RecipeListRepository {
 
     final List<ExtendedIngredient> ingredients = futuresResults[0];
     final double rating = futuresResults[1];
-    final List<String> dishTypes = futuresResults[2];
-    final List<String> cuisines = futuresResults[3];
-    final List<String> diets = futuresResults[4];
+    final List<String> dishTypeNames = futuresResults[2];
+    final List<String> cuisineNames = futuresResults[3];
+    final List<String> dietNames = futuresResults[4];
 
-    final List<String> productsIds = ingredients.map((ingredient) => ingredient.product.id).toList();
-    final inPantry = await _pantryRepository.getNumberOfProductsInPantry(productsIds);
-    
-    // final ingredients = await _recipeRepository.fetchRecipeIngredients(recipeId);
-    // final rating = await _recipeRepository.fetchRecipeRating(recipeId);
-    // final dishTypes = await _getRecipeFilters(
-    //     recipeId: recipeId, collectionName: 'dish-types', collectionIdName: 'dishTypeId');
-    // final cuisines = await _getRecipeFilters(
-    //     recipeId: recipeId, collectionName: 'cuisines', collectionIdName: 'cuisineId');
-    // final diets =
-    //     await _getRecipeFilters(recipeId: recipeId, collectionName: 'diets', collectionIdName: 'dietId');
+    List<DishType> dishTypes = dishTypeNames
+        .map(
+          (name) => kDishTypes.keys.firstWhere(
+            (dishType) => kDishTypes[dishType] == name,
+            orElse: () => null,
+          ),
+        )
+        .toList();
+    dishTypes.removeWhere((dishType) => dishType == null);
 
+    List<Cuisine> cuisines = cuisineNames
+        .map(
+          (name) => kCuisines.keys.firstWhere(
+            (cuisine) => kCuisines[cuisine] == name,
+            orElse: () => null,
+          ),
+        )
+        .toList();
+    cuisines.removeWhere((cuisine) => cuisine == null);
+
+    List<Diet> diets = dietNames
+        .map(
+          (name) => kDiets.keys.firstWhere(
+            (diet) => kDiets[diet] == name,
+            orElse: () => null,
+          ),
+        )
+        .toList();
+    diets.removeWhere((diet) => diet == null);
+
+    final inPantry = _countOwnedProducts(ingredients, pantryIngredients);
     return Recipe(
       id: recipeDoc.id,
       name: recipeData['name'],
@@ -75,6 +106,29 @@ class RecipeListRepository {
       diets: diets,
       inPantry: inPantry,
     );
+  }
+
+  int _countOwnedProducts(
+    List<ExtendedIngredient> recipeIngredients,
+    List<ExtendedIngredient> pantryIngredients,
+  ) {
+    if (pantryIngredients == null) return null;
+
+    Map<Product, double> productAmounts = {};
+    Map<Product, String> productUnits = {};
+    pantryIngredients.forEach((ingredient) {
+      productAmounts[ingredient.product] = ingredient.amount;
+      productUnits[ingredient.product] = ingredient.unit;
+    });
+
+    int owned = 0;
+    recipeIngredients.forEach((ingredient) {
+      if (productAmounts.containsKey(ingredient.product) &&
+          productAmounts[ingredient.product] >= ingredient.amount &&
+          Tools.getUnitShort(productUnits[ingredient.product]) == Tools.getUnitShort(ingredient.unit))
+        owned++;
+    });
+    return owned;
   }
 
   Future<List<String>> _getRecipeFilters({
@@ -95,169 +149,4 @@ class RecipeListRepository {
   Future<String> _getRecipeFilterName(String collectionName, String id) {
     return _firestore.collection(collectionName).doc(id).get().then((doc) => (doc.data()['name'] as String));
   }
-
-  // Stream<Map<String, double>> fetchAllRatings() {
-  //   return _firestore.collection('recipe-ratings').orderBy('recipeId').snapshots().map((snapshot) {
-  //     Map<String, double> result = {};
-  //     snapshot.docs.forEach((doc) {
-  //       final ratingData = doc.data();
-  //       result[(ratingData['recipeId'] as String)] = (ratingData['rating'] as num).toDouble();
-  //     });
-  //     return result;
-  //   });
-  // }
-
-  // Stream<List<Recipe>> fetchAllRecipes() {
-  //   return _firestore
-  //       .collection('recipes')
-  //       .orderBy(FieldPath.documentId)
-  //       .snapshots()
-  //       .asyncMap((snapshot) => Future.wait(snapshot.docs.map(
-  //             (doc) {
-  //               return _getRecipe(doc);
-  //             },
-  //           ).toList()));
-  // }
-
-  // Stream<List<Recipe>> fetchAllRecipes() {
-  //   //MAYBE JUST NEST ALL IN MULTIPLE THEN()
-  //   return _firestore.collection(kRecipesCollectionName).snapshots().map(
-  //         (snapshot) => snapshot.docs.map(
-  //           (doc) {
-  //             final recipeData = doc.data();
-  //             List<ExtendedIngredient> ingredients;
-  //             _firestore
-  //                 .collection(kRecipeIngredientsCollectionName)
-  //                 .where(kRecipeIngredientsFieldIdRecipe, isEqualTo: doc.id)
-  //                 .get()
-  //                 .then(
-  //                   (snapshot) => snapshot.docs.isEmpty
-  //                       ? print('empty')
-  //                       : snapshot.docs.map(
-  //                           (doc) {
-  //                             Product product;
-  //                             final ingredientData = doc.data();
-  //                             _firestore
-  //                                 .collection(kProductsCollectionName)
-  //                                 .doc(ingredientData[
-  //                                     kRecipeIngredientsFieldIdProduct])
-  //                                 .get()
-  //                                 .then(
-  //                               (snapshot) {
-  //                                 final productData = snapshot.data();
-  //                                 product = Product(
-  //                                   id: snapshot.id,
-  //                                   name: productData[kProductsFieldName],
-  //                                   imageUrl:
-  //                                       productData[kProductsFieldImageUrl],
-  //                                 );
-  //                               },
-  //                             );
-  //                             ingredients.add(
-  //                               ExtendedIngredient(
-  //                                 product: product,
-  //                                 amount: ingredientData[
-  //                                     kRecipeIngredientsFieldAmount],
-  //                                 unit: ingredientData[
-  //                                     kRecipeIngredientsFieldUnit],
-  //                               ),
-  //                             );
-  //                           },
-  //                         ),
-  //                 );
-  //             Rating rating;
-  //             _firestore
-  //                 .collection(kRecipeRatingsCollectionName)
-  //                 .where(kRecipeRatingsFieldIdRecipe, isEqualTo: doc.id)
-  //                 .snapshots()
-  //                 .map(
-  //                   (snapshot) => snapshot.docs.map(
-  //                     (doc) {
-  //                       final ratingData = doc.data();
-  //                       rating = Rating(
-  //                         points: ratingData[kRecipeRatingsFieldPoints],
-  //                         votes: ratingData[kRecipeRatingsFieldVotes],
-  //                       );
-  //                     },
-  //                   ),
-  //                 );
-  //             List<String> dishTypes;
-  //             _firestore
-  //                 .collection(kRecipeDishTypesCollectionName)
-  //                 .where(kRecipeDishTypesFieldIdRecipe, isEqualTo: doc.id)
-  //                 .get()
-  //                 .then(
-  //                   (snapshot) => snapshot.docs.map(
-  //                     (doc) {
-  //                       _firestore
-  //                           .collection(kDishTypesCollectionName)
-  //                           .doc(doc.data()[kRecipeDishTypesFieldIdDishType])
-  //                           .get()
-  //                           .then(
-  //                         (doc) {
-  //                           dishTypes.add(doc.data()[kDishTypesFieldName]);
-  //                         },
-  //                       );
-  //                     },
-  //                   ),
-  //                 );
-  //             List<String> cuisines;
-  //             _firestore
-  //                 .collection(kRecipeCuisinesCollectionName)
-  //                 .where(kRecipeCuisinesFieldIdRecipe, isEqualTo: doc.id)
-  //                 .get()
-  //                 .then(
-  //                   (snapshot) => snapshot.docs.map(
-  //                     (doc) {
-  //                       _firestore
-  //                           .collection(kCuisinesCollectionName)
-  //                           .doc(doc.data()[kRecipeCuisinesFieldIdCuisine])
-  //                           .get()
-  //                           .then(
-  //                         (doc) {
-  //                           cuisines.add(doc.data()[kCuisinesFieldName]);
-  //                         },
-  //                       );
-  //                     },
-  //                   ),
-  //                 );
-  //             List<String> diets;
-  //             _firestore
-  //                 .collection(kRecipeDietsCollectionName)
-  //                 .where(kRecipeDietsFieldIdRecipe, isEqualTo: doc.id)
-  //                 .get()
-  //                 .then(
-  //                   (snapshot) => snapshot.docs.map(
-  //                     (doc) {
-  //                       _firestore
-  //                           .collection(kDietsCollectionName)
-  //                           .doc(doc.data()[kRecipeDietsFieldIdDiet])
-  //                           .get()
-  //                           .then(
-  //                         (doc) {
-  //                           diets.add(doc.data()[kDietsFieldName]);
-  //                         },
-  //                       );
-  //                     },
-  //                   ),
-  //                 );
-  //             return Recipe(
-  //               id: doc.id,
-  //               name: recipeData[kRecipesFieldName],
-  //               imageUrl: recipeData[kRecipesFieldImageUrl],
-  //               instructions: (recipeData[kRecipesFieldInstructions] as List)
-  //                   .map((instruction) => instruction as String)
-  //                   ?.toList(),
-  //               readyInMinutes: recipeData[kRecipesFieldReadyInMinutes],
-  //               servings: recipeData[kRecipesFieldServings],
-  //               ingredients: ingredients,
-  //               rating: rating,
-  //               dishTypes: dishTypes,
-  //               cuisines: cuisines,
-  //               diets: diets,
-  //             );
-  //           },
-  //         ).toList(),
-  //       );
-  // }
 }

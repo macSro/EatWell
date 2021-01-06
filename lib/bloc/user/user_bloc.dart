@@ -82,7 +82,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     yield UserLoading();
     final authResult = await _repository.signOut();
     if (authResult) {
-      print('sign out success');
       yield UserUnauthenticated();
     } else {
       yield UserSignOutFailed();

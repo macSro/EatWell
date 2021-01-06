@@ -1,6 +1,8 @@
 import 'package:eat_well_v1/bloc/all_recipes/recipe_list_bloc.dart';
 import 'package:eat_well_v1/bloc/all_recipes/recipe_list_event.dart';
 import 'package:eat_well_v1/bloc/all_recipes/recipe_list_state.dart';
+import 'package:eat_well_v1/bloc/filters/filters_bloc.dart';
+import 'package:eat_well_v1/widgets/screens/filters/recipe_list_filters.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -32,18 +34,37 @@ class RecipesScreen extends StatelessWidget {
                 onPressed: () => BlocProvider.of<RecipeListBloc>(context).add(FetchRecipes())),
           ],
           child: state is RecipesFetched
-              ? _getContent(context, state.recipes)
+              ? BlocListener<FiltersBloc, FiltersState>(
+                  listener: (context, filtersState) {
+                    if (filtersState is FiltersSaved) {
+                      BlocProvider.of<RecipeListBloc>(context).add(
+                        FilterAndSortRecipes(
+                          allRecipes: state.allRecipes,
+                          filteredRecipes: state.filteredRecipes,
+                          filters: filtersState.filters,
+                        ),
+                      );
+                    }
+                  },
+                  child: _getContent(context, state.filteredRecipes),
+                )
               : LoadingView(text: 'Loading recipes...'),
           floatingActionButton: state is RecipesFetched
               ? FloatingActionButton(
                   onPressed: () {
                     showFullscreenDialog(
                       context: context,
-                      child: FilterList(),
+                      child: BlocBuilder<FiltersBloc, FiltersState>(
+                        builder: (context, state) => state is FiltersSaved
+                            ? FilterList(
+                                initFilters: state.filters,
+                              )
+                            : LoadingView(text: 'Loading filters...'),
+                      ),
                       title: 'What are you craving?',
                     ).then(
-                      (value) {
-                        if (value != null) _applySortByAndFilters(context, state.recipes, value);
+                      (result) {
+                        if (result != null) _applySortByAndFilters(context, state.filteredRecipes, result);
                       },
                     );
                   },
@@ -55,10 +76,16 @@ class RecipesScreen extends StatelessWidget {
     );
   }
 
-  _applySortByAndFilters(context, recipes, value) {
-    final SortBy selectedSortBy = value[0];
-    BlocProvider.of<RecipeListBloc>(context).add(
-      SortRecipes(recipes: recipes, sortBy: selectedSortBy),
+  _applySortByAndFilters(context, recipes, result) {
+    final SortBy sortBy = result[0];
+    final Map<DishType, bool> dishTypes = result[1];
+    final Map<Cuisine, bool> cuisines = result[2];
+    final Map<Diet, bool> diets = result[3];
+
+    BlocProvider.of<FiltersBloc>(context).add(
+      UpdateFilters(
+        filters: RecipeListFilters(sortBy: sortBy, dishTypes: dishTypes, cuisines: cuisines, diets: diets),
+      ),
     );
   }
 

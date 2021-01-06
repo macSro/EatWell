@@ -1,3 +1,4 @@
+import 'package:eat_well_v1/constants.dart';
 import 'package:equatable/equatable.dart';
 
 import 'extended_ingredient.dart';
@@ -7,9 +8,9 @@ class Recipe extends Equatable {
   final String name;
   final String imageUrl;
   final List<ExtendedIngredient> ingredients;
-  final List<String> dishTypes;
-  final List<String> cuisines;
-  final List<String> diets;
+  final List<DishType> dishTypes;
+  final List<Cuisine> cuisines;
+  final List<Diet> diets;
   final List<String> instructions;
   final int readyInMinutes;
   final int servings;

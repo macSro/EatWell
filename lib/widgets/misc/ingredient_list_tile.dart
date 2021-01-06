@@ -9,7 +9,9 @@ class IngredientListTile extends StatelessWidget {
   final double amount;
   final String unit;
   final DateTime expDate;
-  final otherTrailing;
+  final Widget otherTrailing;
+  final Function onTap;
+  final Function onDelete;
 
   IngredientListTile({
     @required this.imageUrl,
@@ -18,11 +20,14 @@ class IngredientListTile extends StatelessWidget {
     this.unit,
     this.expDate,
     this.otherTrailing,
+    this.onTap,
+    this.onDelete,
   });
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      onTap: onTap,
       leading: Container(
         height: 48,
         width: 48,
@@ -45,16 +50,30 @@ class IngredientListTile extends StatelessWidget {
             ? Theme.of(context).textTheme.headline6.copyWith(fontSize: 18)
             : Theme.of(context).textTheme.bodyText1,
       ),
-      subtitle:
-          expDate != null ? Text('Expires: ${Tools.getDate(expDate)}') : null,
+      subtitle: expDate != null ? Text('Expires: ${Tools.getDate(expDate)}') : null,
       trailing: otherTrailing != null
           ? otherTrailing
-          : amount != null
-              ? Text(
-                  '${Tools.simplifyDouble(amount).toString()}${unit != null ? ' ' : ''}${unit != null ? Tools.getUnitShort(unit) : ''}',
-                  style: TextStyle().copyWith(fontStyle: FontStyle.italic),
-                )
-              : null,
+          : onDelete == null
+              ? amount != null
+                  ? Text(
+                      '${Tools.simplifyDouble(amount).toString()}${unit != null ? ' ' : ''}${unit != null ? Tools.getUnitShort(unit) : ''}',
+                      style: TextStyle().copyWith(fontStyle: FontStyle.italic),
+                    )
+                  : null
+              : Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (amount != null)
+                      Text(
+                        '${Tools.simplifyDouble(amount).toString()}${unit != null ? ' ' : ''}${unit != null ? Tools.getUnitShort(unit) : ''}',
+                        style: TextStyle().copyWith(fontStyle: FontStyle.italic),
+                      ),
+                    IconButton(
+                      icon: Icon(Icons.delete_rounded, color: Colors.redAccent),
+                      onPressed: onDelete,
+                    ),
+                  ],
+                ),
       visualDensity: VisualDensity(horizontal: 0, vertical: 4),
     );
   }

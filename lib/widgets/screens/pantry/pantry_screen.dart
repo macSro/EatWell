@@ -19,6 +19,7 @@ class PantryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<PantryBloc, PantryState>(
       builder: (context, state) {
+        print(state);
         return MyScaffold(
           title: 'Pantry',
           child: Padding(
@@ -124,7 +125,7 @@ class PantryScreen extends StatelessWidget {
         );
         showFullscreenDialog(
           context: context,
-          child: AddProductForm(includeAmount: true),
+          child: AddProductForm(includeAmount: true, includeDate: true),
           title: 'Add a product to your pantry!',
         ).then((result) {
           if (result != null) {

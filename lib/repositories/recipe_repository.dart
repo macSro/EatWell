@@ -27,11 +27,13 @@ class RecipeRepository {
     );
     final List<ExtendedIngredient> ingredients = [];
     for (int i = 0; i < ingredientDocs.length; i++) {
-      ingredients.add(ExtendedIngredient(
-        product: products[i],
-        amount: (ingredientDocs[i].data()['amount'] as num).toDouble(),
-        unit: ingredientDocs[i].data()['unit'] as String,
-      ));
+      ingredients.add(
+        ExtendedIngredient(
+          product: products[i],
+          amount: (ingredientDocs[i].data()['amount'] as num).toDouble(),
+          unit: ingredientDocs[i].data()['unit'] as String,
+        ),
+      );
     }
 
     return ingredients;
@@ -75,10 +77,10 @@ class RecipeRepository {
     return userRatingDocId != null
         ? _firestore.collection('recipe-ratings').doc(userRatingDocId).update({'rating': rating})
         : _firestore.collection('recipe-ratings').doc().set({
-          'recipeId': recipeId,
-          'userId': _userRepository.getCurrentUser().uid,
-          'rating': rating,
-        });
+            'recipeId': recipeId,
+            'userId': _userRepository.getCurrentUser().uid,
+            'rating': rating,
+          });
   }
 
   Future<void> deleteUserRating(String recipeId) async {

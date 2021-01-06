@@ -5,6 +5,7 @@ import 'package:eat_well_v1/bloc/filters/filters_bloc.dart';
 import 'package:eat_well_v1/bloc/inquiry/inquiry_bloc.dart';
 import 'package:eat_well_v1/bloc/pantry/pantry_bloc.dart';
 import 'package:eat_well_v1/bloc/product_search/product_search_bloc.dart';
+import 'package:eat_well_v1/repositories/created_recipes_repository.dart';
 import 'package:eat_well_v1/repositories/diet_repository.dart';
 import 'package:eat_well_v1/repositories/inquiry_repository.dart';
 import 'package:eat_well_v1/repositories/pantry_repository.dart';
@@ -47,6 +48,11 @@ class FireBlocWrapper extends StatelessWidget {
       userRepository: userRepository,
       recipeListRepository: recipeListRepository,
     );
+    CreatedRecipesRepository createdRecipesRepository = CreatedRecipesRepository(
+      firestore: firestore,
+      userRepository: userRepository,
+      recipeListRepository: recipeListRepository,
+    );
     ProductSearchRepository productSearchRepository = ProductSearchRepository(firestore: firestore);
     DietRepository dietRepository = DietRepository(firestore: firestore, userRepository: userRepository);
     InquiryRepository inquiryRepository = InquiryRepository(firestore: firestore);
@@ -75,7 +81,9 @@ class FireBlocWrapper extends StatelessWidget {
           ),
         ),
         BlocProvider(
-          create: (context) => CreatedRecipesBloc(),
+          create: (context) => CreatedRecipesBloc(
+            createdRecipesRepository: createdRecipesRepository,
+          ),
         ),
         BlocProvider(
           create: (context) => ProductSearchBloc(

@@ -1,54 +1,46 @@
-import 'package:eat_well_v1/bloc/filters/filters_bloc.dart';
-import 'package:eat_well_v1/widgets/misc/loading.dart';
+import 'package:eat_well_v1/widgets/screens/filters/recipe_list_filters.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../constants.dart';
 import '../../../tools.dart';
 import '../../misc/icon_text.dart';
 
 class FilterList extends StatefulWidget {
+  final RecipeListFilters initFilters;
+
+  FilterList({@required this.initFilters});
+
   @override
   _FilterListState createState() => _FilterListState();
 }
 
-//TODO: NEEDS A SEPARATE BLOC TO REMEMBER FILTERS WHEN USER USES THEM AND OPENS DIALOG AGAIN WITHOUT LEAVING THE SCREEN
 class _FilterListState extends State<FilterList> {
   final sortIconsData = {
-    SortBy.AZ: Icons.arrow_upward_rounded,
-    SortBy.ZA: Icons.arrow_downward_rounded,
-    SortBy.Rating: Icons.star_border_rounded,
-    SortBy.PreparationTime: Icons.timer_rounded,
-    SortBy.Servings: Icons.group_rounded,
+    SortBy.NameAsc: Icons.arrow_upward_rounded,
+    SortBy.NameDesc: Icons.arrow_downward_rounded,
     SortBy.PantryProducts: Icons.kitchen_rounded,
+    SortBy.Rating: Icons.star_border_rounded,
+    SortBy.PreparationTimeAsc: Icons.timer_off_rounded,
+    SortBy.PreparationTimeDesc: Icons.timer_rounded,
+    SortBy.ServingsAsc: Icons.person_rounded,
+    SortBy.ServingsDesc: Icons.group_rounded,
   };
   Map<SortBy, bool> sortBy = {};
-  Map<String, bool> mealTypesFilters = {};
-  Map<String, bool> cuisineFilters = {};
-  Map<String, bool> dietsFilters = {};
+  Map<DishType, bool> dishTypeFilters = {};
+  Map<Cuisine, bool> cuisineFilters = {};
+  Map<Diet, bool> dietFilters = {};
 
   @override
   void initState() {
-    kMealTypes.forEach((_, value) => mealTypesFilters[value] = false);
-    kCuisines.forEach((_, value) => cuisineFilters[value] = false);
-    kDiets.forEach((_, value) => dietsFilters[value] = false);
+    kSortBy.forEach((key, _) => sortBy[key] = key == widget.initFilters.sortBy);
+    widget.initFilters.dishTypes.forEach((key, value) => dishTypeFilters[key] = value);
+    widget.initFilters.cuisines.forEach((key, value) => cuisineFilters[key] = value);
+    widget.initFilters.diets.forEach((key, value) => dietFilters[key] = value);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<FiltersBloc, FiltersState>(
-      builder: (context, state) => state is FiltersInitial
-          ? _getContent(initSort: SortBy.AZ)
-          : state is FiltersSaved
-              ? _getContent(initSort: state.sortBy)
-              : LoadingView(
-                  text: 'Loading filters...',
-                ),
-    );
-  }
-
-  Widget _getContent({SortBy initSort}) {
     return Column(
       children: [
         Expanded(
@@ -61,7 +53,7 @@ class _FilterListState extends State<FilterList> {
                 ),
               ),
               const SizedBox(height: 18),
-              _getSorting(),
+              _getSortListTile(widget.initFilters.sortBy),
               const SizedBox(height: 32),
               Center(
                 child: Text(
@@ -70,47 +62,59 @@ class _FilterListState extends State<FilterList> {
                 ),
               ),
               const SizedBox(height: 18),
-              _getMealTypeListTile(context),
+              _getDishTypeListTile(context),
               _getCuisineListTile(context),
               _getDietListTile(context),
             ],
           ),
         ),
         const SizedBox(height: 16),
-        RaisedButton(
-          onPressed: () {
-            final SortBy selectedSortingOption = sortBy.entries
-                .firstWhere(
-                  (sortingOption) => sortingOption.value == true,
-                )
-                .key;
-            print('selected: ${kSortBy[selectedSortingOption]}');
-            //TODO: here return filters and in fab inside recipelist screen add event to bloc to sort and to save filters inside bloc and also in drawer and splashscreen i need to reset filters when entering
-            Navigator.pop(context, [selectedSortingOption]);
-          },
-          color: kAccentColor,
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Apply',
-                style: TextStyle().copyWith(fontSize: 24),
-              ),
-            ],
-          ),
-        ),
+        _getApplyButton(),
         const SizedBox(height: 16),
         const Divider(),
       ],
     );
   }
 
-  Widget _getSorting(SortBy initSort) {
-    kSortBy.forEach((key, _) => sortBy[key] = key == initSort);
+  Widget _getApplyButton() {
+    return RaisedButton(
+      onPressed: () {
+        final SortBy selectedSortingOption = sortBy.entries
+            .firstWhere(
+              (sortingOption) => sortingOption.value == true,
+            )
+            .key;
+        Navigator.pop(context, [selectedSortingOption, dishTypeFilters, cuisineFilters, dietFilters]);
+      },
+      color: kAccentColor,
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'Apply',
+            style: TextStyle().copyWith(fontSize: 24),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _getSortListTile(SortBy initSort) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: Column(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: ExpansionTile(
+        title: IconText(
+          text: Text(
+            'Sorting options',
+            style: Theme.of(context).textTheme.headline6.copyWith(fontSize: 22),
+          ),
+          icon: Icon(
+            Icons.sort_rounded,
+            color: kPrimaryColorDark,
+          ),
+          spacing: 16,
+        ),
         children: sortBy.entries
             .map(
               (sortingOption) => SwitchListTile(
@@ -140,32 +144,32 @@ class _FilterListState extends State<FilterList> {
     );
   }
 
-  Widget _getMealTypeListTile(context) {
+  Widget _getDishTypeListTile(context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
+      padding: const EdgeInsets.symmetric(horizontal: 12),
       child: ExpansionTile(
         title: IconText(
           text: Text(
-            'Meal types',
+            'Dish types',
             style: Theme.of(context).textTheme.headline6.copyWith(fontSize: 22),
           ),
           icon: Icon(
             Icons.room_service_rounded,
             color: kPrimaryColorDark,
           ),
-          spacing: 32,
+          spacing: 16,
         ),
-        children: mealTypesFilters.entries
+        children: dishTypeFilters.entries
             .map(
               (filter) => SwitchListTile(
                 title: Text(
-                  Tools.capitalizeAllWords(filter.key),
+                  Tools.capitalizeAllWords(kDishTypes[filter.key]),
                   style: Theme.of(context).textTheme.headline6.copyWith(fontSize: 18),
                 ),
                 value: filter.value,
                 onChanged: (val) {
                   setState(() {
-                    mealTypesFilters[filter.key] = val;
+                    dishTypeFilters[filter.key] = val;
                   });
                 },
               ),
@@ -177,7 +181,7 @@ class _FilterListState extends State<FilterList> {
 
   Widget _getCuisineListTile(context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
+      padding: const EdgeInsets.symmetric(horizontal: 12),
       child: ExpansionTile(
         title: IconText(
           text: Text(
@@ -188,13 +192,13 @@ class _FilterListState extends State<FilterList> {
             Icons.restaurant_rounded,
             color: kPrimaryColorDark,
           ),
-          spacing: 32,
+          spacing: 16,
         ),
         children: cuisineFilters.entries
             .map(
               (filter) => SwitchListTile(
                 title: Text(
-                  Tools.capitalizeAllWords(filter.key),
+                  Tools.capitalizeAllWords(kCuisines[filter.key]),
                   style: Theme.of(context).textTheme.headline6.copyWith(fontSize: 18),
                 ),
                 value: filter.value,
@@ -212,7 +216,7 @@ class _FilterListState extends State<FilterList> {
 
   Widget _getDietListTile(context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
+      padding: const EdgeInsets.symmetric(horizontal: 12),
       child: ExpansionTile(
         title: IconText(
           text: Text(
@@ -223,19 +227,19 @@ class _FilterListState extends State<FilterList> {
             Icons.block_rounded,
             color: kPrimaryColorDark,
           ),
-          spacing: 32,
+          spacing: 16,
         ),
-        children: dietsFilters.entries
+        children: dietFilters.entries
             .map(
               (filter) => SwitchListTile(
                 title: Text(
-                  Tools.capitalizeAllWords(filter.key),
+                  Tools.capitalizeAllWords(kDiets[filter.key]),
                   style: Theme.of(context).textTheme.headline6.copyWith(fontSize: 18),
                 ),
                 value: filter.value,
                 onChanged: (val) {
                   setState(() {
-                    dietsFilters[filter.key] = val;
+                    dietFilters[filter.key] = val;
                   });
                 },
               ),

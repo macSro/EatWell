@@ -35,6 +35,22 @@ class Tools {
       return 'tbsp';
     else if (unit == 'teaspoon' || unit == 'teaspoons')
       return 'tsp';
+    else if (unit == 'cups')
+      return 'cup';
+    else if (unit == 'gram' || unit == 'grams')
+      return 'g';
+    else if (unit == 'millilitre' || unit == 'millilitres')
+      return 'ml';
+    else if (unit == 'clove' ||
+        unit == 'cloves' ||
+        unit == 'serving' ||
+        unit == 'piece' ||
+        unit == 'pieces' ||
+        unit == 'medium' ||
+        unit == 'small' ||
+        unit == 'large' ||
+        unit == 'big')
+      return '';
     else
       return unit;
   }

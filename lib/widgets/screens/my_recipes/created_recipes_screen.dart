@@ -6,7 +6,6 @@ import '../../../bloc/my_recipes/created_recipes/created_recipes_state.dart';
 import '../../../bloc/recipe/recipe_bloc.dart';
 import '../../../bloc/recipe/recipe_event.dart';
 import '../../../constants.dart';
-import '../../../model/recipe.dart';
 import '../../misc/icon_text.dart';
 import '../../misc/loading.dart';
 import '../all_recipes/recipe_list_item.dart';
@@ -31,7 +30,7 @@ class CreatedRecipesScreen extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       child: RaisedButton(
         onPressed: () => _navigateToCreateRecipeScreen(context),
-        padding: const EdgeInsets.symmetric(vertical: 8),
+        padding: const EdgeInsets.symmetric(vertical: 12),
         color: kAccentColor,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -65,29 +64,34 @@ class CreatedRecipesScreen extends StatelessWidget {
     return BlocBuilder<CreatedRecipesBloc, CreatedRecipesState>(
       builder: (context, state) => state is CreatedRecipesFetched
           ? state.recipes.isNotEmpty
-              ? ListView(
-                  children: _mapRecipesToRecipeItems(
-                    context,
-                    state.recipes,
+              ? ListView.builder(
+                  itemCount: state.recipes.length,
+                  itemBuilder: (context, index) => RecipeListItem(
+                    recipe: state.recipes[index],
+                    onTap: () => _navigateToRecipeScreen(context, state.recipes[index]),
                   ),
                 )
-              : Center(
-                  child: Text(
-                    'You haven\'t created any recipes yet!',
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
+              : Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.no_food_rounded,
+                      color: kPrimaryColor,
+                      size: 100,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'You haven\'t created any recipes yet!',
+                        style: Theme.of(context).textTheme.headline4.copyWith(color: kPrimaryColor),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ],
                 )
           : LoadingView(text: 'Loading created recipes...'),
     );
-  }
-
-  _mapRecipesToRecipeItems(context, List<Recipe> recipes) {
-    return recipes
-        .map((recipe) => RecipeListItem(
-              recipe: recipe,
-              onTap: () => _navigateToRecipeScreen(context, recipe),
-            ))
-        .toList();
   }
 
   _navigateToRecipeScreen(context, recipe) {

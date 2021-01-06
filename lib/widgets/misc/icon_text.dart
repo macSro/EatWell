@@ -6,6 +6,7 @@ class IconText extends StatelessWidget {
   final double spacing;
   final bool iconFirst;
   final bool squeeze;
+  final bool center;
 
   IconText({
     @required this.text,
@@ -13,12 +14,14 @@ class IconText extends StatelessWidget {
     this.spacing = 8,
     this.iconFirst = true,
     this.squeeze = false,
+    this.center = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisSize: squeeze ? MainAxisSize.min : MainAxisSize.max,
+      mainAxisAlignment: center ? MainAxisAlignment.center : MainAxisAlignment.start,
       children: [
         iconFirst ? icon : text,
         SizedBox(width: spacing),

@@ -96,19 +96,22 @@ class PantryRepository {
         );
   }
 
-  Future<int> getNumberOfProductsInPantry(List<String> productIds) {
-    return _firestore
-        .collection('pantry-products')
-        .where('userId', isEqualTo: _userRepository.getCurrentUser().uid)
-        .get()
-        .then(
-      (snap) {
-        int result = 0;
-        snap.docs.forEach((doc) {
-          if (productIds.contains(doc.data()['productId'])) result++;
-        });
-        return result;
-      },
-    );
-  }
+  // Future<int> getNumberOfProductsInPantry(List<ExtendedIngredient> ingredients) {
+  //   final List<String> productsIds = ingredients.map((ingredient) => ingredient.product.id).toList();
+
+  //   return _firestore
+  //       .collection('pantry-products')
+  //       .where('userId', isEqualTo: _userRepository.getCurrentUser().uid)
+  //       .get()
+  //       .then(
+  //     (snap) {
+  //       int result = 0;
+  //       snap.docs.forEach((doc) {
+  //         final data = doc.data();
+  //         if (productsIds.contains(data['productId']) && (data['amount'] as num).toDouble() >= ingredien) result++;
+  //       });
+  //       return result;
+  //     },
+  //   );
+  // }
 }

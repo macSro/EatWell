@@ -1,5 +1,12 @@
 import 'package:eat_well_v1/bloc/all_recipes/recipe_list_bloc.dart';
 import 'package:eat_well_v1/bloc/all_recipes/recipe_list_event.dart';
+import 'package:eat_well_v1/bloc/diet/diet_bloc.dart';
+import 'package:eat_well_v1/bloc/filters/filters_bloc.dart';
+import 'package:eat_well_v1/bloc/my_recipes/created_recipes/created_recipes_bloc.dart';
+import 'package:eat_well_v1/bloc/my_recipes/created_recipes/created_recipes_event.dart';
+import 'package:eat_well_v1/bloc/my_recipes/saved_recipes/saved_recipes_bloc.dart';
+import 'package:eat_well_v1/bloc/my_recipes/saved_recipes/saved_recipes_event.dart';
+import 'package:eat_well_v1/bloc/pantry/pantry_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,12 +30,10 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       child: BlocListener<UserBloc, UserState>(
-        listenWhen: (previous, current) =>
-            previous is UserLoading && current is UserAuthenticated,
+        listenWhen: (previous, current) => previous is UserLoading && current is UserAuthenticated,
         listener: (context, state) => _navigateToRecipeListScreen(context),
         child: BlocListener<UserBloc, UserState>(
-          listenWhen: (previous, current) =>
-              previous is UserLoading && current is UserAuthenticationFailed,
+          listenWhen: (previous, current) => previous is UserLoading && current is UserAuthenticationFailed,
           listener: (context, state) => Navigator.pushNamed(
             context,
             ErrorScreen.routeName,
@@ -85,8 +90,7 @@ class LoginScreen extends StatelessWidget {
               ),
               const Divider(height: 32),
               GoogleSignInButton(
-                onPressed: () =>
-                    BlocProvider.of<UserBloc>(context).add(SignInWithGoogle()),
+                onPressed: () => BlocProvider.of<UserBloc>(context).add(SignInWithGoogle()),
                 borderRadius: 20,
               ),
             ],
@@ -103,6 +107,19 @@ class LoginScreen extends StatelessWidget {
 
   _navigateToRecipeListScreen(context) {
     Navigator.of(context).pushReplacementNamed(RecipesScreen.routeName);
+    _fetchData(context);
+  }
+
+  _fetchData(context) {
     BlocProvider.of<RecipeListBloc>(context).add(FetchRecipes());
+    BlocProvider.of<FiltersBloc>(context).add(ResetFilters());
+    BlocProvider.of<CreatedRecipesBloc>(context).add(
+      FetchCreatedRecipes(),
+    );
+    BlocProvider.of<SavedRecipesBloc>(context).add(
+      FetchSavedRecipes(),
+    );
+    BlocProvider.of<PantryBloc>(context).add(FetchPantry());
+    BlocProvider.of<DietBloc>(context).add(FetchBannedProducts());
   }
 }

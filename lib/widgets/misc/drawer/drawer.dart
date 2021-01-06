@@ -1,16 +1,13 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:eat_well_v1/bloc/all_recipes/recipe_list_bloc.dart';
 import 'package:eat_well_v1/bloc/all_recipes/recipe_list_event.dart';
-import 'package:eat_well_v1/bloc/diet/diet_bloc.dart';
-import 'package:eat_well_v1/bloc/pantry/pantry_bloc.dart';
+import 'package:eat_well_v1/bloc/filters/filters_bloc.dart';
+import 'package:eat_well_v1/bloc/my_recipes/saved_recipes/saved_recipes_bloc.dart';
+import 'package:eat_well_v1/bloc/my_recipes/saved_recipes/saved_recipes_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../bloc/my_recipes/created_recipes/created_recipes_bloc.dart';
-import '../../../bloc/my_recipes/created_recipes/created_recipes_event.dart';
-import '../../../bloc/my_recipes/saved_recipes/saved_recipes_bloc.dart';
-import '../../../bloc/my_recipes/saved_recipes/saved_recipes_event.dart';
 import '../../../bloc/user/user_bloc.dart';
 import '../../../bloc/user/user_event.dart';
 import '../../../constants.dart';
@@ -57,6 +54,7 @@ class MyDrawer extends StatelessWidget {
               onTap: () {
                 Navigator.of(context).pushReplacementNamed(RecipesScreen.routeName);
                 BlocProvider.of<RecipeListBloc>(context).add(FetchRecipes());
+                BlocProvider.of<FiltersBloc>(context).add(ResetFilters());
               }),
           MyDrawerTile(
             icon: Icon(
@@ -66,14 +64,8 @@ class MyDrawer extends StatelessWidget {
             title: Text('My recipes',
                 style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
             onTap: () {
-              //TODO: somehow check if already fetched so that it doesnt reload everytime i navigate there
+              BlocProvider.of<SavedRecipesBloc>(context).add(FetchSavedRecipes());
               Navigator.of(context).pushReplacementNamed(MyRecipesScreen.routeName);
-              BlocProvider.of<CreatedRecipesBloc>(context).add(
-                FetchCreatedRecipes(),
-              );
-              BlocProvider.of<SavedRecipesBloc>(context).add(
-                FetchSavedRecipes(),
-              );
             },
           ),
           MyDrawerTile(
@@ -81,11 +73,12 @@ class MyDrawer extends StatelessWidget {
                 Icons.kitchen_rounded,
                 color: kAccentColor,
               ),
-              title:
-                  Text('Pantry', style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
+              title: Text(
+                'Pantry',
+                style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white),
+              ),
               onTap: () {
                 Navigator.of(context).pushReplacementNamed(PantryScreen.routeName);
-                BlocProvider.of<PantryBloc>(context).add(FetchPantry());
               }),
           MyDrawerTile(
             icon: Icon(
@@ -95,26 +88,10 @@ class MyDrawer extends StatelessWidget {
             title: Text('Diet', style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
             onTap: () {
               Navigator.of(context).pushReplacementNamed(DietScreen.routeName);
-              BlocProvider.of<DietBloc>(context).add(FetchBannedProducts());
             },
           ),
           Spacer(),
-          Center(
-            child: FlatButton(
-              onPressed: () {
-                BlocProvider.of<UserBloc>(context).add(SignOut());
-              },
-              child: IconText(
-                squeeze: true,
-                icon: Icon(Icons.logout, size: 28),
-                text: Text(
-                  'Sign out',
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                ),
-              ),
-              textColor: Colors.redAccent,
-            ),
-          ),
+          Center(child: _getSignOutButton(context)),
         ],
       ),
     );
@@ -161,6 +138,23 @@ class MyDrawer extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _getSignOutButton(context) {
+    return FlatButton(
+      onPressed: () {
+        BlocProvider.of<UserBloc>(context).add(SignOut());
+      },
+      child: IconText(
+        squeeze: true,
+        icon: Icon(Icons.logout, size: 28),
+        text: Text(
+          'Sign out',
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+        ),
+      ),
+      textColor: Colors.redAccent,
     );
   }
 }

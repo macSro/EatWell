@@ -72,10 +72,7 @@ class RecipeListItem extends StatelessWidget {
             color: kPrimaryColor.withOpacity(0.65),
             child: Text(
               recipe.name,
-              style: Theme.of(context)
-                  .textTheme
-                  .headline5
-                  .copyWith(color: Colors.white),
+              style: Theme.of(context).textTheme.headline5.copyWith(color: Colors.white),
               textAlign: TextAlign.center,
               softWrap: true,
               overflow: TextOverflow.ellipsis,
@@ -88,32 +85,69 @@ class RecipeListItem extends StatelessWidget {
   }
 
   Widget _getDetailsBar(context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
-        IconText(
-          text: Text(
-            '${recipe.readyInMinutes} min',
-            style: Theme.of(context).textTheme.subtitle2,
-          ),
-          icon: Icon(
-            Icons.timer_rounded,
-            color: kPrimaryColorDark,
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            IconText(
+              text: Text(
+                '${recipe.readyInMinutes} min',
+                style: Theme.of(context).textTheme.subtitle2,
+              ),
+              icon: Icon(
+                Icons.timer_rounded,
+                color: kPrimaryColorDark,
+              ),
+            ),
+            RecipeRating(rating: recipe.rating),
+            IconText(
+              text: Text(
+                '${recipe.servings} pers',
+                style: Theme.of(context).textTheme.subtitle2,
+              ),
+              icon: Icon(
+                Icons.group_rounded,
+                color: kPrimaryColorDark,
+              ),
+              iconFirst: false,
+            ),
+          ],
         ),
-        RecipeRating(rating: recipe.rating),
-        IconText(
-          text: Text(
-            '${recipe.servings} pers',
-            style: Theme.of(context).textTheme.subtitle2,
+        if (recipe.inPantry != null) const SizedBox(height: 10),
+        if (recipe.inPantry != null)
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Ingredients in pantry: ',
+                style: Theme.of(context).textTheme.subtitle2,
+              ),
+              Text(
+                '${recipe.inPantry}/${recipe.ingredients.length}',
+                style: Theme.of(context).textTheme.subtitle2.copyWith().copyWith(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: _getInPantryColor(recipe.inPantry, recipe.ingredients.length),
+                    ),
+              ),
+            ],
           ),
-          icon: Icon(
-            Icons.group_rounded,
-            color: kPrimaryColorDark,
-          ),
-          iconFirst: false,
-        ),
       ],
     );
+  }
+
+  Color _getInPantryColor(int inPantry, int ingredientsAmount) {
+    if (inPantry == ingredientsAmount || ingredientsAmount == 0)
+      return kPrimaryColorDark;
+    else if (inPantry / ingredientsAmount > 0.7)
+      return kPrimaryColor;
+    else if (inPantry / ingredientsAmount > 0.3)
+      return kAccentColor;
+    else if (inPantry / ingredientsAmount > 0)
+      return Colors.redAccent;
+    else
+      return Colors.red;
   }
 }

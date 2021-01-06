@@ -4,12 +4,12 @@ import 'package:eat_well_v1/repositories/recipe_list_repository.dart';
 import 'package:eat_well_v1/repositories/user_repository.dart';
 import 'package:flutter/foundation.dart';
 
-class SavedRecipesRepository {
+class CreatedRecipesRepository {
   FirebaseFirestore _firestore;
   UserRepository _userRepository;
   RecipeListRepository _recipeListRepository;
 
-  SavedRecipesRepository({
+  CreatedRecipesRepository({
     @required FirebaseFirestore firestore,
     @required UserRepository userRepository,
     @required recipeListRepository,
@@ -19,9 +19,9 @@ class SavedRecipesRepository {
     this._recipeListRepository = recipeListRepository;
   }
 
-  Future<List<Recipe>> fetchSavedRecipes() async {
+  Future<List<Recipe>> fetchCreatedRecipes() async {
     final ids = await _firestore
-        .collection('saved-recipes')
+        .collection('created-recipes')
         .where('userId', isEqualTo: _userRepository.getCurrentUser().uid)
         .get()
         .then(
@@ -32,24 +32,5 @@ class SavedRecipesRepository {
         ids.map((recipeId) => _firestore.collection('recipes').doc(recipeId).get()).toList());
 
     return Future.wait(recipeDocs.map((doc) => _recipeListRepository.getRecipe(recipeDoc: doc)).toList());
-  }
-
-  Future<void> saveRecipe(String recipeId) async {
-    return _firestore.collection('saved-recipes').doc().set({
-      'userId': _userRepository.getCurrentUser().uid,
-      'recipeId': recipeId,
-    });
-  }
-
-  Future<void> removeRecipeFromSaved(String recipeId) async {
-    return _firestore
-        .collection('saved-recipes')
-        .where('recipeId', isEqualTo: recipeId)
-        .where('userId', isEqualTo: _userRepository.getCurrentUser().uid)
-        .limit(1)
-        .get()
-        .then(
-          (snap) => _firestore.collection('saved-recipes').doc(snap.docs.first.id).delete(),
-        );
   }
 }

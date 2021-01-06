@@ -13,8 +13,9 @@ import '../ingredient_list_tile.dart';
 
 class AddProductForm extends StatefulWidget {
   final bool includeAmount;
+  final bool includeDate;
 
-  AddProductForm({this.includeAmount = false});
+  AddProductForm({this.includeAmount = false, this.includeDate = false});
 
   @override
   _AddProductFormState createState() => _AddProductFormState();
@@ -26,7 +27,7 @@ class _AddProductFormState extends State<AddProductForm> {
   TextEditingController _amountController = TextEditingController();
   String _selectedId;
   String _selectedName;
-  String _selectedUnit = 'g';
+  String _selectedUnit = '';
   DateTime _selectedDate;
 
   @override
@@ -52,7 +53,7 @@ class _AddProductFormState extends State<AddProductForm> {
                     const SizedBox(height: 16),
                     _getAmountAndExpDateFields(),
                     const SizedBox(height: 16),
-                    _getAddButton(),
+                    _getAddButton(state.foundProducts),
                   ],
                 )
           : LoadingView(text: 'Loading products...'),
@@ -152,7 +153,7 @@ class _AddProductFormState extends State<AddProductForm> {
             setState(() {
               _selectedId = null;
               _selectedName = null;
-              _selectedUnit = 'g';
+              _selectedUnit = '';
             });
           },
         ),
@@ -181,6 +182,7 @@ class _AddProductFormState extends State<AddProductForm> {
                             ? 'Incorrect value.'
                             : null,
                     controller: _amountController,
+                    keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       hintText: 'Amount',
                       contentPadding: const EdgeInsets.only(left: 12, right: 12),
@@ -196,7 +198,7 @@ class _AddProductFormState extends State<AddProductForm> {
                     ),
                     icon: Icon(Icons.arrow_downward_rounded, size: 20),
                     value: _selectedUnit,
-                    items: ['g', 'oz', 'serving', 'clove']
+                    items: kUnits
                         .map(
                           (String value) => DropdownMenuItem(
                             value: value,
@@ -213,27 +215,28 @@ class _AddProductFormState extends State<AddProductForm> {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
-            RaisedButton(
-              child: Text(
-                'Select expiry date',
-                style: TextStyle(fontSize: 20),
-              ),
-              onPressed: () {
-                showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(2000),
-                  lastDate: DateTime(DateTime.now().year + 100),
-                ).then((selectedDate) {
-                  setState(() {
-                    _selectedDate = selectedDate;
+            if (widget.includeDate) SizedBox(height: 16),
+            if (widget.includeDate)
+              RaisedButton(
+                child: Text(
+                  'Select expiry date',
+                  style: TextStyle(fontSize: 20),
+                ),
+                onPressed: () {
+                  showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(DateTime.now().year + 100),
+                  ).then((selectedDate) {
+                    setState(() {
+                      _selectedDate = selectedDate;
+                    });
                   });
-                });
-              },
-              color: kAccentColor,
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-            ),
+                },
+                color: kAccentColor,
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+              ),
             if (_selectedDate != null) const SizedBox(height: 16),
             if (_selectedDate != null)
               Text(
@@ -246,7 +249,7 @@ class _AddProductFormState extends State<AddProductForm> {
     );
   }
 
-  Widget _getAddButton() {
+  Widget _getAddButton(List<Product> foundProducts) {
     return RaisedButton(
       color: kPrimaryColor,
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
@@ -255,7 +258,9 @@ class _AddProductFormState extends State<AddProductForm> {
           Navigator.pop(
             context,
             [
-              _selectedId,
+              widget.includeAmount && !widget.includeDate
+                  ? foundProducts.firstWhere((product) => product.id == _selectedId)
+                  : _selectedId,
               double.parse(_amountController.text),
               _selectedUnit,
               _selectedDate,
@@ -269,7 +274,7 @@ class _AddProductFormState extends State<AddProductForm> {
           style: TextStyle(fontSize: 24),
         ),
         icon: Icon(
-          Icons.kitchen_rounded,
+          Icons.check_rounded,
           size: 24,
         ),
         squeeze: true,

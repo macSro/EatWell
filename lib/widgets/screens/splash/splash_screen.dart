@@ -1,5 +1,12 @@
 import 'package:eat_well_v1/bloc/all_recipes/recipe_list_bloc.dart';
 import 'package:eat_well_v1/bloc/all_recipes/recipe_list_event.dart';
+import 'package:eat_well_v1/bloc/diet/diet_bloc.dart';
+import 'package:eat_well_v1/bloc/filters/filters_bloc.dart';
+import 'package:eat_well_v1/bloc/my_recipes/created_recipes/created_recipes_bloc.dart';
+import 'package:eat_well_v1/bloc/my_recipes/created_recipes/created_recipes_event.dart';
+import 'package:eat_well_v1/bloc/my_recipes/saved_recipes/saved_recipes_bloc.dart';
+import 'package:eat_well_v1/bloc/my_recipes/saved_recipes/saved_recipes_event.dart';
+import 'package:eat_well_v1/bloc/pantry/pantry_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -23,7 +30,7 @@ class SplashScreen extends StatelessWidget {
         } else {
           //State has to be UserAuthenticated here.
           Navigator.pushReplacementNamed(context, RecipesScreen.routeName);
-          BlocProvider.of<RecipeListBloc>(context).add(FetchRecipes());
+          _fetchData(context);
         }
       },
       child: Container(
@@ -52,5 +59,18 @@ class SplashScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  _fetchData(context) {
+    BlocProvider.of<RecipeListBloc>(context).add(FetchRecipes());
+    BlocProvider.of<FiltersBloc>(context).add(ResetFilters());
+    BlocProvider.of<CreatedRecipesBloc>(context).add(
+      FetchCreatedRecipes(),
+    );
+    BlocProvider.of<SavedRecipesBloc>(context).add(
+      FetchSavedRecipes(),
+    );
+    BlocProvider.of<PantryBloc>(context).add(FetchPantry());
+    BlocProvider.of<DietBloc>(context).add(FetchBannedProducts());
   }
 }
