@@ -1,5 +1,3 @@
-import 'package:eat_well_v1/model/extended_ingredient.dart';
-import 'package:eat_well_v1/model/product.dart';
 import 'package:flutter/material.dart';
 
 import '../../../misc/scaffold.dart';
@@ -17,19 +15,7 @@ class CreateRecipeScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: ListView(
           children: [
-            CreateRecipeForm(
-              initIngredients: [
-                ExtendedIngredient(
-                  product: Product(
-                    id: '1',
-                    name: 'test',
-                    imageUrl: 'https://spoonacular.com/cdn/ingredients_100x100/apple.jpg',
-                  ),
-                  amount: 20,
-                  unit: 'g',
-                ),
-              ],
-            ),
+            CreateRecipeForm(),
           ],
         ),
       ),

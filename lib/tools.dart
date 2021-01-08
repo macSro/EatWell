@@ -1,5 +1,5 @@
 class Tools {
-  static capitalizeFirstWord(String value) {
+  static String capitalizeFirstWord(String value) {
     if (value == null) {
       throw ArgumentError("string: $value");
     }
@@ -9,7 +9,7 @@ class Tools {
     return value[0].toUpperCase() + value.substring(1);
   }
 
-  static capitalizeAllWords(String value) {
+  static String capitalizeAllWords(String value) {
     if (value == null) {
       throw ArgumentError("string: $value");
     }
@@ -22,7 +22,13 @@ class Tools {
       result += word[0].toUpperCase() + word.substring(1);
       if (word != words[words.length - 1]) result += ' ';
     });
-    return result;
+    List<String> words2 = result.split('-');
+    String result2 = '';
+    words2.forEach((word) {
+      result2 += word[0].toUpperCase() + word.substring(1);
+      if (word != words2[words2.length - 1]) result2 += '-';
+    });
+    return result2;
   }
 
   static num simplifyDouble(double value) {
