@@ -95,6 +95,7 @@ const kDefaultCuisineFilters = {
 };
 const kDefaultDietFilters = {
   Diet.GlutenFree: false,
+  Diet.DairyFree: false,
   Diet.Ketogenic: false,
   Diet.LactoVegetarian: false,
   Diet.OvoVegetarian: false,
@@ -199,6 +200,7 @@ const kCuisines = {
 
 enum Diet {
   GlutenFree,
+  DairyFree,
   Ketogenic,
   LactoVegetarian,
   OvoVegetarian,
@@ -211,6 +213,7 @@ enum Diet {
 }
 const kDiets = {
   Diet.GlutenFree: 'gluten free',
+  Diet.DairyFree: 'dairy free',
   Diet.Ketogenic: 'ketogenic',
   Diet.LactoVegetarian: 'lacto-vegetarian',
   Diet.OvoVegetarian: 'ovo-vegetarian',

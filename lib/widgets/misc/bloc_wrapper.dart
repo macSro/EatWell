@@ -11,6 +11,7 @@ import 'package:eat_well_v1/repositories/inquiry_repository.dart';
 import 'package:eat_well_v1/repositories/pantry_repository.dart';
 import 'package:eat_well_v1/repositories/product_search_repository.dart';
 import 'package:eat_well_v1/repositories/saved_recipes_repository.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -31,17 +32,25 @@ class FireBlocWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
+    FirebaseStorage storage = FirebaseStorage.instance;
     UserRepository userRepository = UserRepository();
     RecipeRepository recipeRepository = RecipeRepository(
       firestore: firestore,
       userRepository: userRepository,
     );
-    PantryRepository pantryRepository =
-        PantryRepository(firestore: firestore, userRepository: userRepository);
+    PantryRepository pantryRepository = PantryRepository(
+      firestore: firestore,
+      userRepository: userRepository,
+    );
+    DietRepository dietRepository = DietRepository(
+      firestore: firestore,
+      userRepository: userRepository,
+    );
     RecipeListRepository recipeListRepository = RecipeListRepository(
       firestore: firestore,
-      pantryRepository: pantryRepository,
       recipeRepository: recipeRepository,
+      pantryRepository: pantryRepository,
+      dietRepository: dietRepository,
     );
     SavedRecipesRepository savedRecipesRepository = SavedRecipesRepository(
       firestore: firestore,
@@ -50,11 +59,11 @@ class FireBlocWrapper extends StatelessWidget {
     );
     CreatedRecipesRepository createdRecipesRepository = CreatedRecipesRepository(
       firestore: firestore,
+      storage: storage,
       userRepository: userRepository,
       recipeListRepository: recipeListRepository,
     );
     ProductSearchRepository productSearchRepository = ProductSearchRepository(firestore: firestore);
-    DietRepository dietRepository = DietRepository(firestore: firestore, userRepository: userRepository);
     InquiryRepository inquiryRepository = InquiryRepository(firestore: firestore);
     return MultiBlocProvider(
       providers: [

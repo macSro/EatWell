@@ -51,14 +51,17 @@ class SavedRecipesScreen extends StatelessWidget {
 
   Widget _getRemoveFromSavedButton(context, currentRecipes, recipeId) {
     return RaisedButton(
-      color: Colors.red,
+      color: Colors.redAccent,
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           IconText(
             icon: Icon(Icons.delete_rounded),
-            text: Text('Remove from Saved'),
+            text: Text(
+              'Remove from Saved',
+              style: TextStyle(fontSize: 18),
+            ),
           ),
         ],
       ),

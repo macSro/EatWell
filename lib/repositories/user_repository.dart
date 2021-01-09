@@ -74,19 +74,15 @@ class UserRepository {
     email,
     password,
     displayName,
-    diet,
   }) async {
     try {
       if (email != null) return await getCurrentUser().updateEmail(email);
       if (password != null)
         return await getCurrentUser().updatePassword(password);
       if (displayName != null) {
-        print('try update');
         return await getCurrentUser()
-            .updateProfile(displayName: displayName)
-            .then((value) => print('updated'));
+            .updateProfile(displayName: displayName);
       }
-      //if(diet != null) go to collection with users diets and update it for current user
     } catch (exception) {
       print(exception.toString());
       return null;

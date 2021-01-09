@@ -41,12 +41,11 @@ class SavedRecipesBloc extends Bloc<SavedRecipesEvent, SavedRecipesState> {
 
       await _savedRecipesRepository.removeRecipeFromSaved(recipeId);
 
-      List<Recipe> newRecipes = currentRecipes;
+      List<Recipe> newRecipes = []..addAll(currentRecipes);
       newRecipes.removeWhere((recipe) => recipe.id == recipeId);
 
       yield SavedRecipesFetched(recipes: newRecipes);
-    }
-    else{
+    } else {
       await _savedRecipesRepository.removeRecipeFromSaved(recipeId);
     }
   }

@@ -175,7 +175,6 @@ class _SelectFiltersState extends State<SelectFilters> {
         cuisines.removeWhere((element) => element == null);
         List<Diet> diets = _dietFilters.entries.map((entry) => entry.value ? entry.key : null).toList();
         diets.removeWhere((element) => element == null);
-        print(dishTypes);
         Navigator.pop(context, [dishTypes, cuisines, diets]);
       },
       child: IconText(

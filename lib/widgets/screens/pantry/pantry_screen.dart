@@ -19,7 +19,6 @@ class PantryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<PantryBloc, PantryState>(
       builder: (context, state) {
-        print(state);
         return MyScaffold(
           title: 'Pantry',
           child: Padding(

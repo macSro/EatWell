@@ -24,18 +24,3 @@ class CreatedRecipesFetched extends CreatedRecipesState {
   @override
   List<Object> get props => [recipes];
 }
-
-class RecipeCreated extends CreatedRecipesState {
-  @override
-  List<Object> get props => [];
-}
-
-class RecipeModified extends CreatedRecipesState {
-  @override
-  List<Object> get props => [];
-}
-
-class RecipeDeleted extends CreatedRecipesState {
-  @override
-  List<Object> get props => [];
-}

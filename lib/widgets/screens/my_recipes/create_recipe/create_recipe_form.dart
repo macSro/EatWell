@@ -1,7 +1,10 @@
 import 'dart:io';
 
+import 'package:eat_well_v1/bloc/my_recipes/created_recipes/created_recipes_bloc.dart';
+import 'package:eat_well_v1/bloc/my_recipes/created_recipes/created_recipes_event.dart';
 import 'package:eat_well_v1/bloc/product_search/product_search_bloc.dart';
 import 'package:eat_well_v1/model/extended_ingredient.dart';
+import 'package:eat_well_v1/model/recipe.dart';
 import 'package:eat_well_v1/widgets/misc/fullscreen_dialog.dart';
 import 'package:eat_well_v1/widgets/misc/ingredient_list_tile.dart';
 import 'package:eat_well_v1/widgets/misc/products/add_product_form.dart';
@@ -16,12 +19,19 @@ import '../../../../tools.dart';
 import '../../../misc/icon_text.dart';
 
 class CreateRecipeForm extends StatefulWidget {
+  final List<Recipe> currentRecipes;
   final List<ExtendedIngredient> initIngredients;
   final List<DishType> initDishTypes;
   final List<Cuisine> initCuisines;
   final List<Diet> initDiets;
 
-  CreateRecipeForm({this.initIngredients, this.initDishTypes, this.initCuisines, this.initDiets});
+  CreateRecipeForm({
+    @required this.currentRecipes,
+    this.initIngredients,
+    this.initDishTypes,
+    this.initCuisines,
+    this.initDiets,
+  });
 
   @override
   _CreateRecipeFormState createState() => _CreateRecipeFormState();
@@ -427,46 +437,7 @@ class _CreateRecipeFormState extends State<CreateRecipeForm> {
         showFullscreenDialog(
           context: context,
           title: 'Instruction step',
-          child: Form(
-            key: _formKeyInstructions,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextFormField(
-                  controller: _instructionsController,
-                  validator: (val) => val.isEmpty ? 'Can\'t be empty.' : null,
-                  minLines: 1,
-                  maxLines: 16,
-                  style: Theme.of(context).textTheme.headline6,
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(vertical: 12),
-                    prefixIcon: const Icon(Icons.group_rounded),
-                    labelText: 'Enter one instruction step',
-                  ),
-                ),
-                const SizedBox(height: 16),
-                RaisedButton(
-                  padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                  onPressed: () {
-                    if (_formKeyInstructions.currentState.validate()) {
-                      Navigator.pop(context, [_instructionsController.text]);
-                    }
-                  },
-                  child: IconText(
-                    text: Text(
-                      'Add',
-                      style: TextStyle(fontSize: 24),
-                    ),
-                    icon: Icon(
-                      Icons.check_rounded,
-                      size: 24,
-                    ),
-                    squeeze: true,
-                  ),
-                ),
-              ],
-            ),
-          ),
+          child: _getAddInstructionStepForm(),
         ).then((result) {
           if (result != null) {
             setState(() {
@@ -476,6 +447,49 @@ class _CreateRecipeFormState extends State<CreateRecipeForm> {
           _instructionsController.clear();
         });
       },
+    );
+  }
+
+  Widget _getAddInstructionStepForm() {
+    return Form(
+      key: _formKeyInstructions,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextFormField(
+            controller: _instructionsController,
+            validator: (val) => val.isEmpty ? 'Can\'t be empty.' : null,
+            minLines: 1,
+            maxLines: 16,
+            style: Theme.of(context).textTheme.headline6,
+            decoration: InputDecoration(
+              contentPadding: const EdgeInsets.symmetric(vertical: 12),
+              prefixIcon: const Icon(Icons.group_rounded),
+              labelText: 'Enter one instruction step',
+            ),
+          ),
+          const SizedBox(height: 16),
+          RaisedButton(
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            onPressed: () {
+              if (_formKeyInstructions.currentState.validate()) {
+                Navigator.pop(context, [_instructionsController.text]);
+              }
+            },
+            child: IconText(
+              text: Text(
+                'Add',
+                style: TextStyle(fontSize: 24),
+              ),
+              icon: Icon(
+                Icons.check_rounded,
+                size: 24,
+              ),
+              squeeze: true,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -559,7 +573,21 @@ class _CreateRecipeFormState extends State<CreateRecipeForm> {
           _createPressed = true;
         });
         if (_formKeyMain.currentState.validate() && _ingredients.isNotEmpty && _instructions.isNotEmpty) {
-          print('yass');
+          BlocProvider.of<CreatedRecipesBloc>(context).add(
+            CreateRecipe(
+              currentRecipes: widget.currentRecipes,
+              name: _nameController.text,
+              imageFile: _image,
+              ingredients: _ingredients,
+              dishTypes: _dishTypes,
+              cuisines: _cuisines,
+              diets: _diets,
+              instructions: _instructions,
+              readyInMinutes: int.parse(_timeController.text),
+              servings: int.parse(_servingsController.text),
+            ),
+          );
+          Navigator.pop(context);
         } else {
           Scaffold.of(context).showSnackBar(
             SnackBar(

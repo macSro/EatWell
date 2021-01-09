@@ -67,6 +67,10 @@ class Tools {
     return '$day-$month-${date.year}';
   }
 
+  static String getImageName(String val) {
+    return val.replaceAll(RegExp(' +'), '-').toLowerCase() + '.jpg';
+  }
+
   static String validatePassword(String val) {
     Pattern pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
     RegExp regExp = RegExp(pattern);

@@ -106,19 +106,16 @@ class RecipeListBloc extends Bloc<RecipeListEvent, RecipeListState> {
       if (filter.value) return filter.key;
     }).toList();
     dishTypeFilters.removeWhere((element) => element == null);
-    print(dishTypeFilters);
 
     List<Cuisine> cuisineFilters = cuisines.entries.map((filter) {
       if (filter.value) return filter.key;
     }).toList();
     cuisineFilters.removeWhere((element) => element == null);
-    print(cuisineFilters);
 
     List<Diet> dietFilters = diets.entries.map((filter) {
       if (filter.value) return filter.key;
     }).toList();
     dietFilters.removeWhere((element) => element == null);
-    print(dietFilters);
 
     List<Recipe> newRecipes = []..addAll(recipes);
 

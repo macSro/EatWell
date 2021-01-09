@@ -31,7 +31,10 @@ class RecipesScreen extends StatelessWidget {
           actions: [
             IconButton(
                 icon: Icon(Icons.refresh),
-                onPressed: () => BlocProvider.of<RecipeListBloc>(context).add(FetchRecipes())),
+                onPressed: () {
+                  BlocProvider.of<RecipeListBloc>(context).add(FetchRecipes());
+                  BlocProvider.of<FiltersBloc>(context).add(ResetFilters());
+                }),
           ],
           child: state is RecipesFetched
               ? BlocListener<FiltersBloc, FiltersState>(
