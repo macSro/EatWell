@@ -20,18 +20,8 @@ import '../../../misc/icon_text.dart';
 
 class CreateRecipeForm extends StatefulWidget {
   final List<Recipe> currentRecipes;
-  final List<ExtendedIngredient> initIngredients;
-  final List<DishType> initDishTypes;
-  final List<Cuisine> initCuisines;
-  final List<Diet> initDiets;
 
-  CreateRecipeForm({
-    @required this.currentRecipes,
-    this.initIngredients,
-    this.initDishTypes,
-    this.initCuisines,
-    this.initDiets,
-  });
+  CreateRecipeForm({@required this.currentRecipes});
 
   @override
   _CreateRecipeFormState createState() => _CreateRecipeFormState();
@@ -53,12 +43,6 @@ class _CreateRecipeFormState extends State<CreateRecipeForm> {
   List<String> _instructions = [];
 
   bool _createPressed = false;
-
-  @override
-  void initState() {
-    if (widget.initIngredients != null) _ingredients.addAll(widget.initIngredients);
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

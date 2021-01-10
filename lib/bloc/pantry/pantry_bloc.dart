@@ -70,7 +70,7 @@ class PantryBloc extends Bloc<PantryEvent, PantryState> {
       expDate: expDate,
     );
 
-    List<ExtendedIngredient> newProducts = currentProducts;
+    List<ExtendedIngredient> newProducts = []..addAll(currentProducts);
     newProducts.add(newProduct);
 
     yield PantryFetched(products: newProducts);
@@ -84,7 +84,7 @@ class PantryBloc extends Bloc<PantryEvent, PantryState> {
 
     await _pantryRepository.removeProductFromPantry(productId);
 
-    List<ExtendedIngredient> newProducts = currentProducts;
+    List<ExtendedIngredient> newProducts = []..addAll(currentProducts);
     newProducts.removeWhere((product) => product.product.id == productId);
 
     yield PantryFetched(products: newProducts);
@@ -102,7 +102,7 @@ class PantryBloc extends Bloc<PantryEvent, PantryState> {
     await _pantryRepository.updateProductInPantry(
         productId: productId, amount: amount, unit: unit, expDate: expDate);
 
-    List<ExtendedIngredient> newProducts = currentProducts;
+    List<ExtendedIngredient> newProducts = []..addAll(currentProducts);
 
     int index = currentProducts
         .indexWhere((product) => product.product.id == productId);

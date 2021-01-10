@@ -8,8 +8,9 @@ class EditProductForm extends StatefulWidget {
   final double initAmount;
   final String initUnit;
   final DateTime initDate;
+  final bool withDate;
 
-  EditProductForm({this.initAmount, this.initUnit, this.initDate});
+  EditProductForm({this.initAmount, this.initUnit, this.initDate, this.withDate = false});
 
   @override
   _EditProductFormState createState() => _EditProductFormState();
@@ -98,27 +99,28 @@ class _EditProductFormState extends State<EditProductForm> {
                 ),
               ],
             ),
-            if(widget.initDate != null) const SizedBox(height: 16),
-            if(widget.initDate != null) RaisedButton(
-              child: Text(
-                'Select expiry date',
-                style: TextStyle(fontSize: 18),
-              ),
-              onPressed: () {
-                showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(2000),
-                  lastDate: DateTime(DateTime.now().year + 100),
-                ).then((selectedDate) {
-                  setState(() {
-                    _selectedDate = selectedDate;
+            if (widget.withDate) const SizedBox(height: 16),
+            if (widget.withDate)
+              RaisedButton(
+                child: Text(
+                  'Select expiry date',
+                  style: TextStyle(fontSize: 18),
+                ),
+                onPressed: () {
+                  showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(DateTime.now().year + 100),
+                  ).then((selectedDate) {
+                    setState(() {
+                      _selectedDate = selectedDate;
+                    });
                   });
-                });
-              },
-              color: kAccentColor,
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-            ),
+                },
+                color: kAccentColor,
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+              ),
             if (_selectedDate != null) const SizedBox(height: 16),
             if (_selectedDate != null)
               Text(

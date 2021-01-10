@@ -52,7 +52,7 @@ class DietBloc extends Bloc<DietEvent, DietState> {
 
     await _dietRepository.removeProductFromBanned(productId);
 
-    List<Product> newProducts = currentProducts;
+    List<Product> newProducts = []..addAll(currentProducts);
     newProducts.removeWhere((product) => product.id == productId);
 
     yield BannedProductsFetched(products: newProducts);

@@ -24,7 +24,19 @@ const kRecipeImageUrlBasePath = 'https://spoonacular.com/recipeImages/';
 const kIngredientImageUrlBasePath = 'https://spoonacular.com/cdn/ingredients_100x100/';
 
 //TYPES
-const kUnits = ['', 'g', 'ml', 'cup', 'tbsp', 'tsp', 'oz', 'lb', 'package', 'serving'];
+const kUnits = [
+  '',
+  'g',
+  'ml',
+  'cup',
+  'tbsp',
+  'tsp',
+  'oz',
+  'lb',
+  'package',
+  'serving',
+  'small',
+];
 
 enum SortBy {
   NameAsc,

@@ -36,7 +36,7 @@ class PantryRepository {
         product: products[i],
         amount: (pantryDocs[i].data()['amount'] as num).toDouble(),
         unit: pantryDocs[i].data()['unit'] as String,
-        //expDate: pantryDocs[i].data()['expDate'] LIKE IN INQUIRIES,
+        expDate: (pantryDocs[i].data()['expDate'] as Timestamp)?.toDate(),
       ));
     }
 
@@ -95,23 +95,4 @@ class PantryRepository {
           }),
         );
   }
-
-  // Future<int> getNumberOfProductsInPantry(List<ExtendedIngredient> ingredients) {
-  //   final List<String> productsIds = ingredients.map((ingredient) => ingredient.product.id).toList();
-
-  //   return _firestore
-  //       .collection('pantry-products')
-  //       .where('userId', isEqualTo: _userRepository.getCurrentUser().uid)
-  //       .get()
-  //       .then(
-  //     (snap) {
-  //       int result = 0;
-  //       snap.docs.forEach((doc) {
-  //         final data = doc.data();
-  //         if (productsIds.contains(data['productId']) && (data['amount'] as num).toDouble() >= ingredien) result++;
-  //       });
-  //       return result;
-  //     },
-  //   );
-  // }
 }

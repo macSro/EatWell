@@ -46,7 +46,7 @@ class PantryScreen extends StatelessWidget {
 
   Widget _getContent(context, List<ExtendedIngredient> products) {
     return Padding(
-      padding: const EdgeInsets.all(4),
+      padding: const EdgeInsets.all(8),
       child: ListView.builder(
         itemCount: products.length,
         itemBuilder: (context, index) => Card(
@@ -69,6 +69,7 @@ class PantryScreen extends StatelessWidget {
                       initAmount: products[index].amount,
                       initUnit: products[index].unit,
                       initDate: products[index].expDate,
+                      withDate: true,
                     ),
                   ],
                   shape: RoundedRectangleBorder(
