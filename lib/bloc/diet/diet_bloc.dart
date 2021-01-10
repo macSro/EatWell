@@ -41,7 +41,7 @@ class DietBloc extends Bloc<DietEvent, DietState> {
 
     final Product newProduct = await _dietRepository.getProduct(productId);
 
-    List<Product> newProducts = currentProducts;
+    List<Product> newProducts = []..addAll(currentProducts);
     newProducts.add(newProduct);
 
     yield BannedProductsFetched(products: newProducts);

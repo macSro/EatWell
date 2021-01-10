@@ -50,9 +50,13 @@ class RecipeScreen extends StatelessWidget {
                 const SizedBox(height: 16),
                 RecipeRating(rating: recipe.rating),
                 const SizedBox(height: 8),
-                Text(
-                  recipe.name,
-                  style: Theme.of(context).textTheme.headline5.copyWith(fontStyle: FontStyle.italic),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(
+                    recipe.name,
+                    style: Theme.of(context).textTheme.headline5.copyWith(fontStyle: FontStyle.italic),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
                 const SizedBox(height: 16),
                 _getDetails(context, recipe.readyInMinutes, recipe.servings),
@@ -82,7 +86,11 @@ class RecipeScreen extends StatelessWidget {
                   style: Theme.of(context).textTheme.headline6,
                 ),
                 const SizedBox(height: 8),
-                RecipeRatingButtons(recipe: recipe, isSaved: isSaved, userRating: userRating,),
+                RecipeRatingButtons(
+                  recipe: recipe,
+                  isSaved: isSaved,
+                  userRating: userRating,
+                ),
                 const SizedBox(height: 32),
               ],
             ),

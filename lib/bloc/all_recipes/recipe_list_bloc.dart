@@ -117,23 +117,51 @@ class RecipeListBloc extends Bloc<RecipeListEvent, RecipeListState> {
     }).toList();
     dietFilters.removeWhere((element) => element == null);
 
-    List<Recipe> newRecipes = []..addAll(recipes);
+    List<Recipe> newRecipes = [];
 
-    dishTypeFilters.forEach(
-      (dishType) => newRecipes.removeWhere(
-        (recipe) => !recipe.dishTypes.contains(dishType),
-      ),
-    );
-    cuisineFilters.forEach(
-      (cuisine) => newRecipes.removeWhere(
-        (recipe) => !recipe.dishTypes.contains(cuisine),
-      ),
-    );
-    dietFilters.forEach(
-      (diet) => newRecipes.removeWhere(
-        (recipe) => !recipe.dishTypes.contains(diet),
-      ),
-    );
+    if (dishTypeFilters.isEmpty && cuisineFilters.isEmpty && dietFilters.isEmpty)
+      newRecipes.addAll(recipes);
+    else {
+      int _dishTypesCount;
+      int _cuisinesCount;
+      int _dietsCount;
+      recipes.forEach((recipe) {
+        _dishTypesCount = 0;
+        _cuisinesCount = 0;
+        _dietsCount = 0;
+
+        dietFilters.forEach((diet) {
+          if (recipe.diets.contains(diet)) {
+            _dietsCount++;
+          }
+        });
+        if (_dietsCount == dietFilters.length || dietFilters.isEmpty) {
+          if (dishTypeFilters.isEmpty && cuisineFilters.isEmpty) {
+            newRecipes.add(recipe);
+          } else {
+            dishTypeFilters.forEach((dishType) {
+              if (recipe.dishTypes.contains(dishType)) {
+                _dishTypesCount++;
+              }
+            });
+            if (_dishTypesCount > 0 || dishTypeFilters.isEmpty) {
+              if (cuisineFilters.isEmpty) {
+                newRecipes.add(recipe);
+              } else {
+                print('recipe cuisines: ${recipe.cuisines}');
+                cuisineFilters.forEach((cuisine) {
+                  if (recipe.cuisines.contains(cuisine)) {
+                    _cuisinesCount++;
+                  }
+                });
+                print('cuisines count: $_cuisinesCount');
+                if (_cuisinesCount > 0) newRecipes.add(recipe);
+              }
+            }
+          }
+        }
+      });
+    }
 
     return newRecipes;
   }

@@ -24,7 +24,7 @@ const kRecipeImageUrlBasePath = 'https://spoonacular.com/recipeImages/';
 const kIngredientImageUrlBasePath = 'https://spoonacular.com/cdn/ingredients_100x100/';
 
 //TYPES
-const kUnits = ['', 'g', 'ml', 'cup', 'tbsp', 'tsp', 'oz'];
+const kUnits = ['', 'g', 'ml', 'cup', 'tbsp', 'tsp', 'oz', 'lb', 'package', 'serving'];
 
 enum SortBy {
   NameAsc,
@@ -170,32 +170,32 @@ enum Cuisine {
   Vietnamese,
 }
 const kCuisines = {
-  Cuisine.African: 'african',
-  Cuisine.American: 'american',
-  Cuisine.British: 'british',
-  Cuisine.Cajun: 'cajun',
-  Cuisine.Caribbean: 'caribbean',
-  Cuisine.Chinese: 'chinese',
-  Cuisine.EasternEuropean: 'eastern Europe',
-  Cuisine.European: 'european',
-  Cuisine.French: 'french',
-  Cuisine.German: 'german',
-  Cuisine.Greek: 'greek',
-  Cuisine.Indian: 'indian',
-  Cuisine.Irish: 'irish',
-  Cuisine.Italian: 'italian',
-  Cuisine.Japanese: 'japanese',
-  Cuisine.Jewish: 'jewish',
-  Cuisine.Korean: 'korean',
-  Cuisine.LatinAmerican: 'latin American',
-  Cuisine.Mediterranean: 'mediterranean',
-  Cuisine.Mexican: 'mexican',
-  Cuisine.MiddleEastern: 'middle Eastern',
-  Cuisine.Nordic: 'nordic',
-  Cuisine.Southern: 'southern',
-  Cuisine.Spanish: 'spanish',
-  Cuisine.Thai: 'thai',
-  Cuisine.Vietnamese: 'vietnamese',
+  Cuisine.African: 'African',
+  Cuisine.American: 'American',
+  Cuisine.British: 'British',
+  Cuisine.Cajun: 'Cajun',
+  Cuisine.Caribbean: 'Caribbean',
+  Cuisine.Chinese: 'Chinese',
+  Cuisine.EasternEuropean: 'Eastern Europe',
+  Cuisine.European: 'European',
+  Cuisine.French: 'French',
+  Cuisine.German: 'German',
+  Cuisine.Greek: 'Greek',
+  Cuisine.Indian: 'Indian',
+  Cuisine.Irish: 'Irish',
+  Cuisine.Italian: 'Italian',
+  Cuisine.Japanese: 'Japanese',
+  Cuisine.Jewish: 'Jewish',
+  Cuisine.Korean: 'Korean',
+  Cuisine.LatinAmerican: 'Latin American',
+  Cuisine.Mediterranean: 'Mediterranean',
+  Cuisine.Mexican: 'Mexican',
+  Cuisine.MiddleEastern: 'Middle Eastern',
+  Cuisine.Nordic: 'Nordic',
+  Cuisine.Southern: 'Southern',
+  Cuisine.Spanish: 'Spanish',
+  Cuisine.Thai: 'Thai',
+  Cuisine.Vietnamese: 'Vietnamese',
 };
 
 enum Diet {

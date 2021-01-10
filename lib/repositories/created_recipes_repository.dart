@@ -126,10 +126,10 @@ class CreatedRecipesRepository {
     });
   }
 
-  Future<String> _uploadImage(String productName, File file) async {
+  Future<String> _uploadImage(String recipeName, File file) async {
     if (file == null) return null;
 
-    Reference ref = _storage.ref().child('recipe-images/${Tools.getImageName(productName)}');
+    Reference ref = _storage.ref().child('recipe-images/${Tools.getImageName(recipeName)}');
 
     return ref.putFile(file).then((_) => ref.getDownloadURL()).catchError((error) => null);
   }

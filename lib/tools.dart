@@ -35,30 +35,23 @@ class Tools {
     return value == value.roundToDouble() ? value.toInt() : value;
   }
 
-  static String getUnitShort(String unit) {
-    //TODO: complete with more examples
-    if (unit == 'tablespoon' || unit == 'tablespoons')
+  static String getUnitShort(String unitLong) {
+    String unit = unitLong.endsWith('s') ? unitLong.substring(0, unitLong.length - 1) : unitLong;
+
+    if (unit.toLowerCase() == 'tablespoon' || unit == 'T')
       return 'tbsp';
-    else if (unit == 'teaspoon' || unit == 'teaspoons')
+    else if (unit.toLowerCase() == 'teaspoon' || unit == 't')
       return 'tsp';
-    else if (unit == 'cups')
+    else if (unit.toLowerCase() == 'c')
       return 'cup';
-    else if (unit == 'gram' || unit == 'grams')
+    else if (unit.toLowerCase() == 'gram')
       return 'g';
-    else if (unit == 'millilitre' || unit == 'millilitres')
+    else if (unit.toLowerCase() == 'millilitre' || unit == 'mL')
       return 'ml';
-    else if (unit == 'clove' ||
-        unit == 'cloves' ||
-        unit == 'serving' ||
-        unit == 'piece' ||
-        unit == 'pieces' ||
-        unit == 'medium' ||
-        unit == 'small' ||
-        unit == 'large' ||
-        unit == 'big')
-      return '';
+    else if (unit == 'ounce')
+      return 'oz';
     else
-      return unit;
+      return unit.toLowerCase();
   }
 
   static String getDate(DateTime date) {
