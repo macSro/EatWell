@@ -264,18 +264,24 @@ class _CreateRecipeFormState extends State<CreateRecipeForm> {
                         builder: (context) => _getEditIngredientDialog(ingredient),
                       ).then((result) {
                         if (result != null) {
-                          setState(() {
-                            int index = _ingredients.indexOf(ingredient);
-                            _ingredients.removeAt(index);
-                            _ingredients.insert(
-                              index,
-                              ExtendedIngredient(
-                                product: ingredient.product,
-                                amount: result[0],
-                                unit: result[1],
-                              ),
-                            );
-                          });
+                          if (result[0] == 'remove') {
+                            setState(() {
+                              _ingredients.removeWhere((ing) => ing.product.name == ingredient.product.name);
+                            });
+                          } else {
+                            setState(() {
+                              int index = _ingredients.indexOf(ingredient);
+                              _ingredients.removeAt(index);
+                              _ingredients.insert(
+                                index,
+                                ExtendedIngredient(
+                                  product: ingredient.product,
+                                  amount: result[0],
+                                  unit: result[1],
+                                ),
+                              );
+                            });
+                          }
                         }
                       });
                     },
@@ -363,51 +369,82 @@ class _CreateRecipeFormState extends State<CreateRecipeForm> {
   }
 
   Widget _getInstructions() {
-    return Row(
-      children: [
-        Expanded(
-          child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16),
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              children: _instructions.asMap().entries.map((entry) {
-                int stepNumber = entry.key + 1;
-                String instruction = entry.value;
-
-                return Column(
-                  children: [
-                    Text(
-                      'Step #$stepNumber',
-                      style: Theme.of(context).textTheme.subtitle1.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: kPrimaryColor,
-                          ),
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        children: _instructions.asMap().entries.map((entry) {
+          int stepNumber = entry.key + 1;
+          String instruction = entry.value;
+          return Row(
+            children: [
+              Expanded(
+                child: Material(
+                  color: Colors.white.withOpacity(0.0),
+                  child: InkWell(
+                    onTap: () {
+                      FocusScope.of(context).unfocus();
+                      showFullscreenDialog(
+                        context: context,
+                        title: 'Edit instruction step',
+                        child: _getAddInstructionStepForm(initText: instruction),
+                      ).then((result) {
+                        if (result != null) {
+                          if (result[0] == 'remove') {
+                            setState(() {
+                              _instructions.removeWhere((instr) => instr == instruction);
+                            });
+                          } else {
+                            setState(() {
+                              int index = _instructions.indexOf(instruction);
+                              _instructions.removeAt(index);
+                              _instructions.insert(
+                                index,
+                                result[0],
+                              );
+                            });
+                          }
+                        }
+                        _instructionsController.clear();
+                      });
+                    },
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 16),
+                        Text(
+                          'Step #$stepNumber',
+                          style: Theme.of(context).textTheme.subtitle1.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: kPrimaryColor,
+                              ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          instruction,
+                          style: Theme.of(context).textTheme.bodyText1,
+                          textAlign: TextAlign.justify,
+                        ),
+                        const SizedBox(height: 16),
+                        if (stepNumber != _instructions.length) const Divider(),
+                      ],
                     ),
-                    const SizedBox(height: 8),
-                    Text(
-                      instruction,
-                      style: Theme.of(context).textTheme.bodyText1,
-                      textAlign: TextAlign.justify,
-                    ),
-                    stepNumber != _instructions.length ? const Divider(height: 32) : const SizedBox(),
-                  ],
-                );
-              }).toList(),
-            ),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 1,
-                  blurRadius: 3,
+                  ),
                 ),
-              ],
-            ),
+              ),
+            ],
+          );
+        }).toList(),
+      ),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 1,
+            blurRadius: 3,
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -434,7 +471,8 @@ class _CreateRecipeFormState extends State<CreateRecipeForm> {
     );
   }
 
-  Widget _getAddInstructionStepForm() {
+  Widget _getAddInstructionStepForm({String initText}) {
+    if (initText != null) _instructionsController.text = initText;
     return Form(
       key: _formKeyInstructions,
       child: Column(
@@ -453,8 +491,31 @@ class _CreateRecipeFormState extends State<CreateRecipeForm> {
             ),
           ),
           const SizedBox(height: 16),
+          if (initText != null)
+            RaisedButton(
+              color: Colors.redAccent,
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              onPressed: () {
+                Navigator.pop(context, ['remove']);
+              },
+              child: IconText(
+                text: Text(
+                  'Delete',
+                  style: TextStyle(fontSize: 24),
+                ),
+                icon: Icon(
+                  Icons.delete_rounded,
+                  size: 24,
+                ),
+                squeeze: true,
+              ),
+            ),
+          if (initText != null) const SizedBox(height: 16),
+          if (initText != null) const Divider(),
+          if (initText != null) const SizedBox(height: 16),
           RaisedButton(
-            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            color: kPrimaryColor,
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
             onPressed: () {
               if (_formKeyInstructions.currentState.validate()) {
                 Navigator.pop(context, [_instructionsController.text]);
@@ -462,7 +523,7 @@ class _CreateRecipeFormState extends State<CreateRecipeForm> {
             },
             child: IconText(
               text: Text(
-                'Add',
+                initText == null ? 'Add' : 'Update',
                 style: TextStyle(fontSize: 24),
               ),
               icon: Icon(
