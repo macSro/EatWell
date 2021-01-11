@@ -63,7 +63,7 @@ class RecipeScreen extends StatelessWidget {
                 const SizedBox(height: 32),
                 Text(
                   'Ingredients',
-                  style: Theme.of(context).textTheme.headline6,
+                  style: Theme.of(context).textTheme.headline6.copyWith(color: kPrimaryColor),
                 ),
                 const SizedBox(height: 16),
                 Padding(
@@ -73,7 +73,7 @@ class RecipeScreen extends StatelessWidget {
                 const SizedBox(height: 32),
                 Text(
                   'Instructions',
-                  style: Theme.of(context).textTheme.headline6,
+                  style: Theme.of(context).textTheme.headline6.copyWith(color: kPrimaryColor),
                 ),
                 const SizedBox(height: 16),
                 Padding(
@@ -82,7 +82,7 @@ class RecipeScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 32),
                 Text(
-                  'How did you like this recipe?',
+                  'How did you enjoy this recipe?',
                   style: Theme.of(context).textTheme.headline6,
                 ),
                 const SizedBox(height: 8),
