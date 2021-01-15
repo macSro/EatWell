@@ -148,13 +148,11 @@ class RecipeListBloc extends Bloc<RecipeListEvent, RecipeListState> {
               if (cuisineFilters.isEmpty) {
                 newRecipes.add(recipe);
               } else {
-                print('recipe cuisines: ${recipe.cuisines}');
                 cuisineFilters.forEach((cuisine) {
                   if (recipe.cuisines.contains(cuisine)) {
                     _cuisinesCount++;
                   }
                 });
-                print('cuisines count: $_cuisinesCount');
                 if (_cuisinesCount > 0) newRecipes.add(recipe);
               }
             }
