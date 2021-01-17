@@ -91,7 +91,7 @@ class PantryRepository {
           (snap) => _firestore.collection('pantry-products').doc(snap.docs.first.id).update({
             'amount': amount,
             'unit': unit,
-            'expDate': Timestamp.fromDate(expDate),
+            'expDate': expDate != null ? Timestamp.fromDate(expDate) : expDate,
           }),
         );
   }
