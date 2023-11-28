@@ -144,7 +144,7 @@ flutter run
 
 * Publish a recipe
 
-* Report a product missing in the database (handled by <a href="https://github.com/macSro/EatWell-Reviewer">EatWell Reviewer</a>)
+* Report a product missing in the database _(handled by <a href="https://github.com/macSro/EatWell-Reviewer">EatWell Reviewer</a>)_
 
 * Manage pantry (products on hand)
 
