@@ -50,10 +50,14 @@ class MyDrawer extends StatelessWidget {
                 color: kAccentColor,
               ),
               title: Text('All recipes',
-                  style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline6
+                      .copyWith(color: Colors.white)),
               onTap: () {
-                Navigator.of(context).pushReplacementNamed(RecipesScreen.routeName);
-                BlocProvider.of<RecipeListBloc>(context).add(FetchRecipes());
+                Navigator.of(context)
+                    .pushReplacementNamed(RecipesScreen.routeName);
+                // BlocProvider.of<RecipeListBloc>(context).add(FetchRecipes());
                 BlocProvider.of<FiltersBloc>(context).add(ResetFilters());
               }),
           MyDrawerTile(
@@ -62,10 +66,15 @@ class MyDrawer extends StatelessWidget {
               color: kAccentColor,
             ),
             title: Text('My recipes',
-                style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
+                style: Theme.of(context)
+                    .textTheme
+                    .headline6
+                    .copyWith(color: Colors.white)),
             onTap: () {
-              BlocProvider.of<SavedRecipesBloc>(context).add(FetchSavedRecipes());
-              Navigator.of(context).pushReplacementNamed(MyRecipesScreen.routeName);
+              BlocProvider.of<SavedRecipesBloc>(context)
+                  .add(FetchSavedRecipes());
+              Navigator.of(context)
+                  .pushReplacementNamed(MyRecipesScreen.routeName);
             },
           ),
           MyDrawerTile(
@@ -75,17 +84,25 @@ class MyDrawer extends StatelessWidget {
               ),
               title: Text(
                 'Pantry',
-                style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white),
+                style: Theme.of(context)
+                    .textTheme
+                    .headline6
+                    .copyWith(color: Colors.white),
               ),
               onTap: () {
-                Navigator.of(context).pushReplacementNamed(PantryScreen.routeName);
+                Navigator.of(context)
+                    .pushReplacementNamed(PantryScreen.routeName);
               }),
           MyDrawerTile(
             icon: Icon(
               Icons.block_rounded,
               color: kAccentColor,
             ),
-            title: Text('Diet', style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white)),
+            title: Text('Diet',
+                style: Theme.of(context)
+                    .textTheme
+                    .headline6
+                    .copyWith(color: Colors.white)),
             onTap: () {
               Navigator.of(context).pushReplacementNamed(DietScreen.routeName);
             },
@@ -125,11 +142,17 @@ class MyDrawer extends StatelessWidget {
             children: [
               Text(
                 'Hello there,',
-                style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.white),
+                style: Theme.of(context)
+                    .textTheme
+                    .headline6
+                    .copyWith(color: Colors.white),
               ),
               AutoSizeText(
                 '$displayName!',
-                style: Theme.of(context).textTheme.headline5.copyWith(color: kAccentColor),
+                style: Theme.of(context)
+                    .textTheme
+                    .headline5
+                    .copyWith(color: kAccentColor),
                 minFontSize: 18,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,

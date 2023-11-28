@@ -38,11 +38,7 @@ dependencies:
   auto_size_text: ^2.1.0
   double_back_to_close_app: ^1.2.0
   flutter_launcher_icons: ^0.8.1
-  loading:
-    git:
-      url: git://github.com/leonzone/loading.git
-      path: loading
-      ref: 8f5a63f
+  loading: ^1.0.2
   transparent_image: ^1.0.0
 
 flutter_icons:

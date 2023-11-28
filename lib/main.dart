@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
         listener: (context, state) =>
             Navigator.pushNamed(context, LoginScreen.routeName),
         child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           title: kAppName,
           theme: _getThemeData(),
           initialRoute: SplashScreen.routeName,

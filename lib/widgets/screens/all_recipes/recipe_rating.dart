@@ -65,7 +65,7 @@ class RecipeRating extends StatelessWidget {
               ),
         const SizedBox(height: 2),
         Text(
-          'Rating: ${rating > 0 ? rating : '-'}',
+          'Rating: ${rating > 0 ? rating.toStringAsFixed(1) : '-'}',
           style: Theme.of(context).textTheme.subtitle2,
         ),
       ],

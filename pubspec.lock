@@ -229,7 +229,7 @@ packages:
       name: flutter_svg
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.19.0"
+    version: "0.19.1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -320,11 +320,9 @@ packages:
   loading:
     dependency: "direct main"
     description:
-      path: loading
-      ref: "8f5a63f"
-      resolved-ref: "8f5a63fff48d371ff4de96865861c5c24f58f7b5"
-      url: "git://github.com/leonzone/loading.git"
-    source: git
+      name: loading
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "1.0.2"
   matcher:
     dependency: transitive
