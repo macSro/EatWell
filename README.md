@@ -154,6 +154,14 @@ flutter run
 
 ## Demo
 
+https://github.com/macSro/EatWell/assets/56345054/0020942a-6a92-42f3-9ab0-04bd66642903
 
+https://github.com/macSro/EatWell/assets/56345054/affeb64b-f374-4cd1-93ca-271633240081
+
+https://github.com/macSro/EatWell/assets/56345054/0cad2b20-e27d-4912-b6dc-1590130ad4e6
+
+https://github.com/macSro/EatWell/assets/56345054/71a98e62-a322-45e5-b779-741efe382910
+
+https://github.com/macSro/EatWell/assets/56345054/711a5f1b-78a3-4f7b-b917-49af79e2e22d
 
 <p align="right">(<a href="#top">back to top</a>)</p>
